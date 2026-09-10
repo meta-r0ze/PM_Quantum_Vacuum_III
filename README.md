@@ -6,7 +6,7 @@ The rendered version can be viewed here: https://meta-r0ze.github.io/PM_Quantum_
 
 ## Reproducibility
 
-A core tenet of this work is that the physical constants are computational outputs. To verify the results found in the papers:
+The physical constants within the paper are injected and are computational outputs. To verify the results found in the papers:
 
 ### 2. Generate the Constants
 To regenerate the values for $\alpha^{-1}$, $\alpha_s$, $G_F$, etc., run:
