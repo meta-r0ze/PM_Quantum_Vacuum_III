@@ -1,4 +1,4 @@
-This repository contains the latex source for the "Informational Energetics: ested Persistence" paper which defines the three rules by which systems partion themselves.
+This repository contains the latex source for the "Persistence Mechanics of the Quantum Vacuum III" paper which defines the three rules by which systems partion themselves.
 
 and then validates this by applying this to E8 to derive the constants such as 
 
