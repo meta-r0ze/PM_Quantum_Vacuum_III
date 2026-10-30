@@ -6,15 +6,15 @@
 \CatchFileBetweenTags{\ResidualCapVal}{constants.tex}{ResidualCapVal}
 
 \CatchFileBetweenTags{\GravCouplingVal}{constants.tex}{GravCouplingVal}
-\CatchFileBetweenTags{\GravCouplingExperimentalValue}{constants.tex}{GravCouplingExperimentalValue}
+\CatchFileBetweenTags{\GravCouplingExperimentalVal}{constants.tex}{GravCouplingExperimentalVal}
 \CatchFileBetweenTags{\GravCouplingSigma}{constants.tex}{GravCouplingSigma}
 
 \CatchFileBetweenTags{\PlanckMassVal}{constants.tex}{PlanckMassVal}
-\CatchFileBetweenTags{\PlanckMassExperimentalValue}{constants.tex}{PlanckMassExperimentalValue}
+\CatchFileBetweenTags{\PlanckMassExperimentalVal}{constants.tex}{PlanckMassExperimentalVal}
 \CatchFileBetweenTags{\PlanckMassSigma}{constants.tex}{PlanckMassSigma}
 
 \CatchFileBetweenTags{\VacuumEnergyScaleVal}{constants.tex}{VacuumEnergyScaleVal}
-\CatchFileBetweenTags{\VacuumEnergyScaleExperimentalValue}{constants.tex}{VacuumEnergyScaleExperimentalValue}
+\CatchFileBetweenTags{\VacuumEnergyScaleExperimentalVal}{constants.tex}{VacuumEnergyScaleExperimentalVal}
 \CatchFileBetweenTags{\VacuumEnergyScaleSigma}{constants.tex}{VacuumEnergyScaleSigma}
 
 \subsection{The Architectural Requirement}
@@ -22,7 +22,7 @@ Gravity is traditionally treated as a distinct fundamental force described by Ge
 
 We identify Gravity as the \textbf{Geometric Depth} of the lattice. Just as the Higgs regulates the energy density of Matter at the local surface, Gravity is the nested regulatory subsystem that maintains the structural integrity of the bulk geometry. It is an \textbf{Attenuated Signal}. Gauge forces originate at the topological boundary (the particle's ``surface'', $r=0$), while gravity originates at the lattice centroid (the particle's ``core'', $r=\Delta/2$). \textit{(This spatial partitioning of force origins is introduced here as a structural consequence of the $D_4 \oplus D_4$ decomposition; Papers 1 and 2 established the functional forms of these forces but not this loci assignment.)} The apparent gravitational weakness is strictly the signal attenuation across this geometric depth.
 
-As derived in \textit{Informational Energetics: Entropic Action} \cite{meyer_ieaction_2026}, the Bulk Regulator's architectural pillars mathematically necessitate the Einstein-Hilbert action (a massless spin-2 field preserving diffeomorphism invariance) to conserve local capacity and maintain volumetric resolution. In this section, we assume those derived functional forms and focus exclusively on calculating their exact numerical partition coefficients using the nested partitioning rules established in Section II: the gravitational coupling ($\alpha_G$), the Planck Mass ($M_P$), and the Cosmological Constant ($\Lambda$).
+As derived in \textit{Persistence Mechanics: Entropic Action} \cite{meyer_ieaction_2026}, the Bulk Regulator's architectural pillars mathematically necessitate the \textbf{functional form} of the Einstein-Hilbert action (a massless spin-2 field preserving diffeomorphism invariance) to conserve local capacity and maintain volumetric resolution. Paper 2 establishes the action structure; the numerical partition coefficients ($\alpha_G$, $M_P$, $\Lambda$) remain undetermined there. In this section, we apply the nested partitioning rules to calculate those exact coefficients using the invariants established in Section II: the gravitational coupling ($\alpha_G$), the Planck Mass ($M_P$), and the Cosmological Constant ($\Lambda$).
 
 To satisfy \textbf{Rule 3: Impedance Matching}, the internal bandwidth of this bulk regulator is rigidly partitioned using the lattice invariants:
 
@@ -51,9 +51,14 @@ Substituting the invariants ($\nu=16, \sigma=5, \chi=2$):
 \begin{equation}
 B_{res} \approx 16 - \frac{2}{3} - 0.00729 \approx \mathbf{\ResidualCapVal}
 \end{equation}
+The channel count here is the frame, at unit weight. Newton's constant tests this independently of the VEV: with $\nu=16$ the coupling lies in $(1.7517995,1.7517996)\times10^{-45}$, inside the CODATA window from $G=6.67430(15)\times10^{-11}$ at about $-0.25\sigma$; counting the channels as payload, $16\eta$, puts it more than $200\sigma$ low (\texttt{GravityAccounting.channels\_as\_frame}, \texttt{inside\_codata}, \texttt{channels\_as\_payload}). The same measurement pins the storage term to $0.6662<s<0.6670$; among $\chi/k$ only $k=3$ fits, and $2/3=\chi\cdot\tfrac13$ is the boundary's two units each storing the colour-axis charge quantum fixed by tracelessness in the carrier representation (\texttt{BoundaryStorage}). The Fermi constant (\texttt{VevAccounting}) and $m_H$ with $G_F$ (\texttt{ScalarAccounting}) select the same rule: capacity counts take the channels as frame, while the per-phase workload of \cref{subsec:weak_mixing} weighs their payload by $\eta$.
 
 \subsubsection{Harmonic Attenuation (The Lattice Depth)}
-The gravitational signal must propagate from the lattice core ($r = \Delta/2$) to the surface ($r = 0$). Each lattice layer is a discrete information-processing step: a signal quantum is either coherently relayed to the next layer (with probability $(1-\alpha)$) or lost to vacuum fluctuations (with probability $\alpha$). As established in Paper 1 \cite{meyer_informational_2026}, $\alpha$ is the per-bond fidelity loss of the $E_8$ lattice --- the fraction of a transmitted state that fails to propagate coherently across one lattice link. This is the same $\alpha$ that governs the electromagnetic vacuum impedance ($\alpha^{-1}$): both are the same geometric quantity, one viewed as coupling strength at the surface, the other as attenuation rate through the bulk. After $r$ independent hops, the surviving signal fraction is $(1-\alpha)^r = \alpha^r$ (in the small-$\alpha$ limit; see Paper 1 for the exact $E_8$ lattice derivation). The Beer-Lambert law is the macroscopic continuous limit of this discrete per-hop calculation.
+The gravitational signal must propagate from the lattice core ($r = \Delta/2$) to the surface ($r = 0$). Each lattice layer is a discrete transfer step whose weight is the admittance $\alpha$: the signal must be handed on across each layer, and a handoff succeeds with weight $\alpha$, the same geometric quantity that sets the electromagnetic vacuum impedance $\alpha^{-1}$. After $r$ independent handoffs the transferred fraction is $\alpha^r$. This is not the survival fraction $(1-\alpha)^r$ of a relay that loses $\alpha$ per step; the two differ for every $r>0$ (Lean: \texttt{Depth}), and $(1-\alpha)^{21.5}\approx0.85$ would give no hierarchy at all. The Beer-Lambert form is the continuous limit of this per-handoff product.
+
+\textit{Possible origin of the half-integer depth.} A complete causal loop consists of $\Delta=43$ handoffs and so has weight $\alpha^{43}$; its amplitude is $\alpha^{43/2}=\alpha^{21.5}$. Because $43$ is odd, $21.5$ cannot be a count of full hops (Lean: \texttt{Bulk}), but it arises directly as an amplitude. This reading is offered as a hypothesis alongside the centroid argument below. It would need to explain why the gravitational coupling is read at amplitude level while the gauge couplings are read at probability level.
+
+\textit{Event-law status (Lean: \texttt{DepthEvents}).} Both choices are now fixed by premises used elsewhere. Nothing changes state without an event, so a signal crosses a layer only through a handoff event; with probability $p$ per layer, crossing $n$ layers has probability $p^n$, and no-event histories do not advance (\texttt{required\_handoffs}, \texttt{no\_event\_no\_advance}). This selects $\alpha^n$ over $(1-\alpha)^n$ once the handoff probability is the coupling. The only integer-count object is the closed 43-handoff loop, of probability $\alpha^{43}$. The update is real and therefore time-reversal symmetric, so the outbound and return legs have equal probability, and the one-way transmission is uniquely $\alpha^{43/2}$ (\texttt{one\_way\_from\_loop}, \texttt{gravity\_from\_events}). The gravitational coupling is read as a one-way transmission, not as an amplitude; no half-hop is needed. The residual factor remains a premise.
 
 The origin of this bulk signal is strictly dictated by the foundational symmetry of the lattice. For the $E_8 \to D_4 \oplus D_4$ projection to be persistent, it must preserve the self-duality of the parent lattice. This requires the bulk resonance to treat both orthogonal $D_4$ sublattices perfectly symmetrically. Any excitation centered on an integer-valued lattice node would inherently break this symmetry by selecting one sublattice over the other. 
 
@@ -79,7 +84,7 @@ The coupling is the product of the spare capacity (Bandwidth) and the attenuatio
 \vspace{0.5em}
 \begin{tabular}{ll}
 \textbf{Prediction:} & $\GravCouplingVal$ \\
-\textbf{Experiment:} & \GravCouplingExperimentalValue \\
+\textbf{Experiment:} & \GravCouplingExperimentalVal \\
 \textbf{Accuracy:}   & $\GravCouplingSigma \sigma$ \\
 \end{tabular}
 \vspace{0.5em}
@@ -111,7 +116,7 @@ M_P \approx \mathbf{\PlanckMassVal}
 \vspace{0.5em}
 \begin{tabular}{ll}
 \textbf{Prediction:} & $\PlanckMassVal$ \\
-\textbf{Experiment:} & \PlanckMassExperimentalValue \\
+\textbf{Experiment:} & \PlanckMassExperimentalVal \\
 \textbf{Accuracy:}   & $\PlanckMassSigma \sigma$ \\
 \end{tabular}
 \vspace{0.5em}
@@ -175,7 +180,7 @@ Normalizing to the Planck density:
 \vspace{0.5em}
 \begin{tabular}{ll}
 \textbf{Prediction:} & $\VacuumEnergyScaleVal$ \\
-\textbf{Experiment:} & \VacuumEnergyScaleExperimentalValue \\
+\textbf{Experiment:} & \VacuumEnergyScaleExperimentalVal \\
 \textbf{Accuracy:}   & $\VacuumEnergyScaleSigma \sigma$ \\
 \end{tabular}
 \vspace{0.5em}

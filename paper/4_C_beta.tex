@@ -1,21 +1,19 @@
 \CatchFileBetweenTags{\AlphaRunningVal}{constants.tex}{AlphaRunningVal}
-\CatchFileBetweenTags{\AlphaRunningExperimentalValue}{constants.tex}{AlphaRunningExperimentalValue}
+\CatchFileBetweenTags{\AlphaRunningExperimentalVal}{constants.tex}{AlphaRunningExperimentalVal}
 \CatchFileBetweenTags{\AlphaRunningSigma}{constants.tex}{AlphaRunningSigma}
-
-\CatchFileBetweenTags{\AlphaSTauVal}{constants.tex}{AlphaSTauVal}
 
 \subsection{Rigidity: The Beta Function (\texorpdfstring{$\beta_0$}{beta\_0})}
 
 The \textbf{Governor} pillar of the Capacity Partition requires structural rigidity: the partition ratios must resist deformation under localized perturbations. The QCD beta function coefficients are the exact geometric encoding of this stiffness.
 
 \paragraph{Geometric Stiffness: The Anti-Screening Term}
-The coefficient ``11'' is the trace of the rigidity operator on the local Hilbert space. It is forced by the tensor product structure of orthogonal perturbations:
+The proposed coefficient ``11'' counts the ranks of two geometrically independent contributions:
 
-The Spacetime Anchor ($D \times \chi$) and Symmetry Pressure ($\sigma - \chi$) act on geometrically independent subspaces (spacetime vs. internal). Their contributions combine via tensor product, not direct sum, because the perturbations are orthogonal. The trace of a tensor product is the product of traces; here each factor has trace equal to its rank, yielding $8 + 3 = 11$. Alternative combinations violate this orthogonality: $D \times \sigma = 20$ double-counts boundary dimensionality; $\chi \times \sigma = 10$ ignores spacetime anchoring; $D + \chi + \sigma = 11$ adds rather than tensors, violating the product structure of independent subspaces.
+The Spacetime Anchor ($D \times \chi = 8$) and Symmetry Pressure ($\sigma - \chi = 3$) act on spacetime and internal subspaces respectively. The proposed count adds their ranks. A tensor product of the two identity operators would instead have trace $8\cdot3=24$ (Lean: \texttt{ReviewChecks.tensor\_trace\_check}), so the additive combination is a hypothesis about how the two stiffness contributions compose, not a consequence of their orthogonality. Other integer combinations ($D\times\sigma=20$, $\chi\times\sigma=10$, $D+\chi+\sigma=11$) show that the rule must be fixed independently of the target value.
 
-The total vacuum rigidity is the trace of these combined structural tensors:
+The proposed vacuum rigidity is then:
 \begin{equation}
-    \beta_0^{\text{stiff}} = \text{Tr}(T_{anchor}) + \text{Tr}(T_{pressure}) = 8 + 3 = \mathbf{11}
+    \beta_0^{\text{stiff}} = \operatorname{rank}(T_{anchor}) + \operatorname{rank}(T_{pressure}) = 8 + 3 = \mathbf{11}
 \end{equation}
 
 This derivation is a \textbf{universality test}: if the geometric construction rules are truly substrate properties rather than group-theoretic accidents, the same rules must apply to all gauge theories. The QED coefficient $4/3$ is not fitted; it is the unique ratio of $2\chi = 4$ (topological load of a virtual pair) to $D-1 = 3$ (spatial dilution). Any other value would require either a different topology (violating $\chi=2$) or different dimensionality (violating $D=4$).
@@ -31,82 +29,43 @@ Combining Rigidity and Screening, we recover the exact QCD Beta Function:
     \beta_0 = (D\chi) + (\sigma-\chi) - \frac{\chi}{n_{gen}} n_f = 11 - \frac{2}{3}n_f
 \end{equation}
 
+\textit{Universality check.} The rank composition cannot be the universal rule this section asks for: the weak $SU(2)$ gauge coefficient is $22/3$, and no sum of integer ranks equals it (\texttt{BetaUniversality.rank\_rule\_not\_universal}). The single rule that reproduces both is $(11/3)\,C_A$ with $C_A=\sigma-\chi=3$ for colour and $C_A=\chi=2$ for the weak sector (\texttt{casimir\_form}); the factor $11/3$ is the standard one-loop result (paramagnetic $4$ minus diamagnetic $1/3$ per gauge mode). The coefficients themselves belong with the gauge dynamics of Paper~II, whose Lean states the spin decomposition $(-1)^{2s}((2s)^2-1/3)$ per unit index and derives $b_0=(11/3)N-(2/3)n_f$, hence $9,25/3,23/3,7$ for three to six flavours (\texttt{PMAction.RunningCoefficients.b0\_formula}, \texttt{qcd\_values}); every coefficient used in this paper's running tests is one of these values (\texttt{RunningLinks}). Deriving the two inputs, the spin response $(2s)^2$ and the orbital $1/3$, from the substrate response remains open.
+
 \textbf{Physical Consequence (Asymptotic Freedom):} For $n_f \leq 16$, we have $\beta_0 > 0$, meaning $\alpha_s$ decreases logarithmically at high energy, a phenomenon called \textit{asymptotic freedom}, analogous to \textbf{negative feedback} in control systems. This emerges because Geometric Stiffness ($11$) exceeds Topological Screening ($2n_f/3$) for all Standard Model quark flavors. The strong force weakens at short distances because the vacuum's geometric rigidity dominates the fermion screening contribution.
 
-
 \CatchFileBetweenTags{\AlphaSTauLinearVal}{constants.tex}{AlphaSTauLinearVal}
-\CatchFileBetweenTags{\AlphaSTauCorrectedVal}{constants.tex}{AlphaSTauCorrectedVal}
-\CatchFileBetweenTags{\AlphaSTauCorrectedExperimentalValue}{constants.tex}{AlphaSTauCorrectedExperimentalValue}
-\CatchFileBetweenTags{\AlphaSTauCorrectedSigma}{constants.tex}{AlphaSTauCorrectedSigma}
+\CatchFileBetweenTags{\AlphaSTauThresholdVal}{constants.tex}{AlphaSTauThresholdVal}
+\CatchFileBetweenTags{\AlphaSTauThresholdExperimentalVal}{constants.tex}{AlphaSTauThresholdExperimentalVal}
+\CatchFileBetweenTags{\AlphaSTauThresholdSigma}{constants.tex}{AlphaSTauThresholdSigma}
 
 \subsubsection{Validation 2: Geometric Scaling (Running to \texorpdfstring{$M_\tau$}{Mtau})}
 
-To verify the Stiffness derivation ($\beta_0$), we trace the coupling evolution across energy scales. In the lattice framework, energy scale corresponds to inverse resolution ($\mu \sim 1/r$). The evolution of the coupling is governed by the \textbf{Lattice Scaling Law}, where the logarithmic term $\ln(M_\tau/M_Z)$ represents the number of \textbf{Scale Octaves} (doublings) between the two resolutions.
-
+To test the stiffness coefficient we trace the coupling across energy scales. If each species' response is additive over scale ratios and continuous, it is a coefficient times the logarithm of the scale ratio (Lean: \texttt{ScaleResponse.scale\_homogeneous\_log}); applied to $\alpha_s^{-1}$ this gives the one-loop form
 \begin{equation}
-\alpha_s(M_\tau) = \frac{\alpha_s(M_Z)}{1 + \frac{\beta_0}{2\pi} \alpha_s(M_Z) \ln(M_\tau/M_Z)}
+\alpha_s^{-1}(\mu) = \alpha_s^{-1}(M) + \frac{\beta_0}{2\pi}\ln\frac{\mu}{M}.
 \end{equation}
 
-This form, functionally identical to the perturbative Renormalization Group Equation (RGE), emerges here as the linear response of the lattice stiffness ($\beta_0$) to scale transformations.
-
-\textit{Note on Active Degrees of Freedom:} Standard perturbative QCD patches the RGE across quark mass thresholds. In the $E_8$-Persistence theory, the global lattice stiffness $\beta_0$ is a topological invariant of the bulk, driven by the $n_{gen}=3$ generation manifold. The geometric scaling therefore utilizes the structural base state ($n_f = 3 \implies \beta_0 = 9$) across the entire macroscopic resolution interval.
-
-Substituting the values:
+\textit{Active flavours.} Under the same species-additive response, a flavour screens only above its own mass. Paper~V's quark masses order as $m_c<m_\tau<m_b<M_Z$ (Lean: \texttt{StrongRunning.flavour\_order}), so five flavours are active on $[m_b,M_Z]$ and four on $[m_\tau,m_b]$. Holding $n_f=3$ across the whole interval gives a strictly smaller $\alpha_s^{-1}(m_\tau)$, by the exact excess $\frac{1}{2\pi}\left(\frac43\ln\frac{M_Z}{m_b}+\frac23\ln\frac{m_b}{m_\tau}\right)$ (\texttt{three\_flavours\_inflate}). With the thresholds,
 \begin{equation}
-\alpha_s^{\text{(1-loop)}}(M_\tau) \approx \frac{0.1179}{1 + \frac{9}{2\pi}(0.1179)(-3.93)} \approx \AlphaSTauLinearVal
+\alpha_s^{\text{(1-loop)}}(m_\tau) \approx \AlphaSTauThresholdVal,
 \end{equation}
+compared with $\AlphaSTauLinearVal$ for three flavours throughout.
 
-\subsubsection{The Finite Capacity Correction (The Sterile Channel)}
-
-A continuous field theory implicitly assumes infinite information capacity, allowing channels to operate entirely independently regardless of signal density. In the $E_8$-Persistence theory, the channel capacity is strictly finite ($\nu=16$). 
-
-As the Saturation Ratio $\alpha_s$ approaches maximum throughput ($\gtrsim 0.3$), the lattice becomes \textbf{capacity-limited}, analogous to a digital communication channel approaching maximum bandwidth. The linear one-loop prediction ($\alpha_s^{\text{(1-loop)}} \approx \AlphaSTauLinearVal$) fails to account for this hardware limit. We must apply the geometric mechanism of capacity saturation:
-
-\textbf{The Geometric Mechanism:}
-In a discrete lattice with $\nu$ chiral channels, the coupling $\alpha_s$ represents the fraction of channels actively transmitting color charge. In the continuum limit (weak coupling), channels operate independently. However, at saturation:
-
-\begin{enumerate}
-    \item \textbf{Unitarity Constraint:} Conservation of probability imposes $\sum_{i=1}^{\nu} p_i = 1$, which strictly locks exactly one degree of freedom. 
-    
-    \item \textbf{Capacity Saturation:} When all $\nu$ channels are driven to capacity, the system cannot distinguish between ``signal'' and ``saturation noise.'' To maintain coherent transmission, the locked channel must remain partially open as a \textbf{reference state} (analogous to a pilot tone in dense signaling).
-    
-    \item \textbf{Effective Coupling:} Because of this reference lock, the maximum active signal capacity is limited to exactly $\nu-1$ independent channels, while the geometric impedance ($\alpha^{-1}$) is normalized to the full capacity $\nu$.
-
-    \item \textbf{The Sterile Channel ($\nu_R$):} The $E_8 \to D_4 \oplus D_4$ decomposition assigns the 16 physical spinors to the $8_s$ representation of each $D_4$ factor. $D_4$ triality is the $S_3$ symmetry permuting the three inequivalent 8-dimensional representations $\{8_v, 8_s, 8_c\}$. Under the $SU(2)$ action of the topological boundary $\chi=2$ (the weak isospin generator), the $8_s$ decomposes into $SU(2)$ doublets plus exactly one $SU(2)$ singlet. This singlet is triality-forced: it corresponds to the direction in $8_s$ that maps to $8_c$ under the triality automorphism and therefore carries zero weak isospin --- it is the unique $D_4$ representation fixed by the triality action relative to the $SU(2)$ boundary. Triality does not merely \emph{identify} this channel after the fact; it \emph{guarantees} exactly one such singlet exists among the 16 chiral states (full derivation deferred to the companion paper on fermion structure). This singlet is the \textbf{geometric vacancy}: a topological absence, not a propagating particle. At full saturation, the unitarity constraint locks exactly this channel. The effective active capacity is therefore $(\nu-1)/\nu = 15/16$.
-\end{enumerate}
-
-\textit{Why multiplicative?} In Shannon's channel capacity model, a coupling constant represents the fraction of the substrate's transmission probability allocated to a given interaction. If one of $\nu$ independent channels is blocked (locked as a reference state), the remaining $(\nu-1)$ channels transmit freely, but the total available probability space has not changed --- it is still normalized to $\nu$ channels. The coupling therefore scales as the ratio of active-to-total probability: $(\nu-1)/\nu$. An additive correction would imply the blocked channel contributes negative coupling, which has no geometric meaning; the multiplicative ratio correctly reflects the fractional reduction in available transmission probability.
-
-The effective coupling at saturation becomes:
-\begin{equation}
-\alpha_s^{\text{(eff)}} = \alpha_s^{\text{(1-loop)}} \cdot \frac{\text{Active Channels}}{\text{Total Capacity}} 
-= \alpha_s^{\text{(1-loop)}} \cdot \frac{\nu-1}{\nu}
-\end{equation}
-
-Numerically:
-\begin{equation}
-\alpha_s^{\text{(eff)}}(M_\tau) = \AlphaSTauLinearVal \times \frac{15}{16} = \mathbf{\AlphaSTauCorrectedVal}
-\end{equation}
-
+\vspace{0.5em}
 \begin{tabular}{ll}
-\textbf{Prediction:} & \AlphaSTauCorrectedVal \\
-\textbf{Experiment:} & $\AlphaSTauCorrectedExperimentalValue$ \\
-\textbf{Accuracy:}   & $\AlphaSTauCorrectedSigma \sigma$ \\
+\textbf{One-loop, thresholds:} & \AlphaSTauThresholdVal \\
+\textbf{Experiment ($\tau$ decays):} & \AlphaSTauThresholdExperimentalVal \\
+\textbf{Deviation:}   & $\AlphaSTauThresholdSigma \sigma$ \\
 \end{tabular}
+\vspace{0.5em}
 
-\textbf{Physical Interpretation:} This correction is uniquely determined by the chiral capacity $\nu=16$. The ``sterile channel'' is the geometric vacancy required to maintain unitarity when all active channels saturate; it need not correspond to a propagating degree of freedom in the effective field theory. Standard QFT recovers this effect 
-through higher-order loop diagrams ($\alpha_s^2$, $\alpha_s^3$, \ldots). We obtain the same result directly via the geometric capacity limit, demonstrating that infinite perturbative loop expansions are the continuous approximations of a strict, finite geometric bound.
+The one-loop deficit is the expected size of the next order in the coupling: as an external comparison, adding the standard two-loop coefficient with the same thresholds gives $\alpha_s(m_\tau)\approx0.313$. A substrate derivation of the second response coefficient is therefore the next requirement for this test.
 
-\textbf{Prediction:} This finite-capacity correction should be:
-\begin{itemize}
-    \item Negligible in the perturbative regime ($\alpha_s \lesssim 0.2$).
-    \item Significant at strong coupling ($\alpha_s \gtrsim 0.3$).
-    \item Observable in lattice QCD simulations evaluated at finite volume.
-\end{itemize}
+\textit{A capacity factor is not supported.} Multiplying the three-flavour value by $(\nu-1)/\nu=15/16$ does not follow from the substrate. A multiplicative factor changes the coupling by the same $1/16$ at every scale, so it cannot be negligible at weak coupling and significant only at strong coupling (\texttt{uniform\_factor\_scale\_free}); applied at the Z mass it would give $\alpha_s<0.1106$ (\texttt{factor\_at\_z}). Normalizing sixteen channel probabilities to one also does not assign the reference channel the share $1/16$ (\texttt{locked\_channel\_share}, \texttt{locked\_share\_not\_forced}). With consistent thresholds the factor would move the estimate further from the data.
 
 \subsubsection{Derivation 3: Geometric Universality --- The QED Beta Coefficient}
 
-Having validated the QCD stiffness coefficients through running coupling predictions, we now test whether these geometric construction rules extend beyond the Strong Force. If the beta function coefficients are truly geometric properties rather than group-theoretic accidents, the same rules must apply universally to all gauge theories. We test this by deriving the QED coefficient from identical geometric principles.
+Having validated the QCD stiffness coefficients through running coupling predictions, we now demonstrate that these geometric construction rules extend beyond the Strong Force. If the beta function coefficients are truly geometric properties rather than group-theoretic accidents, the same rules must apply universally to all gauge theories. We verify this by deriving the QED coefficient from identical geometric principles.
 
 The QED Beta function coefficient arises from the polarization of the vacuum by virtual pairs:
 \begin{enumerate}
@@ -119,35 +78,22 @@ The QED Beta coefficient is the exact ratio of topology to spatial dilution, per
     \beta_0^{\text{QED}} = \frac{2\chi}{D-1} = \frac{4}{3}
 \end{equation}
 
-\subsubsection{Consistency Check: The Z-Pole Running Coupling (Empirical Anchor)}
-\textbf{Numerical Validation (The Unitary Resonance):}
-To test the QED screening effect at the Z-Pole ($M_Z$), we temporarily adopt the experimentally evaluated vacuum polarization ``Screening Fog'' $\Delta \alpha_{\text{total}} \approx 0.0590$ (PDG 2024) as an external input. We utilize this empirical anchor strictly to isolate and validate the geometric projection overhead ($\eta$) at the Z-Pole. (The \textit{ab initio} derivation of the full fermion spectrum required to calculate $\Delta\alpha_{total}$ purely from geometry is the subject of a companion paper, ensuring this temporary anchor does not introduce a free parameter into the fundamental architecture). 
+\subsubsection{Consistency Check: The Z-Pole Running Coupling}
 
-Applying this shift to the static vacuum impedance yields a standard effective coupling of $\alpha^{-1}_{QFT} \approx 137.036 - 8.085 = 128.951$ (where the absolute shift is $\alpha^{-1}_{geo} \cdot \Delta \alpha_{\text{total}} \approx 8.085$). This leaves a $\approx 1.0$ discrepancy against the experimental value of $127.955$.
-
-The $E_8$-Persistence theory explicitly resolves this gap. At the exact energy of the Z-Pole ($M_Z$), the vacuum undergoes a \textbf{Resonant Transition}, coupling to the Scalar Ground State ($\Delta^0 = 1$). This unitary geometric step is projected onto the physical manifold and is therefore subjected to The Coordinate Overhead ($\eta$). The true geometric impedance is:
-
+The calculator evaluates
 \begin{equation}
-\alpha^{-1}(M_Z) = \left[ \alpha^{-1}_{geo} - \text{Screening} \right] - \Delta^0 \cdot \eta
+\alpha^{-1}(M_Z) = \left[ \alpha^{-1}_{geo}(1-\Delta\alpha) \right] - \Delta^0 \cdot \eta \approx \AlphaRunningVal,
 \end{equation}
-
-\begin{equation}
-\begin{split}   
-\alpha^{-1}(M_Z) 
-& \approx (\AlphaInvVal - 8.085) - 0.994 \\
-& \approx \mathbf{\AlphaRunningVal}
-\end{split}
-\end{equation}
+using the measured on-shell vacuum polarization $\Delta\alpha\approx0.0590$ as an external input.
 
 \vspace{0.5em}
 \begin{tabular}{ll}
-\textbf{Prediction:} & \AlphaRunningVal \\
-\textbf{Experiment:} & \AlphaRunningExperimentalValue \\
-\textbf{Accuracy:}   & $\AlphaRunningSigma \sigma$ \\
+\textbf{Calculated:} & \AlphaRunningVal \\
+\textbf{Experiment ($\overline{\rm MS}$):} & \AlphaRunningExperimentalVal \\
+\textbf{Deviation:}   & $\AlphaRunningSigma \sigma$ \\
 \end{tabular}
 \vspace{0.5em}
 
-\textbf{Physical Interpretation:} The difference between the low-energy coupling ($\sim 137$) and the Z-pole coupling ($\sim 128$) is the sum of standard fermion screening (QFT) and exactly one unit of geometric resonance ($\Delta^0=1$), corrected for manifold projection efficiency ($\eta$).
+\textbf{Scheme caution.} The input $\Delta\alpha$ is the on-shell quantity, whereas the target $127.955$ is the $\overline{\rm MS}$ coupling. The two schemes differ by $\Delta\hat\alpha-\Delta\alpha\approx0.0072$ at leading order, about $1.0$ in $\alpha^{-1}$ (Particle Data Group electroweak review). The approximately unit gap attributed to $\Delta^0\eta$ is therefore of the size of this scheme conversion, and the agreement does not test $\eta$. A test of the overhead needs both sides in one scheme and a substrate-derived $\Delta\alpha$.
 
-\textbf{Empirical Anchor Declaration:}
-To isolate the geometric projection overhead $\eta$ at the Z-pole from the fermion screening contribution, we utilize the experimentally evaluated vacuum polarization $\Delta\alpha_{\text{total}} \approx 0.0590$ (PDG 2024) as a known boundary condition. This is analogous to using the refractive index of air when verifying Snell's law: the geometric derivation of $\eta$ is independent of the medium's dispersion, but its experimental isolation requires separating the two effects. The \textit{ab initio} derivation of $\Delta\alpha_{\text{total}}$ from the fermion spectrum is the subject of a companion paper; here, we verify that the geometric correction $\Delta^0 \cdot \eta$ closes the remaining $\sim 1.0$ discrepancy once the screening contribution is accounted for.
+\textbf{Not the electroweak interface coupling.} Using this Z-pole value as the coupling of the W and Z readouts would require an interface factor $k=\alpha^{-1}/\alpha^{-1}(M_Z)>1.07$, whereas the measured Z mass requires $1.0362<k<1.0365$ (\texttt{ScaleResponse.zpole\_not\_interface}). Writing $1/k=1-\Delta\alpha+X$ forces $0.0236<X<0.0242$: an anti-screening term opposite in sign to vacuum screening is required (\texttt{antiscreening\_required}).

@@ -1,4 +1,4 @@
-\CatchFileBetweenTags{\InvCoordinateOverhead}{constants.tex}{InvCoordinateOverhead}
+\CatchFileBetweenTags{\InvCoordinateOverhead}{constants.tex}{EtaVal}
 
 \section{System 4: The Gauge Partition}
 \label{sec:capacity_partition}
@@ -8,7 +8,7 @@ Under Rule 1 (\textbf{Capacity Partitioning}), a discrete substrate with finite 
 To persist, the capacity must be split into non-overlapping fractional bandwidths for each orthogonal demand, creating specialized subsystems to manage them. This routing problem defines \textbf{System 4: The Gauge Partition}. When evaluated, these structural limits identically match the core empirical parameters of the Standard Model gauge sector:
 
 \begin{enumerate}
-    \item \textbf{Capacity: The Chiral Bandwidth} ($\nu = 16$). The $E_8$ substrate possesses 16 chiral degrees of freedom. This acts as the absolute processing budget that must be distributed across all tasks without overflow. Because each subsystem must share a common coordinate grid to remain causally coherent, any signal traversing the bulk manifold incurs the Coordinate Overhead ($\eta = 171/172$). When all channels are active, the resulting impedance load is $\alpha_s$.
+    \item \textbf{Capacity: The Chiral Bandwidth} ($\nu = 16$). The $E_8$ substrate possesses 16 chiral degrees of freedom. This acts as the absolute processing budget that must be distributed across all tasks without overflow. The proposed aggregate propagated load is $16\eta$, with $\eta=171/172$. Converting the storage-capacity ratio into this workload needs an operational loss law: phase-grid counting alone does not impose $\eta$ as the duty factor of each channel. The conditional collision and quadratic-load routes are stated in \cref{subsec:weak_mixing}. Converting that load into $\alpha_s$ additionally requires the response prescription.
 
     \item \textbf{Map: The Gauge Topology} ($\sigma = 5, \chi = 2$). To embed a distinct topological defect into the substrate, the system must map its internal interaction generators (rank $\sigma = 5$) and localized boundaries ($\chi = 2$) onto the available capacity. These invariants define the number of distinct interaction apertures requiring bandwidth.
     
@@ -18,5 +18,5 @@ To persist, the capacity must be split into non-overlapping fractional bandwidth
     
     \item \textbf{Toll: Projection Frustration} ($J$). The irreducible geometric mismatch cost of mapping 5-fold symmetry onto 4-fold spacetime.
     
-    \item \textbf{Margin: Minimum Resolvable Impedance} ($y_e$). The structural noise floor below which vacuum fluctuations erase distinguishable states. (The Electron Yukawa coupling explicit derivation is deferred to \cref{sec:resonant_interface}, where it emerges as the minimum resolvable impedance of the resonant interface.)
+    \item \textbf{Margin: Minimum Resolvable Impedance} ($PM=1/(31\cdot6\cdot43^2)$). The structural noise floor below which vacuum fluctuations erase distinguishable states. It enters the VEV correction in \cref{sec:resonant_interface}; the electron Yukawa itself then follows from the VEV by the mass law rather than as an independent dressing of this floor.
 \end{enumerate}

@@ -3,13 +3,13 @@
 \usepackage{amsmath}  % Math formulas
 \usepackage{amssymb}  % Math symbols (like \mathbb, \mathcal)
 \usepackage{graphicx} % Images
-\graphicspath{{calculations/}}
+\graphicspath{{calculations/}{../calculations/}}
 
 \makeatletter
 \providecommand*{\input@path}{}
-\g@addto@macro\input@path{{calculations/}} % Add your folder here
+\g@addto@macro\input@path{{calculations/}{../calculations/}} % Add your folder here
 \makeatother
-\usepackage[pdfencoding=auto]{hyperref} % Hyperlinks
+\usepackage[pdfencoding=auto,hidelinks]{hyperref} % Hyperlinks
 \usepackage{bm}       % Bold math
 \usepackage{booktabs} % For professional table formatting
 \usepackage{array}    % For better column definitions
@@ -37,11 +37,11 @@
 
 % Title Area
 
-\title{Informational Energetics: Nested Persistence}
+\title{Persistence Mechanics of the Quantum Vacuum III: Nested Persistence and the Partition of Constants}
 
 \author{Kate Lenore Meyer}
 \affiliation{Independent Researcher}
-\email{kate.ie@meyerhome.net}
+\email{kate@meyerhome.net}
 
 \date{\today}
 
@@ -87,4 +87,4 @@
 
 \typeout{get arXiv to do 4 passes: Label(s) may have changed. Rerun}
 
-% Follow idea would be applying IE to the "Error-Threshold" Paradox which it solves.
+% Follow idea would be applying PM to the "Error-Threshold" Paradox which it solves.

@@ -1,22 +1,23 @@
-\section{Empirical Validation: The Global Geometric Fit}
+\section{Numerical Comparison with Measurement}
 \label{sec:numerical_validation}
 
+
 \CatchFileBetweenTags{\AlphaInvVal}{constants.tex}{AlphaInvVal}
-\CatchFileBetweenTags{\AlphaInvExperimentalValue}{constants.tex}{AlphaInvExperimentalValue}
-\CatchFileBetweenTags{\AlphaInvSigma}{constants.tex}{AlphaInvSigma}
+\CatchFileBetweenTags{\AlphaInvExperimentalVal}{constants.tex}{AlphaInvCodataExperimentalVal}
+\CatchFileBetweenTags{\AlphaInvSigma}{constants.tex}{AlphaInvCodataSigma}
 
 \CatchFileBetweenTags{\FermiConstSigma}{constants.tex}{FermiConstSigma}
-\CatchFileBetweenTags{\AlphaSSigma}{constants.tex}{AlphaSSigma}
-\CatchFileBetweenTags{\AlphaSExperimentalValue}{constants.tex}{AlphaSExperimentalValue}
+\CatchFileBetweenTags{\AlphaSSigma}{constants.tex}{AlphasSSigma}
+\CatchFileBetweenTags{\AlphaSExperimentalVal}{constants.tex}{AlphasSExperimentalVal}
 \CatchFileBetweenTags{\HiggsMassSigma}{constants.tex}{HiggsMassSigma}
 
 \CatchFileBetweenTags{\JarlskogVal}{constants.tex}{JarlskogVal}
-\CatchFileBetweenTags{\JarlskogExperimentalValue}{constants.tex}{JarlskogExperimentalValue}
+\CatchFileBetweenTags{\JarlskogExperimentalVal}{constants.tex}{JarlskogExperimentalVal}
 \CatchFileBetweenTags{\JarlskogSigma}{constants.tex}{JarlskogSigma}
 
 \CatchFileBetweenTags{\VonKlitzingVal}{constants.tex}{VonKlitzingVal}
-\CatchFileBetweenTags{\VonKlitzingExperimentalValue}{constants.tex}{VonKlitzingExperimentalValue}
-\CatchFileBetweenTags{\VonKlitzingSigma}{constants.tex}{VonKlitzingSigma}
+\CatchFileBetweenTags{\VonKlitzingExperimentalVal}{constants.tex}{VonKlitzingRkExperimentalVal}
+\CatchFileBetweenTags{\VonKlitzingSigma}{constants.tex}{VonKlitzingRkSigma}
 
 \CatchFileBetweenTags{\bosonictotalchiVal}{constants.tex}{bosonictotalchiVal}
 \CatchFileBetweenTags{\bosonicreducedchiVal}{constants.tex}{bosonicreducedchiVal}
@@ -25,85 +26,80 @@
 \CatchFileBetweenTags{\combinedtotalchiVal}{constants.tex}{combinedtotalchiVal}
 \CatchFileBetweenTags{\combinedreducedchiVal}{constants.tex}{combinedreducedchiVal}
 
-\CatchFileBetweenTags{\WBosonMassExperimentalValue}{constants.tex}{WBosonMassExperimentalValue}
+\CatchFileBetweenTags{\WBosonMassExperimentalVal}{constants.tex}{WBosonMassExperimentalVal}
 \CatchFileBetweenTags{\WBosonMassSigma}{constants.tex}{WBosonMassSigma}
 
-\CatchFileBetweenTags{\WeakAngleExperimentalValue}{constants.tex}{WeakAngleExperimentalValue}
+\CatchFileBetweenTags{\WeakAngleExperimentalVal}{constants.tex}{WeakAngleExperimentalVal}
 \CatchFileBetweenTags{\WeakAngleSigma}{constants.tex}{WeakAngleSigma}
 
 \CatchFileBetweenTags{\ElectronYukawaVal}{constants.tex}{ElectronYukawaVal}
-\CatchFileBetweenTags{\ElectronYukawaExperimentalValue}{constants.tex}{ElectronYukawaExperimentalValue}
+\CatchFileBetweenTags{\ElectronYukawaExperimentalVal}{constants.tex}{ElectronYukawaExperimentalVal}
 \CatchFileBetweenTags{\ElectronYukawaSigma}{constants.tex}{ElectronYukawaSigma}
 
 \CatchFileBetweenTags{\GravCouplingVal}{constants.tex}{GravCouplingVal}
-\CatchFileBetweenTags{\GravCouplingExperimentalValue}{constants.tex}{GravCouplingExperimentalValue}
+\CatchFileBetweenTags{\GravCouplingExperimentalVal}{constants.tex}{GravCouplingExperimentalVal}
 
 \CatchFileBetweenTags{\VacuumEnergyScaleVal}{constants.tex}{VacuumEnergyScaleVal}
-\CatchFileBetweenTags{\VacuumEnergyScaleExperimentalValue}{constants.tex}{VacuumEnergyScaleExperimentalValue}
+\CatchFileBetweenTags{\VacuumEnergyScaleExperimentalVal}{constants.tex}{VacuumEnergyScaleExperimentalVal}
 
 \CatchFileBetweenTags{\HiggsLambdaSigma}{constants.tex}{HiggsLambdaSigma}
 \CatchFileBetweenTags{\PlanckMassSigma}{constants.tex}{PlanckMassSigma}
 \CatchFileBetweenTags{\GravCouplingSigma}{constants.tex}{GravCouplingSigma}
 
-\CatchFileBetweenTags{\HiggsVEVExperimentalValue}{constants.tex}{HiggsVEVExperimentalValue}
+\CatchFileBetweenTags{\HiggsVEVExperimentalVal}{constants.tex}{HiggsVEVExperimentalVal}
 \CatchFileBetweenTags{\HiggsVEVSigma}{constants.tex}{HiggsVEVSigma}
 
-While Section \ref{sec:Synthesis} demonstrated that the partitioned architecture is mathematically self-consistent, we must ultimately determine if it describes our physical reality. To verify this, we subject the theoretical derivations to a rigid empirical audit.
+The joint tests of \cref{sec:Synthesis} decide which premises can fail. This section records how the proposed values compare with measurement. A goodness-of-fit summary does not replace those joint tests.
 
-\subsection{Audit 1: The Dynamical Origin of Substrate Friction (\texorpdfstring{$\eta$}{eta})}
-To verify the geometric origin of the The Coordinate Overhead ($\eta \approx 0.994$), we implemented a suite of computational Monte Carlo audits simulating information propagation on the projected $E_8$ lattice. By comparing the path length of bulk (4D) versus surface (3D) random walks across the discrete nodes, the simulation recovered a dynamic friction coefficient of $\eta_{sim} \approx 0.988$.
+\subsection{A Random-Walk Estimate of the Overhead}
+A Monte Carlo comparison of bulk (4D) and surface (3D) random walks on the projected $E_8$ lattice gives a path-length ratio $\eta_{sim}\approx0.988$, within $0.7\%$ of $171/172\approx0.994$. The agreement is suggestive. It is not a derivation of the overhead: the register, reference and event premises identified in \cref{subsec:coordinate_overhead,subsec:weak_mixing} remain open, and the simulation's observable has not been mapped to them. The source code is available as Supplementary Material.
 
-This aligns with the theoretical resonant value ($\eta_{th} \approx 0.994186$) to within $0.7\%$. This numerical simulation acts as a ``Kill-Switch'': it confirms that $\eta$ is the strict, irreducible geometric cost of projecting a higher-dimensional discrete capacity onto a lower-dimensional coordinate manifold. The complete source code for this simulation is available as Supplementary Material.
-
-\subsection{Audit 2: The Zero-Degree-of-Freedom Global Fit}
-As a final empirical validation, we perform a global $\chi^2$ fit evaluating 9 fundamental observables spanning gauge couplings, electroweak masses, and gravitational scales (including the von Klitzing constant $R_K$ derived from the geometric impedance in \cite{meyer_informational_2026}).
-
-Crucially, standard Effective Field Theory global fits achieve their precision by floating continuous input parameters to match the data. The $E_8$-Persistence theory possesses \textbf{zero floating parameters}. Every theoretical value is rigidly locked to the geometric derivations established in the preceding sections. The sole exception is the QCD running coupling validation in Section~IV, which uses the experimentally evaluated vacuum polarization $\Delta\alpha_{\text{total}} \approx 0.0590$ (PDG 2024) as a boundary condition for isolating the geometric overhead $\eta$. This empirical input is not a free parameter; it will be derived \textit{ab initio} in the companion paper on fermion mass spectra. All nine observables in the global fit below are purely geometric. The degrees of freedom for this fit is therefore equal to the number of observables ($N=9$): the statistically conservative choice. A parameterized model with $p$ free parameters would have $\chi^2$ distributed with $N-p$ degrees of freedom, yielding a more favorable reduced $\chi^2$. Our zero-parameter constraint therefore \emph{increases} the burden of proof. A reduced $\chi^2 \gg 1$ would indicate that the geometric invariants fail to capture the physical correlations; $\chi^2 \ll 1$ would suggest overfitting or correlated experimental errors. The observed $\chi^2 \approx 1$ is the unique signature of a structurally determined, non-tunable architecture.
+\subsection{Comparison Table}
+No coefficient below is fitted to data. Each value is nonetheless conditional on the workload, response and matching premises stated in its section, so the table is not a zero-parameter fit of a completed theory. The W mass uses the measured Z mass and tests the ratio $1-s$; the absolute W/Z response needs the interface factor of \cref{subsec:weak_mixing}. The strong coupling at $M_Z$ uses the zero-momentum impedance. The von Klitzing constant is fixed by $\alpha^{-1}$ through $R_K=\mu_0c/(2\alpha)$ and is not independent of it. Tier~3 values are algebraic consequences of Tier~1 and~2 inputs and are excluded from $\chi^2$.
 
 \begin{table*}[h!]
 \centering
-\caption{The Zero-DOF Global Geometric Audit. The combined fit across both tiers demonstrates a reduced $\chi^2 \approx \combinedreducedchiVal$. Because there are zero tunable parameters, this precision strictly indicates that the geometric constraints of the $E_8$ lattice natively encode the physical correlations of the Standard Model. Tier 3 values are not included in the global $\chi^2$ calculations. Because they are strict algebraic consequences of the Tier 1 and Tier 2 inputs, including them would double-count degrees of freedom. They are presented here to demonstrate the framework's dependent predictive power.}
+\caption{Proposed values compared with measurement. The reduced $\chi^2$ summarizes agreement of separately evaluated formulas; it does not test their joint consistency (\cref{sec:Synthesis}). The electron Yukawa is fixed by the mass law from $v$ and is listed for reference only.}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}lllr@{}}
 \toprule
-\textbf{Observable} & \textbf{Geometric Value} & \textbf{Experimental Value} & \textbf{Deviation} \\
+\textbf{Observable} & \textbf{Proposed Value} & \textbf{Experimental Value} & \textbf{Deviation} \\
 \midrule
 \multicolumn{4}{c}{\textit{Tier 1: Bosonic Structure \& Couplings}} \\
 \midrule
-$\alpha^{-1}$ & \AlphaInvVal & \AlphaInvExperimentalValue & $\AlphaInvSigma \sigma$ \\
-$G_F$ & \FermiConstVal & \FermiConstExperimentalValue & $\FermiConstSigma \sigma$ \\
-$M_W$ & \WBosonMassVal & \WBosonMassExperimentalValue & $\WBosonMassSigma \sigma$ \\
-$\alpha_s(M_Z)$ & \AlphaSVal & \AlphaSExperimentalValue & $\AlphaSSigma \sigma$ \\
-$M_H$ & \HiggsMassVal & \HiggsMassExperimentalValue & $\HiggsMassSigma \sigma$ \\
+$\alpha^{-1}$ & \AlphaInvVal & \AlphaInvExperimentalVal & $\AlphaInvSigma \sigma$ \\
+$G_F$ & \FermiConstVal & \FermiConstExperimentalVal & $\FermiConstSigma \sigma$ \\
+$M_W$ ($M_Z$ input) & \WBosonMassVal & \WBosonMassExperimentalVal & $\WBosonMassSigma \sigma$ \\
+$\alpha_s(M_Z)$ & \AlphaSVal & \AlphaSExperimentalVal & $\AlphaSSigma \sigma$ \\
+$M_H$ & \HiggsMassVal & \HiggsMassExperimentalVal & $\HiggsMassSigma \sigma$ \\
 \midrule
-\multicolumn{3}{l}{\textbf{Tier 1 $\chi^2$}} & \textbf{$\bosonictotalchiVal$ (5 DOF)} \\
+\multicolumn{3}{l}{\textbf{Tier 1 $\chi^2$}} & \textbf{$\bosonictotalchiVal$ (5 obs.)} \\
 \midrule
 \multicolumn{4}{c}{\textit{Tier 2: Mass Hierarchy \& Resistance}} \\
 \midrule
-$\sin^2\theta_W$ & \WeakAngleVal & \WeakAngleExperimentalValue & $\WeakAngleSigma \sigma$ \\
-$J_{CKM}$ & $\JarlskogVal$ & \JarlskogExperimentalValue & $\JarlskogSigma \sigma$ \\
-$M_P$ & \PlanckMassVal & \PlanckMassExperimentalValue & $\PlanckMassSigma \sigma$ \\
-$R_K$ & \VonKlitzingVal & \VonKlitzingExperimentalValue & $\VonKlitzingSigma \sigma$ \\
+$\sin^2\theta_W$ & \WeakAngleVal & \WeakAngleExperimentalVal & $\WeakAngleSigma \sigma$ \\
+$J_{CKM}$\textsuperscript{a} & $\JarlskogVal$ & \JarlskogExperimentalVal & $\JarlskogSigma \sigma$ \\
+$M_P$ & \PlanckMassVal & \PlanckMassExperimentalVal & $\PlanckMassSigma \sigma$ \\
+$R_K$ & \VonKlitzingVal & \VonKlitzingExperimentalVal & $\VonKlitzingSigma \sigma$ \\
 \midrule
-\multicolumn{3}{l}{\textbf{Tier 2 $\chi^2$}} & \textbf{$\spectrumtotalchiVal$ (4 DOF)} \\
+\multicolumn{3}{l}{\textbf{Tier 2 $\chi^2$}} & \textbf{$\spectrumtotalchiVal$ (4 obs.)} \\
 \midrule
-\multicolumn{3}{l}{\textbf{Combined Total $\chi^2$}} & \textbf{\combinedtotalchiVal (9 DOF)} \\
+\multicolumn{3}{l}{\textbf{Combined Total $\chi^2$}} & \textbf{\combinedtotalchiVal (9 obs.)} \\
 \multicolumn{3}{l}{\textbf{Combined Reduced $\chi^2$}} & \textbf{\combinedreducedchiVal} \\
 \midrule
 \multicolumn{4}{c}{\textit{Tier 3: Derived Consequences}} \\
 \midrule
-$\lambda$ & $\HiggsLambdaVal$ & \HiggsLambdaExperimentalValue & $\HiggsLambdaSigma \sigma$ \\
-$y_e$ & $\ElectronYukawaVal$ & \ElectronYukawaExperimentalValue & $\ElectronYukawaSigma \sigma$ \\
-$\alpha_G$ & $\GravCouplingVal$ & \GravCouplingExperimentalValue & $\GravCouplingSigma \sigma$ \\
-$\beta_0$ & $11 - \frac{2}{3}n_f$ & $11$ (exact) & Exact \\
-$\rho_{vac}/M_P^4$ & $\VacuumEnergyScaleVal$ & \VacuumEnergyScaleExperimentalValue & Consistent \\
-$v$ & $\HiggsVEVVal$ & $\HiggsVEVExperimentalValue$ & $\HiggsVEVSigma \sigma$ \\
+$\lambda$ & $\HiggsLambdaVal$ & \HiggsLambdaExperimentalVal & $\HiggsLambdaSigma \sigma$ \\
+$\alpha_G$ & $\GravCouplingVal$ & \GravCouplingExperimentalVal & $\GravCouplingSigma \sigma$ \\
+$\rho_{vac}/M_P^4$ & $\VacuumEnergyScaleVal$ & \VacuumEnergyScaleExperimentalVal & Consistent \\
+$v$ & $\HiggsVEVVal$ & \HiggsVEVExperimentalVal & $\HiggsVEVSigma \sigma$ \\
+$y_e$ (mass law) & $\ElectronYukawaVal$ & \ElectronYukawaExperimentalVal & --- \\
 \bottomrule
 \label{tab:global_fit}
 \end{tabular}
+
+\raggedright\footnotesize\textsuperscript{a}From Paper~IV's derived mixing matrix. The earlier geometric estimate $\phi^2\eta T_{geo}\approx3.085\times10^{-5}$ differs by about $2\%$ and is not used (\cref{subsec:jarlskog}).
 \end{table*}
 
-\subsection{Conclusion of the Audit}
-A reduced $\chi^2 \approx 1$ signifies that the theoretical predictions match the experimental observations perfectly within the bounds of expected statistical variance.
-
-Standard physics considers the parameters in Table \ref{tab:global_fit} to be disjoint properties of reality, requiring individual experimental measurement. The ability of a single geometric lattice to rigidly predict all nine values simultaneously linking the macroscopic gravitational scale ($M_P$), the topological quantization of charge ($R_K$), the breaking of electroweak symmetry ($G_F, M_W, M_H$), and the arrow of time ($J_{CKM}$) into a single unified impedance network, suggests these are not independent fundamental constants. They are the strictly necessary capacity partitions of a single, finite-bandwidth information processing substrate operating in Quiescent Equilibrium.
+\subsection{Reading the Comparison}
+Most proposed values lie within their measurement uncertainties, and the gravitational coupling agrees with $Gm_e^2/\hbar c$ to a few parts per million. These agreements motivate the derivation program; they do not establish it. The decisive tests are the joint relations: the electron mass law, the absolute W and Z masses with one interface response, the strong-coupling running with consistent flavour thresholds, and the scalar interface budget. The W mass in particular separates this proposal ($80.385$~GeV) from standard radiative corrections on the same inputs ($80.356$~GeV) at a level future measurements can resolve.

@@ -2,43 +2,45 @@
 \CatchFileBetweenTags{\GaugeLoadVal}{constants.tex}{GaugeLoadVal}
 \CatchFileBetweenTags{\TotalBandwidthVal}{constants.tex}{TotalBandwidthVal}
 
-\section{Synthesis: Global Solvency of the Nested Architecture}
+\section{Synthesis: Conditional Solvency and Joint Closure}
 \label{sec:Synthesis}
 
-In \cref{sec:nested_persistence}, we established that any persistent system whose internal complexity exceeds a single control loop must partition its bandwidth according to three strict structural rules. Having derived the gauge, scalar, and gravitational sectors of the vacuum independently, we must now demonstrate that they form a mathematically closed, interdependent network. For the $E_8$-Persistence theory to be valid, it must be \textbf{globally solvent}: the sum of the partitioned subsystems must perfectly exhaust the substrate, the minimal structural remainders must be conserved, and all nested boundaries must seamlessly connect.
+The general rules constrain resource use, reversible encoding and interface transfer. Applying them to the vacuum additionally requires a substrate-derived workload, response law and selection criterion. This section distinguishes exact accounting identities from the joint tests that can fail.
 
-\subsection{Validation of Rule 1: Capacity Partitioning (The \texorpdfstring{$\nu=16$}{nu=16} Limit)}
-Under Rule 1, partitioning is a strict zero-sum allocation of the hardware capacity. The total allocated bandwidth must exactly match the fundamental chiral limit ($\nu = 16$) without overflow or dead space. 
-
-By summing the derived capacity loads for the Bulk (Gravity), the Boundary (Topology), and the Gauge (Interaction), we verify the global conservation of information:
+\subsection{Capacity Accounting}
+The proposed three-component ledger defines
 \begin{equation}
-\underbrace{B_{res}}_{\text{Gravity (Bulk)}} + \underbrace{\frac{\chi}{\sigma-\chi}}_{\text{Matter (Boundary)}} + \underbrace{\alpha}_{\text{Synchronization (Gauge)}} \equiv \nu
+ B_{res}=\nu-\frac{\chi}{\sigma-\chi}-\alpha,
+ \qquad
+ B_{res}+\frac{\chi}{\sigma-\chi}+\alpha=\nu.
 \end{equation}
-
-Substituting the derived geometric values from the previous sections:
+The displayed numerical sum is
 \begin{equation}
-\ResidualCapVal + \BoundaryStorageVal + \GaugeLoadVal = \TotalBandwidthVal \quad (\text{Exact})
+ \ResidualCapVal+\BoundaryStorageVal+\GaugeLoadVal=\TotalBandwidthVal.
 \end{equation}
+Lean proves the identity and positivity of the stated remainder under the inherited coupling bounds. The equality is exact by definition. It does not independently select the allocations, establish the gravitational attenuation law, or prove that every allocated resource is fully utilized. Any reserve made available to another interface must be accounted for in the same ledger rather than spent twice.
 
-\textit{Note on Circularity:} The sum above is algebraically exact by the definition of $B_{res}$ as the partition remainder; it cannot fail. The non-trivial claim is cross-sector: the same $B_{res} \approx 15.326$ independently governs the gravitational depth in Section~\ref{sec:geometric_depth}, where it couples with the Beer-Lambert attenuation ($\alpha^{\Delta/2}$) to reproduce both $\alpha_G$ and $M_P$ at the correct experimental values. A numerically different remainder --- arising from any other partition scheme --- would yield incorrect gravitational predictions. The solvency check is therefore a consistency test of the partition structure, not a verification of the sum.
+\subsection{Reversible Encoding and Spectral Interpretation}
+The general encoding theorem requires metadata to retain distinctions lost by a coarse description and bounds the required metadata alphabet. The identification of the Margin coefficient with an electron Yukawa or a lowest stable mass is an additional spectral and dynamical hypothesis. A finite encoding cost is not itself an infinite heat penalty, and no mass spectrum follows from metadata cardinality alone.
 
-\subsection{Validation of Rule 2: Reversible Encoding (The Landauer Floor)}
-Under Rule 2, a persistent system cannot simply erase geometric mismatches or fractional remainders, as this would incur an infinite dissipative heat penalty (Landauer's Principle). It must strictly conserve this minimal geometric resolution as structural metadata. 
+The electron Yukawa and VEV also provide a joint test. The earlier independent formula $PM(1+\tfrac{\sigma}{D}\alpha)$ gives
+\begin{equation}
+ 0.99972687<\frac{y_e v}{\sqrt{2}m_e}<0.99972689,
+\end{equation}
+independent of the mass unit. The two formulas therefore cannot both be exact. A field rescaling leaves $y_ev/\sqrt2$ unchanged, and holding the Fermi formula fixed pins that rescaling to $\pm1$, so no normalization choice removes the residual (\texttt{RepairSpace}). Since the VEV reproduces the Fermi-constant value of $v$ within its uncertainty, the Yukawa is now taken from the mass law, $y_e=\sqrt2m_e/v$, which closes exactly. An independent Margin dressing would need the coefficient $1.28777<c<1.28779$ (\cref{subsec:margin_electron}).
 
-The vacuum successfully satisfies this by establishing a strict, non-zero resolution floor: the \textbf{Margin Impedance} ($Z_{MAR}$). As derived in Section \ref{subsec:margin_electron}, the geometric dilution of a single unit of information across the lattice's phase-space establishes the electron mass ($m_e$). The architecture does not permit a mass of zero for charged boundaries; the electron represents the exact Landauer Limit of the substrate, the minimum viable topological defect that can be reversibly encoded without dissolving into thermal noise. Rule 1 sets the capacity ceiling ($\nu=16$); Rule 2 successfully sets the structural floor.
+\subsection{Surface and Core Interface Tests}
+The proposed surface comparison gives close, unequal impedances. For its stated positive-real transfer law, the reflected fraction lies between $10^{-9}$ and $10^{-8}$ (\texttt{SurfaceBudget}). This is compatible with sufficiently small reflected-load cost only if a corresponding reserve is actually available. The scalar's maximal-gain ledger leaves no reserve of its own, so maximal gain cannot pay for its reflection; exact matching leaves unused slack. The largest gain that persists while paying its reflection from the same ledger lies strictly between them, within $c\cdot10^{-8}/23$ of $128/989$ for charge rate $c$ (\texttt{PersistentGain}). Neither comparison contains $v$, and therefore neither independently fixes the electroweak scale.
 
-\subsection{Validation of Rule 3: Nested Impedance Matching}
-Under Rule 3, when a system partitions into nested layers, information crossing the boundaries between them must be translated with minimal dissipative loss. This requires the internal processing resistance (Impedance) of the regulatory subsystems to perfectly match the geometric aperture of the signals they govern.
+At the core, defining $M_P=m_e/\sqrt{\alpha_G}$ makes $Z_G(M_P)=1$ algebraically. Lean verifies this normalization and its uniqueness for fixed positive inputs. This remains a consistency identity rather than an independent derivation of the physical gravitational coupling.
 
-As derived in their respective sections, the vacuum successfully satisfies this requirement at both extremes of the substrate's geometry:
-\begin{itemize}
-    \item \textbf{The Surface Match (System 5):} The local Higgs regulator structurally matches the aperture of the force it mediates ($A_{weak} \approx 5.965$). Its internal impedance ($Z_H \approx 5.964$) minimizes entropic drag at the $\chi=2$ topological boundary, perfectly matching the vacuum resonance to the weak channel capacity.
-    \item \textbf{The Core Match (System 6):} The global Gravitational regulator saturates the lattice at the core scale ($r=\Delta/2$). The Planck Mass ($M_P$) is the exact, unique scale required to normalize the bulk geometric attenuation such that the core-to-surface impedance achieves exact unity ($Z_G \equiv 1$).
-\end{itemize}
+\subsection{Joint Gauge Response}
+The displayed neutral response has a massless mixed mode and a massive mode. Using its canonical normalization with the proposed VEV and the displayed uncorrected couplings gives
+\begin{equation}
+ 78.96<m_W^{\rm response}<78.97\ {\rm GeV},\qquad
+ 89.57<m_Z^{\rm response}<89.58\ {\rm GeV}.
+\end{equation}
+These intervals use the existing electron mass-unit input and are certified by Lean. No value of $\eta$ in $[0,1]$ can close them. One interface factor $1.0362<k<1.0365$ on $\alpha$ closes both while preserving $m_W^2=(1-s)m_Z^2$, but the same factor would push the strong readout above $0.1221$ (\texttt{ScaleConsistency}). With the measured Z mass the ratio gives $80.3845<m_W<80.3846$~GeV and an implied $\Delta r\approx0.0351$, compared with about $0.0368$ from standard radiative corrections on the same inputs. This is a falsifiable difference; deriving the interface response from the substrate is the corresponding obligation.
 
-\subsection{Final Verdict: Global Solvency}
-The Effective Field Architecture of the vacuum is globally solvent. Its $\nu = 16$ capacity budget is exhausted across the gauge, matter, and gravitational sectors without overflow or dead space. Its structural floor is set by the Landauer limit of the electron, and its nested boundaries are impedance-matched from the topological surface to the geometric core.
-
-The fundamental constants of the Standard Model, the dimensionless couplings (Tier 1), the massive energy scales (Tier 2), and the time-asymmetric causal flow ($J_{CKM}$), are not independent, arbitrary parameters. They are the unique, strictly constrained solutions to a global impedance-matching problem. 
-
-The physical universe persists because its substrate transfers information from the lattice core ($r = \Delta/2$) to the surface ($r = 0$) with minimal dissipative loss, reversibly encoding its boundary states (matter) while flawlessly exhausting its finite $\nu=16$ capacity budget.
+\subsection{Status of the Constant Derivation}
+The present results establish conditional resource-selection theorems, exact algebraic identities, certified numerical intervals and explicit closure residuals. They do not yet establish a unique globally closed vacuum dynamics. The remaining work is to derive the operational allocations, field response, scale dependence and spectra from the substrate while preserving the general persistence constraints. Numerical agreement of separately evaluated formulas does not replace these joint tests.

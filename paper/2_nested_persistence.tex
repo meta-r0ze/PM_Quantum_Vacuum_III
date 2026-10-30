@@ -1,47 +1,118 @@
 \section{Architecture of Nested Persistence}
 \label{sec:nested_persistence}
 
-Every finite information-processing system such as a cell, corporation, or physical substrate hits a hard capacity ceiling. When entropic demands multiply (internal maintenance, external coordination, or both), the regulatory burden on any single loop grows. Once that burden exceeds capacity, the system's internal model loses track of reality and collapses. Only systems that partition persist. They do so by splitting into specialized subsystems, each managing a tractable fraction of the total threat space. This partitioning is governed by three operations: Capacity Partitioning splits the budget across orthogonal demands, Reversible Encoding conserves the indivisible remainder without erasure, and Impedance Matching binds the nested layers without reflection loss.
+A persistent system must service its continuing demands within finite resources while retaining the distinctions needed for its future operation. When a single control loop cannot meet a fixed workload within its causal deadline, the architecture must change: it may acquire additional parallel capacity, reduce the workload, or relax the deadline. Partitioning is required when the workload and deadline are fixed and additional capacity is supplied by parallel subsystems. Dividing an unchanged, insufficient budget cannot itself remove the overload.
 
-\textbf{Example:} Consider a firm with a finite operational budget of \$10M that must simultaneously manufacture, innovate, and comply with regulations. \textit{Capacity Partitioning} requires splitting the \$10M across these three departments; the sum of their allocations plus accounting overhead must exhaust the total. When the budget does not divide evenly, \$3M per department leaves a \$1.0M remainder, \textit{Reversible Encoding} requires carrying this indivisible remainder as a strategic reserve rather than discarding it (which would incur an audit penalty). Simultaneously, \textit{Impedance Matching} resolves the friction when an executive team generates initiatives at a higher frequency than R\&D can absorb; a middle manager acts as a transformer, scaling and scheduling the executive signal to match the departmental aperture and prevent reflection loss (missed deadlines, dropped projects).
+We formulate three architectural rules: Capacity Partitioning accounts for competing demands and interface costs; Reversible Encoding preserves distinctions lost by a coarse description; and Impedance Matching controls the resource burden of transfer between subsystems. Their mathematical statements below are independent of the vacuum example. They constrain which architectures are admissible. A unique allocation additionally requires the workload, available operations, cost law, and selection objective of the application.
+
+For example, a firm allocating a fixed budget among manufacturing, innovation, and compliance must include coordination costs and a reserve. An indivisible remainder may be retained in its accounts rather than erased. A communication interface must deliver the required throughput within its processing budget. These examples motivate the rules; they do not assume that an organizational interface obeys the particular wave-impedance law used later for the vacuum.
 
 \subsection{Capacity Partitioning}
 \label{rule_capacity_partitioning}
 
-\textbf{Foundational Principle.} By Ashby's Law of Requisite Variety \cite{raadt_ashbys_1987}, a control system must possess at least as many states as the perturbations it seeks to regulate. However, the maximum rate at which a system can transition between states is strictly bounded by its physical capacity \cite{margolus_maximum_1998}.
+\textbf{Persistence constraint.} Finite regulatory variety and finite execution rates motivate a distinction between the number of states a controller can represent and the work it can perform before a deadline \cite{raadt_ashbys_1987,margolus_maximum_1998}. Neither quantity should be substituted for the other without a model connecting them.
 
-\textbf{Activation Threshold.} \textit{When the number of concurrent regulatory demands requires a computation rate exceeding what a single loop can execute within its fundamental update cycle, the system must split into parallel, nested subsystems.}
+Let $w_i\geq0$ be the work demanded by task $i$ during a specified interval, $C_j$ the work capacity of subsystem $j$ in that interval, and $h_j\geq0$ its interface overhead. A feasible allocation assigns nonnegative service $s_{ij}$ satisfying
+\begin{equation}
+    \sum_j s_{ij}=w_i,
+    \qquad
+    \sum_i s_{ij}+h_j\leq C_j.
+\end{equation}
+Summing these constraints gives the necessary global budget condition
+\begin{equation}
+    \sum_i w_i+\sum_j h_j\leq\sum_j C_j.
+\end{equation}
+For equal subsystem capacity $C>0$, this implies that the number of subsystems is at least $(\sum_iw_i+\sum_jh_j)/C$. This aggregate bound is necessary; dependencies, indivisible tasks, or communication deadlines may impose further scheduling restrictions.
 
-\textbf{Operational Mandate.} The system must partition its resources such that the sum of the active subsystem capacities exhausts the total budget.
+\textbf{Operational mandate.} The system must keep its demand and coordination cost within available capacity. It need not consume every available unit. Writing used capacity plus reserve equal to total capacity is an accounting identity; setting the reserve to zero is an additional saturation condition. Distinct allocations can obey the same feasibility constraints. When a unique split is claimed, its selection objective must be stated and proved to select that split.
 
-\textbf{Structural Cost.} Creating a boundary between subsystems inherently consumes capacity (synchronization overhead, data framing, interface maintenance). This \textbf{irreducible structural overhead} is the cost of the boundary itself.
-    
+\textbf{Formal scope.} Lean proves the total budget inequality, the impossibility of allocating an insufficient unchanged budget, and the corresponding worker-count bound. It also exhibits a family of feasible allocations and a feasible allocation with idle capacity (\texttt{General.Capacity}). The model treats work as divisible and assumes that all specified demand must be completed within the interval.
+
+\paragraph{Repeated workloads and bounded backlog.}
+Work may vary within a repeating cycle. Write $d_{i,t}$ and $s_{i,t}$ for demand
+and service of class $i$ at phase $t$ in a cycle of $N$ phases, with common
+operation rate $\rho$. A queue obeying
+\begin{equation}
+ q_{i,n,t+1}=q_{i,n,t}+\rho d_{i,t}-s_{i,t},\qquad
+ q_{i,n+1,0}=q_{i,n,N}
+\end{equation}
+accumulates the same net drift in each cycle. If its nonnegative boundary backlog
+is bounded for all cycles, this drift must vanish:
+\begin{equation}
+ \sum_t s_{i,t}=\rho\sum_t d_{i,t}.
+\end{equation}
+For $\rho\ne0$, normalized cycle-total service shares therefore equal normalized
+cycle-total demand shares (Lean: \texttt{General.Service}). This permits deferred
+service within the cycle; it does not require pointwise equality of demand and
+service, uniform phases, or full resource utilization. The repeating demand and
+service pattern, the queue balance law, and bounded backlog are hypotheses.
+This necessary balance does not itself construct a schedule meeting every
+causal deadline.
+
 \subsection{Reversible Encoding}
 \label{rule_reversible_encoding}
 
-\textbf{Foundational Principle.} Information erasure incurs an irreducible thermodynamic tax (Landauer's Principle \cite{landauer_irreversibility_1961}), which would compound and destabilize the system if the remainder of any partition were discarded.
+\textbf{Persistence constraint.} A coarse description may merge states that remain physically distinguishable. If those distinctions must be conserved within the system, the information omitted by the description must remain recoverable elsewhere. Reversible computation provides an operational formulation of this requirement \cite{bennett_thermodynamics_1982}.
 
-\textbf{Activation Threshold.} When a system's workload cannot divide evenly across its subsystems, this structural mismatch leaves a remainder that cannot be discarded.
+For a state space $X$, let $q:X\to Q$ be the coarse description and $m:X\to M$ its retained metadata. The combined encoding is
+\begin{equation}
+    E(x)=(q(x),m(x)).
+\end{equation}
+Conservation of the specified distinctions requires $E$ to be injective. Equivalently, the metadata must distinguish every pair of states merged by $q$; equivalently, there is a decoder that recovers every encoded state. For finite state spaces,
+\begin{equation}
+    |q^{-1}(a)|\leq |M| \quad\text{for every coarse label }a,
+    \qquad |X|\leq |Q|\,|M|.
+\end{equation}
+Thus, if a quotient label admits $k$ distinct possible remainders, an encoding retaining all of them requires at least $k$ metadata states.
 
-\textbf{Operational Mandate.} The system must perform \textbf{Reversible Encoding} \cite{bennett_thermodynamics_1982}: it must strictly conserve the mismatch by storing it as structural metadata.
+\textbf{Operational mandate.} Preserve the distinctions required by the dynamics, either in the primary description or in recoverable metadata. This is an information-capacity condition. Identifying the metadata with physical mass, or assigning a thermodynamic cost to erasure, requires the application's additional physical model. Landauer's principle supplies thermodynamic context \cite{landauer_irreversibility_1961}; the counting theorem does not itself assert an infinite heat cost for a finite erasure.
 
-\textbf{Structural Cost.} The metadata itself consumes capacity. A ledger that carries a rounding error must allocate bits to that remainder; a scheduling queue that carries a temporal offset must allocate slots to that offset. This storage overhead is the price of avoiding erasure.
+\textbf{Formal scope.} Lean proves the reversible-encoding criterion, its equivalent decoder formulation, the fiber and total capacity bounds, and invariance under relabeling the metadata (\texttt{General.Encoding}).
+
+For group-valued data on sites, an exact relative description consists of the
+reference value $x_o$ together with $x_i-x_o$ for $i\ne o$. Lean supplies an
+explicit inverse (\texttt{General.RelationalEncoding}). The self-difference
+vanishes, but dropping the reference value merges distinct constant
+configurations. A reference position alone does not supply that value. This
+information-preservation statement does not set the maintenance frequency or
+cost of the retained data.
 
 \subsection{Impedance Matching}
 \label{rule_impedance_matching}
 
-\textbf{Foundational Principle.} When a system partitions its capacity, it creates nested subsystems that operate on different geometric or functional scales. Information crossing the boundary must be translated. To minimize total Entropic Action ($S_\Phi$) \cite{meyer_ieaction_2026} across the hierarchy, these translations must minimize reflection loss (Shannon \cite{shannon_communication_1949}).
+\textbf{Persistence constraint.} An interface must deliver the required transfer while keeping its processing and reflected-load burden within the resources available to handle it. Exact matching is a possible optimum, but a nonzero mismatch does not by itself establish failure of persistence. The transfer law and the available reserve must be specified.
 
-\textbf{Activation Threshold.} When nested subsystems operate at different scales, any signal crossing the boundary risks reflection.
+For the positive-real interface law considered here, source and load impedances $Z_s,Z_l>0$ give
+\begin{equation}
+    r=\frac{Z_l-Z_s}{Z_l+Z_s},
+    \qquad T=1-r^2.
+\end{equation}
+An incident load $P>0$ divides into reflected load $Pr^2$ and transmitted load $PT$, with
+\begin{equation}
+    Pr^2+PT=P.
+\end{equation}
+Reflection remains in this conserved ledger; it is not identified with irreversible erasure. If the model allocates reserve $B$ to handling reflected load, admissibility requires
+\begin{equation}
+    Pr^2\leq B
+    \quad\Longleftrightarrow\quad
+    T\geq 1-\frac{B}{P}.
+\end{equation}
+For zero reserve, exact matching $Z_l=Z_s$ is necessary. With positive reserve, mismatched interfaces can remain admissible. Exact matching uniquely maximizes transmission for this law, but that optimality statement is stronger than budget feasibility.
 
-\textbf{Operational Mandate.} The internal processing resistance of a subsystem must closely match the geometric bandwidth allocated to it by the partition.
+\textbf{Operational mandate.} Derive the tolerated mismatch from the interface's resource budget and transfer law. A tolerance may not be chosen merely to cover a numerical residual. Conversely, a numerical near match must not be described as an exact identity. If a physical application uses a different transfer or recovery mechanism, that mechanism must supply the corresponding admissibility condition.
 
-\textbf{Structural Cost.} If there is a mismatch, the signal translation fails, information reflects at the boundary, and the resulting excess entropy causes the system to decay. To prevent this, the system must engineer the match, consuming capacity to align internal resistance with external aperture.
-
+\textbf{Formal scope.} Lean proves the conserved ledger, the reflected-load budget criterion, exact matching under zero reserve, and an explicit mismatched interface within a positive reserve (\texttt{General.Matching}). This is a conditional interface model, not a claim that every persistent system obeys the displayed impedance formula.
 
 \subsection{Recursive Universality}
 \label{sec:recursive_universality}
-These three rules apply recursively: each partitioned subsystem is itself a persistent entity, instantiating the full 
-six-pillar architecture on its fraction of the parent's capacity. If its allocated capacity is insufficient to regulate its own internal complexity it must partition again. The full architecture of a complex persistent system is therefore a \textbf{finite nesting hierarchy} (a nearly decomposable system, \textit{cf.} Simon \cite{klir_architecture_1991}), with each level's partition coefficients strictly determined by the parent level's bandwidth allocation. No level introduces free parameters; each inherits its budget from above and exhausts it completely.
 
-This recursion is universal: a multicellular organism partitions metabolic bandwidth across organ systems; a corporation partitions operational capacity across departments. In every domain, the partition coefficients must satisfy the global solvency constraint of nested persistence.  This paper applies these principles strictly to the quantum vacuum; their application to macroscopic domains is the subject of future work.
+The rules apply recursively when each subsystem must service demands, preserve distinctions, and exchange information across a boundary. They describe the resource conditions under which nearly decomposable architectures can persist \cite{klir_architecture_1991}. Their application to a particular substrate must identify the resources and operations at each level.
+
+Finite total budget alone does not prove finite nesting depth if successive levels may cost arbitrarily little. If every level costs at least $c_{\min}>0$ and a branch has budget $B$, then
+\begin{equation}
+    n\,c_{\min}\leq B,
+    \qquad n\leq\frac{B}{c_{\min}}.
+\end{equation}
+Alternatively, a natural-valued resource that strictly decreases at every level bounds the depth by its initial value. Lean proves both bounds and gives a counterexample to omitting the uniform cost floor: the positive costs $2^{-(i+1)}$ have every finite prefix sum within budget one (\texttt{General.Hierarchy}). Finite branching is additionally needed to turn a depth bound into a finite-total-node statement.
+
+The constants example that follows must therefore supply its own workload, encoding, response law, and selection criterion. The general rules constrain those choices; they do not, on their own, determine unique numerical partition coefficients. The Lean general-rules layer imports no $E_8$ or vacuum-constant module, and a separate dependency audit checks that separation.

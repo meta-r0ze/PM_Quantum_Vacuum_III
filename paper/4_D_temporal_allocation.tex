@@ -3,10 +3,10 @@
 \CatchFileBetweenTags{\WeakAngleStepOneVal}{constants.tex}{WeakAngleStepOneVal}
 \CatchFileBetweenTags{\WeakAngleVal}{constants.tex}{WeakAngleVal}
 \CatchFileBetweenTags{\WBosonMassVal}{constants.tex}{WBosonMassVal}
-\CatchFileBetweenTags{\AlphaInvTOL}{constants.tex}{AlphaInvTOL}
+\CatchFileBetweenTags{\AlphaInvTOL}{constants.tex}{AlphaInvTOLVal}
 \CatchFileBetweenTags{\WeakAngleTCheckVal}{constants.tex}{WeakAngleTCheckVal}
-\CatchFileBetweenTags{\WeakAngleExperimentalValue}{constants.tex}{WeakAngleExperimentalValue}
-\CatchFileBetweenTags{\WeakAngleGlobalExperimentalValue}{constants.tex}{WeakAngleGlobalExperimentalValue}
+\CatchFileBetweenTags{\WeakAngleExperimentalVal}{constants.tex}{WeakAngleExperimentalVal}
+\CatchFileBetweenTags{\WeakAngleGlobalExperimentalVal}{constants.tex}{WeakAngleGlobalExperimentalVal}
 \CatchFileBetweenTags{\WeakAngleGlobalSigma}{constants.tex}{WeakAngleGlobalSigma}
 
 \CatchFileBetweenTags{\NcVal}{constants.tex}{NcVal}
@@ -14,7 +14,7 @@
 \CatchFileBetweenTags{\WeinbergGUTVal}{constants.tex}{WeinbergGUTVal}
 \CatchFileBetweenTags{\WeinbergGUTEq}{constants.tex}{WeinbergGUTEq}
 
-\CatchFileBetweenTags{\InvRM}{constants.tex}{InvRM}
+\CatchFileBetweenTags{\InvRM}{constants.tex}{RMVal}
 
 \subsection{The Spacetime Partition (Weak Mixing Angle \texorpdfstring{$\sin^2 \theta_W$}{sin2thetaW})}
 \label{subsec:spacetime_partition}
@@ -26,7 +26,7 @@
 
 \begin{enumerate}
     \item \textbf{The Address Space ($R_M$):} The spacetime coordinate grid. The fundamental resonance ($\Delta=43$) distributed across the $D=4$ dimensions yields a manifold resolution of $R_M = 172$ coordinate slots.
-    \item \textbf{The State Payload ($\nu \cdot \eta$):} The active chiral data ($\nu=16$) occupying the grid, strictly subject to the active transmission overhead ($\eta$), yielding $\approx 15.9$ active payload states.
+    \item \textbf{The State Payload ($\nu \cdot \eta$):} The proposed aggregate chiral workload $16\eta\approx15.9$. Its interpretation as executed work requires the event and load laws below; a capacity deficit alone does not give every channel this duty factor.
     \item \textbf{The Interaction Bus ($\sigma$):} The $\sigma = 5$ independent generators required to physically connect the node to its neighbors.
 \end{enumerate}
 
@@ -47,23 +47,216 @@ To maintain causal coherence, a portion of the bandwidth is allocated purely to 
 \end{split}
 \end{equation}
 
-\subsubsection{Physical Consequence: Electroweak Symmetry Breaking}
+\paragraph{Capacity versus availability.}
+The ratio $171/172$ proved for storage capacity is not itself a temporal
+availability law. For the actual phase-only tick, an invariant probability mass
+has the form $\mu(d,t)=w_d/43$, with four direction weights summing to one.
+A fixed cell on one deterministic trajectory is available for $42/43$ of a
+period if it is in that trajectory's row, and for the whole period otherwise;
+neither value is $171/172$ (Lean: \texttt{AvailabilityAudit}). A uniform ensemble over all grid cells does not follow from a direction symmetry: Gram-preserving permutations of the $D_4$ simple-root basis fix the central node and are not transitive. A separate selection model supplies a conditional route. For strictly positive laws on the grid, the uniform law uniquely minimizes either the equally weighted average return cost $-\frac1{172}\sum_x\log p_x$ or the worst-return cost $-\log\min_x p_x$ (framework \texttt{LawSelection}). In a finite candidate family containing that law, with positive initial weights and the stated asymptotic action rates, the normalized surviving ensemble concentrates on it. \texttt{SelectedColourLoad} now proves that an arbitrary law minimizing either specified rate is uniform and supplies the mean geometric colour weights $4\eta$. The scoring law, admissible candidate family and their identification with the physical reference process remain application hypotheses.
 
-This geometric bandwidth ratio identically matches the Weak Mixing Angle ($\sin^2 \theta_W$) of the Standard Model. Rather than an arbitrary group-theoretic mixing parameter, it is the structural limit that dictates the physical bifurcation of the Electroweak force:
+Under that uniform law, excluding one cell leaves mass $171/172$ (\texttt{SelectedAvailability.selected\_excluded}); this is not by itself a payload suppression event. The result is an ensemble statement. A single phase-only trajectory still sees $42/43$ or $1$, and no direction-mixing update has been inferred from the optimization theorem.
 
-\begin{itemize}
-    \item \textbf{The Photon ($\gamma$):} Represents the $\Delta$ numerator. Because it couples strictly to the temporal update stream, it carries no structural hardware load. It therefore propagates without geometric impedance as a massless carrier at the speed limit of the substrate ($c$).
-    \item \textbf{The W/Z Bosons:} Represent the massive denominator ($N_{sys} - \Delta$). Because they must update the heavy spatial grid, state payload, and interaction bus, their propagation is severely impeded by the lattice structure, manifesting macroscopically as massive, short-range gauge bosons.
-\end{itemize}
+A narrower route concerns the aggregate rather than each channel. If operations
+have fixed target cells and a reference collision suppresses the targeted
+operation, four targets in each direction give a mean total loss $4/43$ on
+\emph{every} phase trajectory. Thus the executed aggregate is
+$16-4/43=16\eta$, without a mixture over directions
+(\texttt{BalancedAvailability}). The collision rule and target assignment remain
+premises; injective storage coding alone defines neither. A static checksum code,
+for example, can make a payload write change both its payload cell and a checksum
+cell, exhibiting additional writes instead of suppression. That static code is
+not a clock-equivariant protocol.
+
+There is also a substrate-derived geometric balance. In Paper I's even-sum
+realization of $D_4$, every minimal vector has doubled-coordinate norm
+$\sum_d y_d^2=4$. Lean checks that each of the three eight-vector nontrivial glue
+classes has $\sum_y y_d^2=8$ in every orthogonal coordinate. Hence the normalized
+quadratic load is $2$ per axis per class, and any two distinct classes give load
+$4$ per axis (\texttt{ChannelDirectionLoad}). If register directions are these
+axes and the reference removes this quadratic component for one of $43$ phases,
+the aggregate loss is again $4/43$. The geometric balance is proved; that
+register identification and operational loss law are still to be derived.
+
+Conservation also constrains the proposed omission. If all sixteen operations
+are required at every phase, only executing $684$ of the $688$ demanded per
+$43$-phase cycle leaves four outstanding operations per cycle. Lean proves that
+this cannot maintain bounded backlog
+(\texttt{BalancedAvailability.required\_work\_cannot\_be\_skipped}). A genuine
+saving therefore needs a reason the omitted work is unnecessary or redundant,
+or must include the work needed to recover it. The theorem does not assume
+that this arrival demand is physically realized; it states the obstruction
+that an operational derivation must address.
+
+\paragraph{Relative-maintenance contract.}
+A complete star centred on the reference has $171$ nonself links. Assigning the
+fixed per-address density $4/43$ to those links yields $16\eta$ as required work;
+redistributing a prescribed total of $16$ across the links instead retains total
+work $16$ (\texttt{ExclusionLawAudit}). These are different workload contracts,
+neither selected by the link count. Paper I's distinction cost counts differences
+of \emph{state values}, not unequal address labels: a homogeneous state has zero
+such cost even on a star, whereas the positive fixed link density does not.
+Consequently that theorem alone does not derive the intensive contract.
+Relative encoding itself can preserve all data when its reference value is
+retained, but a primitive update, its maintained distinctions and its full cost
+ledger are still required. Similarly, the necessity of all sixteen fields for
+an injective readout does not establish sixteen refresh operations per phase.
+
+\paragraph{Allocation from phase-dependent work.}
+The collision construction need not be replaced by a fictitious constant
+per-channel duty factor. With demand vector
+$(43,129,P_t,5)$ at phase $t$, where $P_t$ is its executed payload work,
+balance gives $\sum_tP_t=684$ over $43$ phases. Lean proves that bounded backlog
+under repeatable phase-dependent demand and service fixes their cycle totals.
+At a common nonzero operation rate, the temporal share of total service is then
+\begin{equation}
+ \frac{\sum_t s_{0,t}}{\sum_i\sum_t s_{i,t}}
+ =\frac{43\cdot43}{43\cdot172+684+43\cdot5}
+ =\frac{1849}{8295}
+\end{equation}
+(\texttt{PeriodicAllocation.persistent\_clock\_share}). This is conditional on
+collision semantics, balanced targets, the work units and the repeating queue
+model. It requires neither uniform direction sampling nor constant service
+within a cycle, and identifies a ratio of total service rather than a mean of
+instantaneously normalized fractions. The earlier obstruction still applies
+if omitted operations are actually required arrivals rather than unnecessary
+work.
+
+\paragraph{Operation costs and averaging.}
+The preceding count uses a common cost per operation and a particular
+observation rule. A finite ledger makes these assumptions testable. Let
+$c_A,c_P,c_B$ denote address, payload and bus costs. In an explicit model with
+$172$ equally weighted availability cases, suppressing payload work in one
+case gives mean work
+\begin{equation}
+ \overline W=172c_A+16\eta c_P+5c_B,
+ \qquad s_{\rm aggregate}=\frac{43c_A}{\overline W}.
+\end{equation}
+At common unit cost this recovers the proposed footprint and clock ratio.
+Lean proves that common cost rescaling cancels, whereas changing relative
+class costs changes the ratio (\texttt{WorkloadLedger}). The availability
+cases specify a sample/readout model; they have not been derived as a physical
+clock trajectory. For this particular joint event model, equal weighting of individually normalized
+cases instead gives $7615/34161$, strictly greater than the aggregate ratio
+$1849/8295$. Distributing channel suppressions over different cases can preserve
+the aggregate mean while changing that individually normalized readout.
+Thus neither the relative tolls nor the observation rule follows from cardinality
+alone. Deriving them from the substrate's counted transitions is required before
+the workload ratio can select a physical coupling.
+
+\paragraph{Connection to primitive transitions and Economy.}
+Paper I's common toll $c_0$ applies to a primitive transition. If an address,
+payload or bus operation consists of respectively $m_A,m_P,m_B$ primitive
+transition events, its cost is $c_0m_A,c_0m_P,c_0m_B$. Applying Paper I's
+\texttt{NetCost.expected\_count\_linear} to always-occurring events and to
+payload events gated by the specified availability set gives
+\begin{equation}
+ \mathbb E[C]=c_0(172m_A+16\eta m_P+5m_B),\qquad
+ s_{\rm aggregate}=\frac{43m_A}{172m_A+16\eta m_P+5m_B}.
+\end{equation}
+This bridge is checked in \texttt{TransitionLedger}; linearity needs no
+independence between event indicators. A common positive toll cancels, but does
+not itself fix the three operation lengths. Positive, bounded fluid-queue
+realizations exist for each such weighted ledger, so that persistence test alone
+does not select their relative lengths. These queue witnesses are accounting
+models, not alternate microscopic $E_8$ realizations.
+
+For positive integer lengths, Lean proves
+\begin{equation}
+ 172m_A+16\eta m_P+5m_B\geq N_{sys},
+ \qquad\text{equality}\ \Longleftrightarrow\ m_A=m_P=m_B=1.
+\end{equation}
+Consequently Economy would select the proposed ratio if the one-transition
+realization of all three operations is an admissible competitor and the selected
+realization minimizes expected transition cost over that comparison. Admissibility
+requires actual substrate operations preserving the required distinctions; it
+cannot be obtained by declaring a composite operation primitive. This leaves a
+specific constructive obligation rather than three freely fitted tolls.
+
+\paragraph{A concrete local transition model.}
+As a bounded first construction, place binary state values at two actual
+nearest-neighbour addresses of the $E_8$ lattice. If a local update is reversible
+and conserves the binary population, Lean classifies it as identity or swap;
+nontriviality selects swap within this stated contract
+(\texttt{LocalMaintenance}). The swap is active precisely when the endpoint
+values differ. Paper I's boundary cost counts both orientations of an unequal
+edge, giving twice the activation indicator of one undirected swap event.
+The common-toll expected cost is therefore the probability of that activation
+event, with the counting convention explicit.
+
+This construction does not yet identify the physical channel states or their
+global update. Even here, invariant samples with identical one-site occupations
+can have different expected costs: the equally weighted samples $(00,11)$ and
+$(01,10)$ have active-event costs zero and one. A two-pair example retains this
+freedom at fixed total population two and identical one-site marginals, under
+the specified pairwise swap menu. Thus local reversibility and marginal
+homogeneity do not fix the joint disagreement probability. A physical workload
+derivation must connect the actual carrier states, update and event law to the
+ledger; the lattice embedding alone supplies none of those identifications.
+
+The aggregate ratio also equals the mean of per-case ratios weighted by each
+case's total work (\texttt{General.Accounting.aggregate\_is\_work\_weighted}).
+That identity explains the counting convention, but does not identify which
+observable the physical readout measures.
+
+\subsubsection{Response Matching and Electroweak Mixing}
+
+The allocation ratio is a proposed input to the neutral-field response,
+\begin{equation}
+ s_{\rm alloc}=\frac{\Delta}{N_{sys}},\qquad
+ \frac{g'^2}{g^2+g'^2}=s_{\rm alloc}.
+\end{equation}
+The second equality is a substrate-to-field matching condition, not a consequence of counting the workload alone. The quadratic penalty itself follows from the scalar's role as the inter-sector link (\cref{app:OriginOfHypercharge}): weak links act on the left-handed sector only, so the link is transported by $\theta=(g/2)W\!\cdot\!\sigma+(g'/2)B$, and on the vacuum direction its quadratic cost is $(g^2/4)(W_1^2+W_2^2)+\tfrac14(gW^3-g'B)^2$ (Lean: \texttt{LinkMass.link\_quadratic}). With $\langle\phi\rangle=v/\sqrt2$ this gives $m_W^2=g^2v^2/4$, $m_Z^2=(g^2+g'^2)v^2/4$ and a free combination $g'W^3+gB$ (\texttt{w\_mass\_term}, \texttt{z\_mass\_term}, \texttt{photon\_free}). The neutral penalty is therefore proportional to $(gW^3-g'B)^2$, giving
+\begin{equation}
+ M_N^2=\frac{v^2}{4}
+ \begin{pmatrix}g^2&-gg'\\-gg'&g'^2\end{pmatrix}.
+ \label{eq:neutral_response}
+\end{equation}
+Its null eigenvector is $(g',g)$ and its other eigenvector is $(g,-g')$, with eigenvalue $v^2(g^2+g'^2)/4$. Thus the massless mode is a mixture $A\propto g'W^3+gB$; it is not identified with a pure hypercharge or pure clock sector. Lean proves the quadratic identity, the two eigenvector relations, and nonnegativity (\texttt{GaugeSpectrum}). Identifying this response with the physical photon and neutral massive mode additionally requires the field and coupling matching assumptions.
+
+The same response gives $m_W^2=g^2v^2/4$ and $m_Z^2=(g^2+g'^2)v^2/4$, hence $m_W^2/m_Z^2=1-s_{\rm alloc}$. This relation tests a ratio. A comparison to a named weak-angle observable must also specify its scale and normalization.
 
 \vspace{0.5em}
 \begin{tabular}{ll}
 \textbf{Prediction:} & \num{\WeakAngleVal} \\
-\textbf{Experiment (Direct Mass):} & \WeakAngleExperimentalValue \\
-\textbf{Experiment (Global Fit):} & \WeakAngleGlobalExperimentalValue \\
+\textbf{Experiment (Direct Mass):} & \WeakAngleExperimentalVal \\
+\textbf{Experiment (Global Fit):} & \WeakAngleGlobalExperimentalVal \\
 \end{tabular}
 \vspace{0.5em}
 
-\textbf{The W-Boson Mass Tension:} The geometric prediction aligns with the \textbf{Direct Mass} measurement but deviates by \WeakAngleGlobalSigma$\sigma$ from the Standard Model Global Fit. The global fit derives $\sin^2\theta_W$ by propagating correlated constraints across the full electroweak parameter space using continuous perturbative regularization; the geometric prediction arises from a strictly finite, discrete capacity partition. These two procedures need not agree: if the substrate is genuinely discrete, continuous infinite-loop regularization would systematically shift the inferred mixing angle. Whether this \WeakAngleGlobalSigma$\sigma$ tension represents a structural prediction of the discrete substrate or a falsification of the framework depends on the definitive W-mass experimental determination. The direct PDG 2024 measurement ($M_W = 80.369 \pm 0.013\,\mathrm{GeV}$) is consistent with the geometric value; the SM global fit remains a genuine challenge this framework must resolve.
+\CatchFileBetweenTags{\InterfaceFactorVal}{constants.tex}{InterfaceFactorVal}
+\CatchFileBetweenTags{\ImpliedDeltaRVal}{constants.tex}{ImpliedDeltaRVal}
+\CatchFileBetweenTags{\StrongAtInterfaceFactorVal}{constants.tex}{StrongAtInterfaceFactorVal}
 
-\textit{Note on Physical Fields:} The explicit mapping of this Spacetime Partition to the physical gauge fields---demonstrating why the temporal allocation ($\Delta$) manifests as the massless Photon ($\gamma$) and the spatial infrastructure allocation manifests as the massive $W/Z$ bosons---along with the derivation of the absolute link admittances ($g, g', g_3$), is detailed in \cref{app:gauge_admittance}.
+\textbf{Absolute-mass consistency.} Using the displayed couplings $g^2=4\pi\alpha/s_{\rm alloc}$ and $g'^2=4\pi\alpha/(1-s_{\rm alloc})$ with the proposed VEV gives the uncorrected common-scale response values
+\begin{equation}
+ 78.96<m_W^{\rm response}<78.97\ {\rm GeV},\qquad
+ 89.57<m_Z^{\rm response}<89.58\ {\rm GeV},
+\end{equation}
+certified with the electron mass-unit input $m_e=0.00051099895$~GeV (\texttt{ElectroweakBounds}). They do not reproduce the measured Z mass. Lean separates what can and cannot move this residual:
+\begin{itemize}
+ \item \textbf{The efficiency $\eta$ cannot.} Over the whole range $0\le\eta\le1$ it changes only $s$; the products $m_W^2s$ and $m_Z^2s(1-s)$ both equal $\pi\alpha v^2$, and no $\eta$ raises $m_W^2$ by more than $0.05\%$ or $m_Z^2$ by more than $0.04\%$ (\texttt{RepairSpace}).
+ \item \textbf{One interface factor can.} Replacing $\alpha$ by $k\alpha$ in the coupling readouts scales both masses together and preserves $m_W^2=(1-s)m_Z^2$ at every $k$. Matching the measured Z mass requires $1.0362<k<1.0365$ (\texttt{ScaleConsistency.z\_needs\_factor}); the calculator gives $k=\InterfaceFactorVal$.
+ \item \textbf{That factor is not shared with the strong readout.} The same $k$ would give $k\alpha_s=\StrongAtInterfaceFactorVal>0.1221$ (\texttt{same\_scale\_obstruction}). The strong formula is a ratio to the zero-momentum impedance, while the electroweak interface carries its own response.
+\end{itemize}
+Since $s_{\rm alloc}$ is proposed as the on-shell ratio, $k=1/(1-\Delta r)$ defines the implied radiative correction $\Delta r=\ImpliedDeltaRVal$. With the measured Z mass the ratio predicts
+\begin{equation}
+ 80.3845<m_W=M_Z\sqrt{1-s_{\rm alloc}}<80.3846\ {\rm GeV}
+\end{equation}
+(\texttt{ScaleConsistency.anchored\_w}). As an external comparison, standard two-loop radiative corrections evaluated with this paper's own $m_H$, Paper~V's $m_t$ and the proposed $\alpha_s$ give $m_W\approx80.356$~GeV and $\Delta r\approx0.0368$ (using the parametrization of \cite{awramik_precise_2004}). The present world average lies between the two. The comparison sharpens with Paper~II's two-sector domain wall, whose low-energy content is a chiral fermion per sector with a scalar doublet as the inter-sector link (\cref{app:OriginOfHypercharge}). If that low-energy theory responds as the Standard Model does, the interface factor is the standard $\Delta r$ and the allocation's $s$ is displaced from it. The allocation therefore makes a falsifiable claim: future W-mass precision at the MeV level distinguishes $80.385$ from $80.356$~GeV, and the substrate must supply its own response law giving $\Delta r\approx0.0351$.
+
+\textit{The W mass as a parameter-free test.} Read as the on-shell mixing, the exact $s=1849/8295$ fixes $m_W^2/m_Z^2=6446/8295$ with no interface factor, $\alpha$ or VEV. With the measured $m_Z$ this gives $80.3827<m_W<80.38644$~GeV (\texttt{WMassTest.w\_window}): $1.0$--$1.3\sigma$ above the direct world average without CDF ($80.3692\pm0.0133$), $2.3$--$2.7\sigma$ above CMS ($80.3602\pm0.0099$), more than $5\sigma$ below CDF 2022 and more than $4.4\sigma$ above the Standard Model fit (\texttt{pull\_world}, \texttt{pull\_cms}, \texttt{pull\_cdf}, \texttt{pull\_sm}).
+
+\textit{The interface factor is $\Delta r$.} Writing $1/k=1-\Delta r$, the Z-anchor window is $0.0349<\Delta r<0.0353$ (\texttt{LinkCustodial.delta\_r\_window}). The opposite-sign term required in $\Delta r$ has the sign of custodial breaking in the link doublet: the splitting function $F(a,b)=\tfrac{a+b}{2}-\tfrac{ab}{a-b}\log\tfrac ab$ is positive exactly when the two components are split (\texttt{veltman\_pos}), while the link itself is custodial at tree level (\texttt{rho\_tree}). With the standard one-loop normalization and the measured top mass as labelled inputs, the leading term is $0.0324$--$0.0327$ and the remainder must be $0.0082$--$0.0091$ (\texttt{remainder\_required}).
+
+\textit{The ledgers behind the allocation.} For a specified required-resource set, the list model charges one refresh per distinct resource: coverage requires every resource, and positive additive costs exclude repeats at a minimum (\texttt{MinimalRefresh.minimal\_is\_ledger}). The proposed SU(2) requirement set is the shared temporal boundary, giving $43$; the proposed hypercharge set is the spatial rows, wires and all sixteen payloads, giving $129+5+16\eta$ (\texttt{GaugeLedgers}). Given these assignments, their sum is $N_{sys}$ and the mixing is $\Delta/N_{sys}$. The frame parts of these assignments now follow from the reference. The frame's four rows are the lattice directions, along which the carriers $\pm2e_i$ also lie, so the reserved reference occupies the row of its own axis. The signature already distinguishes time; among the axis permutations that fix it, those that also fix the reference's axis number $6$ if that axis is time and $2$ otherwise (\texttt{RequirementRows.axis\_symmetry\_kept}), so Economy places the reference on the time axis: the lepton axis is temporal and the three colour axes are spatial. Every frame row must be refreshed, each once, and only the electroweak refreshes read the frame, since colour reads the payload. Weak moves the reference within its own axis (the doublet index is the carrier's sign) and so must refresh the clock row, and no other; the three spatial rows then fall to hypercharge (\texttt{rows\_assigned}), giving the frame parts $43$ and $129$ (\texttt{frame\_ledgers}). The identification of rows with axes is not a further choice: both are indexed by the four lattice directions with the same permutation symmetry, and the only identification commuting with every axis permutation is the identity (\texttt{RequirementRows.identification\_is\_identity}). Premises: frame rows and carrier axes are both the lattice directions, and weak acts on the frame only through the reference. The rest of the table follows from where each sector's frame is stored. The electroweak pair reads the reserved reference, the in-band marker that locates every resource of the phase; for the phase to persist each of its resources is refreshed, once, by that pair, which is the matching that already gives the electric coupling the whole footprint. With weak confined to the reference row, hypercharge refreshes exactly the complement: the spatial rows, the wires and all sixteen payloads, including the sterile one (\texttt{RequirementComplement.hyper\_is\_complement}), so $129+5+16\eta$ needs no further assignment. Colour has no frame-stored reference, so there is no shared resource to refresh once: each channel's colour state is restored on that channel, Conservation requires every channel colour moves and Economy none it fixes, which are the twelve non-leptonic channels, $12\eta$ (\texttt{colour\_requirement}). Weak's single shared resource and colour's per-channel routing differ exactly in whether the sector's frame is stored in the reference. Scoping hypercharge by its action support instead gives fewer payloads: fifteen with nonzero charge, or fourteen whose phase differs from the reference's; the W mass excludes these by more than $3.1\sigma$ and $7.7\sigma$ (\texttt{ResourceLedger.sterile\_counted}, \texttt{HyperScope.relative\_scope\_excluded}), leaving whole-phase coverage. Premises: the electroweak pair covers the phase's resources once each, and a sector without a stored reference restores each moved channel separately. The physical executability of a minimum schedule remains to be derived.
+
+\textit{Carrier operations and resource assignments.} On the actual minimal vector-class carriers, simultaneous sign reversal in the left sector affects eight labels, while exchanges among the three colour axes in both sectors affect twelve. A bijection identifies these supports with the existing requirement-table columns (\texttt{CarrierActions}). This uses the stated axis/sign interpretation and specifies finite reversible operations; it does not construct the continuous gauge groups. A finite clocked Boolean-register realization preserves identity and total bit population, with the same clock advance for either family (\texttt{CarrierImplementation}). These results establish affected fields without determining their refresh costs.
+
+For the stated hypercharges, diagonal phase transport gives a comparison flag probability $(1-\cos(\theta q))/2$. For $0<|\theta|<\pi$, exactly fifteen labels have a positive flag probability; the neutral reference has zero flag probability at every angle (\texttt{CarrierPhaseResponse}). A sixteenth reference-maintenance resource therefore needs an operational justification distinct from this charge response. Excluding it from the proposed hypercharge ledger would put the anchored $m_W$ below $80.3268$~GeV (\texttt{ResourceLedger.sterile\_counted}); that empirical comparison does not itself supply the missing maintenance law. Phase-independent comparison and storage work have not been declared free.
+
+\textit{Internal routing and executable gates.} Paper~V's proposal that colour changes an internal address without changing the boundary map has a finite realization here. Retaining a carrier's sector, sign and lepton status defines an observable invariant under every colour-axis exchange. Its fibres are exactly the colour orbits: three carriers for each coloured boundary label and one for each lepton label (\texttt{ColourRouting}). Electric charge is unchanged. An invariant load within a coloured orbit therefore splits into equal thirds, although its total load and invariance remain premises. Invisibility to this chosen observable establishes neither confinement nor a binding dynamics.
+
+The carrier gates also have explicit reversible register schedules (\texttt{CarrierSwapSchedule}). Both the weak-style sign exchange and each colour-axis generator are four disjoint two-field swaps. Every intermediate step conserves bit population, and four instructions are minimal in this instruction set because each gate moves eight labels. A single colour generator touches eight fields; the union over the three generators covers twelve. Furthermore, the same weak gate can have zero or four active swaps, depending on its input. Thus the twelve-field coverage, four instructions and input-dependent transition count are distinct quantities. Identifying the per-phase maintenance ledger with $12\eta$, or the weak ledger with $43$, still requires a substrate-derived primitive cost and refresh cadence. These internal register schedules do not yet identify an $E_8$ nearest-neighbour implementation.
+
+\textit{Field mapping:} the algebraic response and the remaining normalization assumptions are discussed in \cref{app:gauge_admittance}.

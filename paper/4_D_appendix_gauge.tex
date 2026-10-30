@@ -2,54 +2,206 @@
 \section{The Gauge Admittance: Electroweak Structure and Link Geometry}
 \label{app:gauge_admittance}
 
-The derivations in \cref{sec:capacity_partition} established the dimensionless bandwidth ratios ($\alpha_s$, $\sin^2\theta_W$), which fix the \textbf{relative} allocation of the lattice's capacity. To complete the physical mapping to the Standard Model, this appendix establishes the \textbf{absolute} gauge couplings ($g$, $g'$, $g_3$) that fix the admittance of information flow across the discrete links, and details their physical manifestation as the electroweak gauge bosons.
+The allocation formulas specify geometric ratios. This appendix states the additional response matching used to read them as gauge couplings. Algebraic consistency of that matching is separate from deriving its physical normalization, scale dependence and particle interpretation from the substrate.
 
-\subsection{The Electroweak Bifurcation}
+\subsection{The Neutral Response}
 
-The geometric partition between the temporal resonance ($\approx 22\%$) and the spatial/hardware infrastructure ($\approx 78\%$) physically dictates the entire phenomenology of the electroweak gauge bosons. 
+The neutral mass matrix in \cref{eq:neutral_response} has a flat direction $(g',g)$ and a massive direction $(g,-g')$. Consequently the photon candidate mixes the two neutral fields. The workload ratio is matched to $g'^2/(g^2+g'^2)$; the existence of a flat direction for arbitrary couplings does not itself determine that ratio. Lean proves these statements directly from the stated quadratic penalty (\texttt{GaugeSpectrum}).
 
-The $E_8$-Persistence theory establishes a strict structural isomorphism to the Standard Model, where the abstract hypercharge ($g'$) and weak isospin ($g$) gauge couplings are simply the continuous reflections of these discrete lattice bandwidth allocations:
+\subsection{Compatible Actions on the Actual Packet}
+
+The representation is now implemented on a common sixteen-dimensional space (\texttt{PacketGaugeActions}), with an explicit bijection to the actual carrier packet. In the order left quarks, right quarks, left leptons and right leptons/reference, the block dimensions are $6,6,2,2$. For supplied unitary matrices $U$ of size two and $V$ of size three, define
+\begin{align}
+ \rho_W(U)&=\operatorname{diag}(I_3\otimes U,I_6,U,I_2),\\
+ \rho_C(V)&=\operatorname{diag}(V\otimes I_2,V\otimes I_2,I_2,I_2).
+\end{align}
+Lean proves that these are unitary representations, that they commute, and that their finite sign/colour label operations match the earlier carrier operations. The hypercharge generator agrees with the existing table: $1/3$ on left quarks, $4/3$ and $-2/3$ on right quarks, $-1$ on left leptons, and $(0,-2)$ on the right lepton/reference block. It is Hermitian and commutes with both factors; its constructed phase transport therefore also commutes with them. Reindexing to the actual packet preserves these properties, and the joint link is unitary.
+
+The construction permits restriction to determinant-one factors, but does not derive their physical selection or uniqueness from PM. Additional central phases, the global group quotient, generator normalization and the inherited axis/chirality interpretation are not fixed by these representation identities. Hypercharge transport here has a real parameter; its circle period is a separate global question.
+
+\subsection{Coupling Normalization and Link Geometry}
+
+A link phase depends on the product $g\ell A_\mu$. A compensating rescaling $g\mapsto g/c$, $A_\mu\mapsto cA_\mu$ leaves that phase unchanged. Therefore the link update rate alone does not fix an absolute numerical gauge coupling. The coefficient $g_{\rm bare}=1/2$ proposed in the discrete-update discussion requires a field-normalization convention and a substrate-to-response calculation before it can determine a physical coupling.
+
+\paragraph{Quadratic packet normalization.} The common representation now gives a controlled response rather than only a carrier count (\texttt{PacketTraceForm}, \texttt{MeanTraceResponse}, \texttt{GaugeTraceNormalization}). For Hermitian traceless fundamental weak and colour generators $A,B$, and hypercharge coefficient $b\in\mathbb R$, its packet generator $H$ satisfies
 \begin{equation}
-\frac{g'^2}{g^2 + g'^2} \longleftrightarrow \frac{\Delta}{N_{sys}}
+ \operatorname{Tr}(H^2)=4\operatorname{Tr}(A^2)+4\operatorname{Tr}(B^2)+\frac{10}{3}b^2.
 \end{equation}
+All mixed terms vanish. With the stated fundamental normalization $\operatorname{Tr}(T^2)=1/2$, the packet indices are $T_W=T_C=2$ and $T_Y=10/3$, where the hypercharge generator is $Y/2$. Lean proves for the uniform packet comparison that
+\begin{equation}
+ \overline q\bigl(e^{i\varepsilon H}\bigr)
+ =\frac{\varepsilon^2}{64}\operatorname{Re}\operatorname{Tr}(H^2)+r(\varepsilon),
+ \qquad |r(\varepsilon)|\le C\varepsilon^4
+\end{equation}
+on a constructed positive radius, with $C\ge0$. The trace identities and controlled response hold on the actual carrier packet after the proved reindexing.
 
-This geometric split forces the observed behavior of the carriers:
+This fixes a distinction in the workload interpretation. If the ledgers $L_W=43$ and $L_Y=129+5+16\eta$ are raw comparison weights under that common uniform readout, their effective coefficients include $T_iL_i$. The mixing would then be
+\begin{equation}
+ s_{\rm raw}=\frac{2L_W}{2L_W+(10/3)L_Y}
+ =\frac{5547}{37777}\approx0.1468354,
+\end{equation}
+not $1849/8295$. A common positive calibration cancels from this ratio. Conversely, if the ledgers already represent index-weighted stiffness, multiplying by the indices again counts them twice. The operational conversion between primitive work, readout and effective stiffness must therefore be derived before identifying the conditional readouts below with consequences of the common event law. Keeping the raw weights and stated generator convention would require positive sector factors with $\kappa_Y=(3/5)\kappa_W$ to recover the proposed ratio (\texttt{compensation\_iff}); this is a compatibility condition, not a derived coefficient to insert. No replacement numerical prediction is selected by this diagnostic.
+
+\paragraph{What persistence selects.} The next test is conservation of required work, rather than selection of a coefficient from the desired ratio. In a unit-capacity fluid-queue model with specified nonnegative demands $d_i$, a nonnegative rate $r$ admits bounded conserved queues exactly when
+\begin{equation}
+ r\sum_i d_i\le1.
+\end{equation}
+For positive total demand, the maximum sustainable rate is therefore $r_{\max}=1/\sum_i d_i$ (\texttt{General.WorkSelection}). This is an exact conditional persistence result; selecting the maximum rate is an additional efficiency criterion. Neither criterion supplies the physical demands.
+
+For example, suppose the weak and hypercharge comparison repairs share this service pool, with index-weighted demands
+\begin{equation}
+ d_W=2\kappa_W L_W,\qquad d_Y=\frac{10}{3}\kappa_Y L_Y.
+\end{equation}
+Every positive pair of multipliers has a positive-rate bounded-queue witness. If retaining the proposed raw comparisons imposes the primitive-work floors $\kappa_W,\kappa_Y\ge1$, maximizing throughput uniquely selects $(1,1)$ and hence the raw ratio above. Recovering the manuscript ratio under those floors instead requires $\kappa_W\ge5/3$. The fastest such choice is $(5/3,1)$, whose rate is $43/27650$, strictly below the raw optimum $129/75554$. These are dimensionless rates for this two-queue service model, not physical vacuum frequencies. Any common nonnegative baseline work per operation preserves this ordering (\texttt{GaugePersistenceChoice}). The shared pool, accessible workload family and raw floors are operational hypotheses, not yet consequences of E$_8$.
+
+The previously proved uniform-reference selection also survives any positive common rescaling of its return-cost functional; it fixes the reference law, not that functional's prefactor. Thus persistence and the stated efficiency test do not justify inserting $3/5$ into the raw ledger. The remaining derivation must identify the actual maintained objects, primitive event costs and preparation/readout ensemble. If the ledger is effective stiffness instead, its corresponding raw multipliers are $1/2$ and $3/10$; the raw-work floors cannot be transferred to that different interpretation. No coupling formula is changed by this conditional comparison.
+
+\paragraph{The W mass decides the reading.} The preparation is not a free choice. Among candidate preparation laws of the sixteen packet carriers, the one kept by the Selection Principle of Persistence Mechanics is uniform (framework Lean \texttt{LawSelection}). Each carrier then has weight $1/16$, and its indices are exactly the uniform packet indices $2,2,10/3$ behind both readings (\texttt{ReadoutAccounting.selected\_is\_uniform}, \texttt{selected\_indices}). A nonuniform preparation that would rescue the raw reading is not the selected law: the per-carrier law $(6,3,6,3,2,2)/73$ is a positive candidate distinct from the uniform one, and with positive initial weights and survival actions at each law's average rate the surviving ensemble concentrates on the uniform law, for this pair and for any finite positive family containing it (\texttt{PreparationSelection.preparation\_selected}, \texttt{any\_family\_selects\_uniform}). The identification of the carrier preparation with the framework's survival model is the premise. With the measured $m_Z$, the raw reading gives $84.22<m_W<84.24$~GeV, more than $289\sigma$ above the direct average $80.3692\pm0.0133$~GeV; the effective reading gives the value of \cref{subsec:weak_mixing}, within $1.3\sigma$ (\texttt{raw\_excluded}, \texttt{ledgers\_are\_effective}). The ledgers are therefore effective stiffness: each already contains its sector's trace index. The raw-floor throughput criterion above selects the reading the W mass excludes, so it is not the operative selection. As with the Fermi constant, Newton's constant and the Higgs mass, an observable selects the accounting rule. What remains is to derive the effective ledgers as primitive work, that is, why the counted refreshes carry the indices $2$ and $10/3$.
+
+\paragraph{Which generator normalization.} A ledger fixes the stiffness of a sector's unit generator. The natural internal candidate, equal packet trace for every unit generator, makes the hypercharge unit $\sqrt{3/5}\,Y/2$: the normalization of a unified group, which with equal ledgers gives $s=3/8$. With the actual ledgers it gives exactly the raw value $5547/37777$, which the W mass excludes (\texttt{GeneratorNormalization.trace\_form\_gives\_raw}, \texttt{unification\_value}, \texttt{normalization\_decided}). The effective reading is the charge-unit normalization instead: $T_3=\pm\tfrac12$ on the doublet and $Y/2$ fixed by $Q=T_3+Y/2$ (\texttt{charge\_units\_give\_effective}). The two differ in how the conserved charge is assembled. On the packet, $Q$ is the plain sum of the unit generators exactly in charge units (\texttt{plain\_sum\_iff}); in trace-form units it is $X_W+\sqrt{5/3}\,X_Y$ (\texttt{trace\_units\_not\_plain\_sum}). The gauge stiffness is therefore counted in units of the conserved charge, one currency for charge, and not by the packet trace form; the factor $3/5$ that unification would introduce is absent.
+
+\paragraph{The reference carrier.} A refresh's stiffness is the comparison response of the carrier it is read against. For a reference prepared on one carrier type, the weak and hypercharge indices are that type's summed squares of $T_3$ and $Y/2$: $(3/2,1/6)$ for $Q$, $(1/2,1/2)$ for $L$, and no weak response for $u$, $d$, $e$ or $n$ (\texttt{ReferenceCharge.reference\_indices}). Weak and hypercharge refreshes have equal nonzero response on a common reference exactly when it is the lepton doublet, the only multiplet with $|T_3|=|Y/2|=1/2$ (\texttt{equal\_response\_iff}). With that reference the weak fraction is $1849/8295$; a quark-doublet reference would give $16641/23087\approx0.721$, and the uniform packet the raw $5547/37777$ (\texttt{lepton\_reference\_mixing}, \texttt{quark\_reference\_mixing}, \texttt{uniform\_reference\_mixing}). The charge-unit normalization is therefore what a common lepton-axis reference measures. This is the axis singled out as the lepton axis in \cref{app:OriginOfHypercharge}; the carrier construction suggests reading it as the temporal axis that the clock SU(2) refreshes (\texttt{CarrierRepresentation}). On it $Q=T_3+Y/2$ takes the values $0$ and $-1$. The lepton doublet carries no colour (\texttt{lepton\_reference\_no\_colour}), so the colour refresh is read against its own reference, as the separate ledger $12\eta$ already assumes. The lepton axis need not be assumed: a reference type that responds to both the weak and the hypercharge refresh and is left unchanged by colour actions is exactly the lepton doublet (\texttt{shared\_colourless\_reference\_iff}). The premises are that the two refreshes share one reference type and that the other sector's actions do not disturb it.
+
+\paragraph{One reserved cell, one reference.} Sharing need not be assumed. The in-band reference with maximal payload that fixes $\eta=171/172$ reserves exactly one of the 172 cells (\texttt{SharedReference.reserved\_single}). If distinct reference types occupy distinct reserved cells, the weak and hypercharge refreshes read against the same type (\texttt{shared}). A type responding to both is $Q$ or $L$ (\texttt{responsive\_iff}). The quark doublet gives $s=16641/23087$ and $48.1<m_W<48.3$~GeV, more than $2400\sigma$ below the direct average; the lepton doublet gives $1849/8295$ within $1.3\sigma$ (\texttt{quark\_reference\_excluded}, \texttt{reference\_selected}). Colour invariance is then not a premise: the measurement chooses between the only two candidates. The only type responding to all three refreshes is $Q$ (\texttt{colour\_not\_reserved}), so the colour refresh does not read against the reserved cell, consistent with its payload-weighted ledger $12\eta$. A witness layout shows these premises are satisfiable (\texttt{witness}). The colour step follows: a reference that responds to colour cannot occupy the reserved cell, which carries the colourless lepton-doublet reference, so it lies in the payload (\texttt{ColourReference.colour\_reference\_in\_payload}). Each payload cell carries $\eta$, and the Economy-minimal refresh of the twelve coloured channels costs exactly $12\eta$, the colour ledger (\texttt{colour\_ledger\_minimal}). That colour maintains the payload rather than the reference is therefore a consequence, not a premise. The remaining premises are one reserved cell per distinct reference type and that both electroweak refreshes read against the reserved reference. Neither premise of this step needs stating. If each reserved cell holds one carrier state, distinct reference types occupy distinct cells (\texttt{ReferenceEconomy.cell\_inj\_of\_content}). The reserved cell is already paid by the frame overhead, while any other reference costs a payload cell $\eta$; so every sector that responds to the reserved type reads it (\texttt{reads\_reserved}), and the added cost of type $t$ is $\eta(3-\#\text{served})$. Unconstrained, this would choose $Q$, which serves all three sectors (\texttt{economy\_unconstrained}); but a coloured reserved reference is moved by colour and breaks it. Among colour-preserving types the cost is least exactly for $L$ (\texttt{economy\_selects\_lepton}), so the lepton doublet follows from Economy and unbroken colour, and the W mass is an independent check.
+
+\paragraph{Classifying the remaining preparation freedom.} Rather than postulating independent compensation factors, one can classify the basis laws invariant under the already constructed carrier operations (\texttt{CarrierReadoutOrbits}). The weak sign flip and colour-axis exchanges have exactly six orbits, labelled $Q,u,d,L,e,n$, of sizes $6,3,3,2,1,1$ under the inherited representation. Every finite word in these gates is reversible and preserves its type, and any two carrier labels of the same type are connected. This is a classification of this gate set; additional physical operations or a particle interpretation require their own proof.
+
+Every invariant incoherent basis-preparation law therefore has one per-carrier weight $q,u,d,l,e,n$ in each orbit, with
+\begin{equation}
+ 6q+3u+3d+2l+e+n=1.
+\end{equation}
+These are per-carrier weights, not the six total orbit probabilities. For nonnegative weights Lean derives the controlled comparison response of the actual packet with leading term $\varepsilon^2\operatorname{Re}\operatorname{Tr}(\rho H^2)/4$, where $\rho$ is the diagonal preparation matrix, and bounds the remainder by $C\varepsilon^4$ on a constructed positive radius (\texttt{WeightedReadoutResponse}, \texttt{GaugeReadoutWeights}). Under the stated fundamental-generator convention the three response indices are
+\begin{align}
+ I_W&=(3q+l)/2, & I_C&=(2q+u+d)/2,\\
+ I_Y&=q/6+4u/3+d/3+l/2+e.
+\end{align}
+Mixed terms vanish for traceless fundamental weak and colour generators. With the existing raw ledgers and positive response indices, recovering the proposed weak fraction is equivalent to
+\begin{equation}
+ 4q=4u+d+3e.
+\end{equation}
+Equalizing the colour and weak indices additionally requires $q+l=u+d$. Symmetry alone enforces neither relation. Uniform weights give $I_W=I_C=1/8$ and $I_Y=5/24$, retaining the raw mixing diagnostic. Positive nonuniform laws satisfying both equal-index conditions exist, but are not selected physical preparations. Applying the existing average-return minimization over the symmetric positive preparation laws selects the uniform law; it does not derive the needed nonuniform weights. Its physical use for probes, rather than reference positions, would itself need justification.
+
+Thus the outstanding operational question is specific: derive the preparation, work density and repair pricing across these six carrier classes from the actual maintained state and primitive updates. The present gates preserve the classes, so stationarity under them leaves their relative weights free. Type-dependent repair or refresh costs would also enter the effective work weights and must be accounted for explicitly. The neutral weight has no direct hypercharge response; any reference-maintenance contribution needs its separate event law. No nonuniform example or new coefficient is adopted in the coupling formulas.
+
+\paragraph{Stationary populations versus repair work.} The inter-sector link gives a further test of preparation-based normalization (\texttt{LinkPreparation}). A diagonal preparation $\rho=\operatorname{diag}(p)$ commutes with a generator $K$ exactly when $p_i=p_j$ across every nonzero matrix entry $K_{ij}$. Commutation supplies exact stationarity under its continuous unitary evolution; stationarity is an additional condition, not implied merely by persistence. If a type-invariant preparation is stationary and $K$ has at least one nonzero $Q$--$u$ hop and one nonzero $Q$--$d$ hop, it follows that $q=u=d$. Hence
+\begin{equation}
+ I_Y-I_W=q/3+e>0
+\end{equation}
+for positive type weights, and its raw-ledger mixing lies strictly below the proposed fraction. For the specifically constructed flavour-diagonal transfer family with zero on-site blocks, even coherent stationary matrices have equal diagonal populations at the ends of each nonzero pair. Coherences therefore do not bypass this test within that family. General coherent preparations, generators with on-site terms, additional couplings and periodic preparation protocols remain outside that conclusion. Neither the physical generator nor these stationary-preparation conditions are selected by this test.
+
+Work weights need not be stationary population probabilities. Under uniform basis preparation, a type-dependent fixed repair length $m_t\in\mathbb N$ gives effective work weight $w_t=m_t/16$. Lean derives this identification by pricing the actual flags, rather than assigning an extra response multiplier (\texttt{TypedRepairWork}):
+\begin{equation}
+ \frac1{16}\sum_v \mathrm{toll}\,m_{t(v)}\,mathrm{flag}_v(U)
+ =\mathrm{toll}\sum_v w_{t(v)}\,\mathrm{flag}_v(U).
+\end{equation}
+Recovering the proposed weak fraction requires $4m_Q=4m_u+m_d+3m_e$; equal weak and colour indices additionally require $m_Q+m_L=m_u+m_d$. With positive fixed integer lengths for all five gauge-active types, the conditional-length sum
+\begin{equation}
+ B_{\mathrm{rep}}=6m_Q+3m_u+3m_d+2m_L+m_e
+\end{equation}
+has baseline $15$. The weak-fraction constraint requires $B_{\mathrm{rep}}\ge21$, attained uniquely on these types at $(2,1,1,1,1)$. Imposing both equal-index constraints requires $B_{\mathrm{rep}}\ge43$, attained uniquely at $(3,1,5,3,1)$. These are sums of conditional repair lengths, not expected executed work: actual flags still weight the work, and the neutral length is not constrained by the direct gauge indices. Variable-length repair protocols are not covered by these fixed-integer bounds. The conditional occurrence of $43$ does not derive the clock period, since the matching constraints were imposed.
+
+A concrete substrate repair task also has a checked answer: undoing the existing E$_8$-induced root reflection on every carrier by repeating it has least length one in each of the three glue classes (\texttt{root\_undo\_minimum}). This does not identify flag repair with root inversion. It shows why longer type-dependent repairs require an actual task and correctness condition; the elementary inverse alone does not supply them. The next target is therefore a conservative primitive protocol specifying what must be restored, with its necessary repair work derived before its coupling ratio is evaluated. No integer repair witness is adopted as vacuum dynamics.
+
+\paragraph{A paired-reflection symmetry test.} The selected readout must also be distinguished from the menu of available substrate operations. The carrier reflection supplied by Paper~II is lifted to both vector-class sectors, exchanging coordinate axes $0$ and $1$ in each. Lean explicitly decomposes this paired action into a left-sector and a right-sector carrier reflection; the pair is not assigned the cost of one primitive E$_8$ event. For the inherited lepton-axis choice, invariance of the six-type preparation or work weights under this action is exactly $q=l$, $u=n$ and $d=e$ (\texttt{PrimitiveReadoutSymmetry}). If $I_W=I_C$ also holds, Lean derives
+\begin{equation}
+ I_Y=\frac53 I_W,
+\end{equation}
+without uniform sampling. Positive response then retains the raw mixing $5547/37777$. The common-stiffness/electric matching further proves that simultaneously recovering the current weak and strong readouts from these raw ledgers requires equal sector indices, hence breaking this particular readout invariance. This does not assert that an available root must preserve the physical vacuum's chosen state, maintained task or readout. It identifies a specific distinction that a successful preparation/repair protocol must derive, rather than assuming an arbitrary nonuniform weight. Effective-stiffness ledgers and other operational maps remain separate possibilities. The shared lepton-doublet reference selected below supplies exactly this distinction: it is not invariant under the paired reflection, which exchanges the lepton axis with a colour axis (\texttt{ReferenceAnchor.lepton\_reference\_breaks\_root}). The asymmetry is the reference itself, not an additional readout rule. The same reference fixes the breaking pattern. A Hermitian electroweak generator leaves the reference's neutral carrier invariant exactly when it is a multiple of $Q=T_3+Y/2$, every colour generator leaves both reference carriers invariant, and a quark reference would instead be moved by colour (\texttt{ReferenceStabilizer.electroweak\_stabilizer}, \texttt{colour\_unbroken}, \texttt{quark\_reference\_breaks\_colour}). The generators that fix the reference are those of $SU(3)\times U(1)_Q$. Read on the reference's neutral carrier, $gT_a$ and $g'Y/2$ give the gauge mass form: $\langle T_1^2\rangle=1/4$ for the charged bosons, and a neutral form $\tfrac14\left(\begin{smallmatrix}g^2&-gg'\\-gg'&g'^2\end{smallmatrix}\right)$ with determinant zero, null vector $(g',g)$ (the photon) and trace $(g^2+g'^2)/4$ (\texttt{ReferenceMasses.charged\_entry}, \texttt{form\_from\_reference}, \texttt{neutral\_form}). So $m_W^2/m_Z^2=g^2/(g^2+g'^2)$, tree-level $\rho=1$ (\texttt{rho\_one}), which is the relation the W-mass tests above use with the measured $m_Z$. Among reference multiplets with isospin $T\le3/2$ only the doublet gives $\rho=1$ (\texttt{rho\_multiplet}). Rotating the neutral fields onto the photon direction gives the currents: with $N=\sqrt{g^2+g'^2}$, the photon couples to $eQ$ with $e=gg'/N$ and the $Z$ to $N(T_3-s^2Q)$, $s^2=g'^2/N^2$ (\texttt{NeutralCurrent.photon\_coupling}, \texttt{z\_coupling}). Hence $1/e^2=1/g^2+1/g'^2$ (\texttt{electric\_matching}): the electric matching that the ledgers read as the sum of the two electroweak sets follows from the reference's massless direction. Colour moves exactly the twelve coloured channels and fixes the four leptonic ones (\texttt{colour\_moves\_iff}, \texttt{colour\_moved\_card}), the count of the colour ledger read from the actions themselves.
+
+\paragraph{A correct coherent comparison repair.} The readout now has a constructed reversible controller (\texttt{CoherentComparisonRepair}),
+\begin{equation}
+ C(U)=\frac12\begin{pmatrix}I+U&I-U\\ I-U&I+U\end{pmatrix}.
+\end{equation}
+Its minus-port entries are exactly the flag amplitudes already used above. For unitary $U$, Lean proves that $C(U)$ is unitary and $C(U^\dagger)C(U)=I$. A coherently prepared state $(\phi,0)$ can therefore be restored exactly, including its controller flag. No measurement record is discarded by this identity.
+
+For an involution, such as the carrier reflection, $P_\pm=(I\pm U)/2$ are complementary projectors. The actually prepared branches are $(P_+\phi,0)$ and $(0,P_-\phi)$. The inverse comparison leaves the former unchanged and sends the latter to $(P_-\phi,0)$; their coherent sum restores the original payload. This valid-input condition is essential. A closed unitary that fixes \emph{every} unflagged state must instead preserve the entire flagged-branch norm and cannot clear a nonzero flag. That obstruction does not prohibit the constructed valid-subspace repair, extra retained controller records, or a flag-proportional excess-cost law. It shows why the restoration task and valid states must be specified before assigning a repair cost.
+
+Primitive realization remains distinct from controller correctness. For a nontrivial carrier permutation, a moved input column of $C(U)$ contains an amplitude $1/2$. A product of permutation gates in this basis cannot produce that column. A coherent state-sum construction, additional superposed preparation or a different readout basis may supply the needed operator step, but its connection to primitive work must be proved. One inverse-comparison application is not automatically one primitive E$_8$ event. Thus the next derivation is a correct implementation and cost map for this explicit task, rather than choosing type-dependent repair lengths to recover a desired coupling ratio.
+
+\paragraph{Controller Hamiltonian and response normalization.} The comparison has an explicit generator (\texttt{ControllerHamiltonian}),
+\begin{equation}
+ K(H)=\frac12\begin{pmatrix}H&-H\\-H&H\end{pmatrix},
+ \qquad e^{itK(H)}=C(e^{itH}).
+\end{equation}
+Lean proves the exponential identity exactly, in fact for every complex parameter, and proves Hermiticity when $H$ is Hermitian. The branch change used in that proof is an algebraic similarity; no unit primitive cost is assigned to it. The trace and prepared-state metrics satisfy
+\begin{align}
+ \operatorname{Tr}(K(H)^2)&=\operatorname{Tr}(H^2),\\
+ \|K(H)(\phi,0)\|^2&=\tfrac12\|H\phi\|^2,\\
+ \|(\phi,0)-C(U)(\phi,0)\|^2&=\tfrac12\|\phi-U\phi\|^2.
+\end{align}
+The controller's own minus-port probability remains the original flag probability. Applying the common squared-change readout to the \emph{whole controller} is a different observable: it gives half the carrier state readout. If priced with the same supplied toll and repair length, that common factor is absorbed into the common calibration; it does not change relative gauge indices or supply the required $3/5$ compensation. A squared-change metric is not itself a count of primitive events.
+
+The remaining admissibility question is specific: does the substrate's state-sum dynamics generate this projector-coupled operator, its coherent preparation and its flag space with the required primitive work? Reconstructing a unitary evolution from a supplied transfer operator does not, by itself, select every such enlarged generator or its cost. The exact controller identity therefore closes an operator-algebra step while leaving that resource and work derivation explicit.
+
+\textbf{Conditional Coupling Readouts:} With the stated rationalized normalization and proposed allocations, define the following effective coupling readouts:
+
 \begin{itemize}
-    \item \textbf{The Photon ($\gamma$, $U(1)$ Temporal):} The hypercharge sector couples strictly to the \textbf{Fundamental Resonance} ($\Delta$), representing the causal update rate of the lattice. Because temporal evolution cannot be obstructed without violating causality, the photon carries no spatial hardware load. It must remain massless and propagate at the exact bandwidth limit of the substrate ($c$).
+    \item \textbf{Strong coupling $g_3$:} The colour-ledger formula is converted by the stipulated normalization:
+    \begin{equation}
+        g_3^2 = 4\pi \alpha_s = 4\pi \cdot \frac{N_{sys}}{12\eta\,\alpha^{-1}}
+        \approx 1.4828 \quad (g_3 \approx 1.2177)
+    \end{equation}
+    Lean: $1.4827<g_3^2<1.4829$ (\texttt{StrongLedgerBounds.ledger\_strong\_squared}).
+    The factor $4\pi$ enters through the calibration $\mathrm{toll}\cdot m=1/(4\pi\alpha N_{sys})$ of \cref{subsec:event_normalization}.
     
-    \item \textbf{The W/Z Bosons ($W^{\pm}, Z^0$, $SU(2)$ Spatial):} The isospin sector couples to the \textbf{Manifold Embedding} ($N_{sys} - \Delta$), representing the dense spatial infrastructure and chiral payload. To propagate through this structural density, these gauge fields must deform the lattice geometry, incurring a severe geometric impedance cost that manifests physically as mass.
+    \item \textbf{Weak isospin $g$:} The weak readout is:
+    \begin{equation}
+        g^2 = \frac{4\pi\alpha}{\sin^2\theta_W} \approx 0.41139 \quad (g \approx 0.6414)
+    \end{equation}
+    
+    \item \textbf{Hypercharge $g'$:} The hypercharge readout is:
+    \begin{equation}
+        g'^2 = \frac{4\pi\alpha}{1-\sin^2\theta_W} \approx 0.11801 \quad (g' \approx 0.3435)
+    \end{equation}
 \end{itemize}
 
-\subsection{Absolute Couplings from Link Geometry}
+\textbf{Scope.} These values use the inherited geometric admittance and the specified allocation ratios. Lean certifies their numerical intervals (\texttt{ElectroweakBounds}) and their algebraic mixing identity. They are not a calculation of running couplings at every scale. Combining them with the VEV without response corrections gives the mass intervals in \cref{subsec:weak_mixing}, which differ from the measured-Z anchor used in the separate ratio validation.
 
-\textbf{The Bare Lattice Coupling:} On the discrete substrate, the link variable $U_\mu = \exp(-ig \ell A_\mu)$ rotates the phase of transmitted signals. The kinematic bandwidth limit $c = \ell/\tau = 1$ (Paper 2, Section III.C) enforces exactly one spatial transition per temporal update. The phase rotation per transition is therefore bounded by the geometric step efficiency:
+\subsection{Normalization from the Event Law}
+\label{subsec:event_normalization}
+
+Under the stated coherent-comparison preparation, squared-amplitude readout and common repair-length contracts, Paper~II connects a link-test cost to actual substrate events. The carriers are the eight minimal vectors of a D$_4$ glue class; the event is the restriction of an integral E$_8$ root reflection; each coherent comparison of a transported amplitude with its reference raises a flag with probability $\|\phi-U\phi\|^2/4$, and each flag is repaired by $m$ primitive events at the common toll (Paper~II, \texttt{CommonResponse}). The same expression gives the gauge cosine $(1-\cos\theta)/2$, the fermion Wilson form and the scalar covariant difference. If all three sectors are priced by this one readout event, with one toll and one repair length $m$, they share the prefactor $\mathrm{toll}\cdot m/4$. That common pricing is a premise; the Lean statement (\texttt{common\_normalization}) factors out the prefactor it supplies and does not derive it.
+
+Consequently $W$ refreshes of a phase test cost $(c_0W)(1-\cos\theta)$ with $c_0=\mathrm{toll}\cdot m/2$ (\texttt{EventStiffness.refresh\_from\_events}), which was the stiffness premise of \cref{subsec:weak_mixing}, and $g^2=1/(\mathrm{toll}\cdot m\cdot W)$. The electric coupling belongs to the whole footprint, so matching it to $\alpha$ fixes the only free product, $\mathrm{toll}\cdot m=1/(4\pi\alpha N_{sys})$ (\texttt{calibration}). Given those contracts and the specified refresh ledgers, the gauge readouts are:
 \begin{equation}
-    g_{\text{bare}} = \frac{1}{2}
+g_W^2=\frac{4\pi\alpha N_{sys}}{43},\qquad g_Y^2=\frac{4\pi\alpha N_{sys}}{129+5+16\eta},\qquad g_3^2=\frac{4\pi\alpha N_{sys}}{12\eta}
 \end{equation}
-This is the universal lattice efficiency: half the phase budget per link is allocated to spatial translation, half to internal rotation.
+(\texttt{couplings\_from\_alpha}). The scalar link expands as $\|\phi-U_\varepsilon\phi\|^2=\varepsilon^2\|\theta\phi\|^2+O(\varepsilon^4)$ with an explicit remainder (Paper~II, \texttt{LinkExpansion}), and on the vacuum direction $\|\theta\hat\phi\|^2$ is exactly the W/Z mass form (\texttt{LinkFromEvents.mass\_form\_from\_events}). Under the common-pricing premise, the gauge action and the W/Z mass terms are therefore responses of the same readout at the same prefactor. The absolute mass scale is not supplied by this chain.
 
-\textbf{The Physical Couplings:} The bare admittance is dressed by the specific capacity allocation of each orthogonal sector:
+\paragraph{Spectral assumptions discharged.} For the explicit Hermitian doublet generator, \texttt{LinkSpectralResponse} now constructs the spectral transport used by the link expansion. Writing $S=\sum_k|\lambda_k|$, it supplies a positive radius $\delta=1/(1+S)$; for $|\varepsilon|\le\delta$ the W/Z quadratic form has the stated fourth-order error bound. The eigenbasis and diagonalization equation are consequences of the spectral theorem, rather than inputs to the final link-response result. The follow-on \texttt{LinkEvolution} proof identifies this transport with the ordinary matrix exponential $U_H(t)=\exp(itH)$ for every finite Hermitian generator, independently of its unitary eigenbasis. It proves $U_H(s+t)=U_H(s)U_H(t)$ and $U_H(-t)=U_H(t)^\dagger$ without a small-step restriction; that restriction is used only for the error estimate. These composition laws concern the same fixed generator, not arbitrary links with different generators. The generator's physical interpretation, the comparison law and the mass scale remain separate premises.
 
-\begin{itemize}
-    \item \textbf{Strong coupling $g_3$:} The color sector occupies $N_c = \sigma - \chi = 3$ channels of the $\nu = 16$ total. The admittance is the geometric mean of the bare coupling and the sector fraction:
-    \begin{equation}
-        g_3^2 = 4\pi \alpha_s = 4\pi \cdot \frac{\nu\eta + 1/D}{\alpha^{-1}}
-        \approx 1.54 \quad (g_3 \approx 1.24)
-    \end{equation}
-    The factor $4\pi$ arises from solid angle integration in the continuous limit (Paper 2, Section V.B).
-    
-    \item \textbf{Weak isospin $g$:} The spatial sector couples to the manifold embedding $N_{\text{sys}} - \Delta$. The admittance is:
-    \begin{equation}
-        g^2 = \frac{4\pi\alpha}{\sin^2\theta_W} \approx 0.42 \quad (g \approx 0.65)
-    \end{equation}
-    
-    \item \textbf{Hypercharge $g'$:} The temporal sector couples to the fundamental resonance $\Delta$. The admittance is:
-    \begin{equation}
-        g'^2 = \frac{4\pi\alpha}{1-\sin^2\theta_W} \approx 0.12 \quad (g' \approx 0.35)
-    \end{equation}
-\end{itemize}
+\subsection{Operational Readiness and Refresh Cadence}
 
-\textbf{Physical Interpretation:} The gauge couplings of standard physics are not independent primitives. They are strictly the \textbf{dressed admittances} of the lattice links, renormalized by the capacity allocation of their respective sectors. The ``gauge principle'' is simply the geometric requirement that phase rotations preserve unitarity across these discrete links.
+The twelve coloured fields are now connected to executable carrier operations, rather than only to a channel table (\texttt{ColourRefreshCadence}). In the two-field-swap model, immediate capability for a specified generator requires exactly its eight moved fields: any implementation must access them, and an explicit reversible implementation suffices. Two distinct generators together require all twelve fields, so immediate capability for every generator is equivalent to availability of the full coloured set. Moreover, composing two distinct exchanges gives a colour gate moving all twelve fields. The eight-field count for a single exchange is therefore not a general limit on colour operations.
+
+To convert this capability into the proposed ledger, one needs a freshness contract: every field required for immediate capability must receive one refresh in every phase at cost $\eta$. Under that contract the additive refresh model has minimum exactly $12\eta$ (\texttt{universal\_refresh\_minimum}). The physical refresh primitive, its cadence and its $\eta$ cost are still to be derived; storing an available field does not by itself prove a positive per-phase refresh charge.
+
+A finite reversible scheduler illustrates the distinction. It retains all sixteen Boolean payload fields, advances a 43-phase clock, and uses an explicit three-state controller to serve the three colour generators in turn. Each phase touches eight fields; every two-phase window covers twelve, and every coloured field is touched twice per three-phase sweep. If demand charges addressed fields only, that component is $24\eta$ per sweep, or $8\eta$ per phase. Bounded persistent queues force service for this supplied demand, not a different demand of $36\eta$ per sweep. This is not an alternative strong-coupling prediction: controller, clock, storage, reference and baseline maintenance costs are not included in that demand component. Nor is the scheduler proved to satisfy the complete vacuum postulates. The calculation identifies the missing physical obligation: derive which maintenance work is required even when a stored value is unchanged or its next operation can wait.
+
+\subsection{Colour Phase Response and Effective Maintenance Weights}
+
+The literal freshness rule can be separated from the response it is intended to supply (\texttt{ColourPhaseMaintenance}). On the actual packet, the three colour addresses occur in four triplets. Balanced phases $\theta_0+\theta_1+\theta_2=0$ give a diagonal unitary three-axis matrix of determinant one; its packet lift leaves the four colourless labels unphased. This realizes determinant-one diagonal phase transport under the stated carrier interpretation, rather than deriving the full gauge group. With the inherited comparison law $q(\theta)=(1-\cos\theta)/2$, effective per-label weights $w_i$ give exactly
+\begin{equation}
+ R_w(\theta)=\sum_{a=0}^2 A_a q(\theta_a),
+ \qquad A_a=\sum_{i\text{ on colour axis }a}w_i.
+\end{equation}
+Each aggregate contains four weights. If all coloured labels have effective weight $k$, then $R_w=12k\,\overline q$, where $\overline q$ is exactly the uniform three-axis comparison readout. The common repair law therefore gives $c_0(12k)\,\overline{(1-\cos\theta)}$. Setting $k=\eta$ reproduces the stipulated $12\eta$ stiffness factor. This is a conditional response derivation; the weights include the comparison rate and have not been derived from storage capacity alone.
+
+Three determinant-one probes, $(\pi,-\pi,0)$, $(\pi,0,-\pi)$ and $(0,\pi,-\pi)$, determine the three pair sums of the $A_a$. Lean proves that equality of the response for every balanced diagonal phase is equivalent to equality of all three aggregates. A phase-independent baseline cannot conceal different aggregates. The probes do not determine the four individual weights in an aggregate: assigning $4k$ to one carrier on each axis has the same response as assigning $k$ to all twelve. If a separate per-label upper bound $w_i\le k$ is proved, however, aggregate saturation at $4k$ forces every coloured label to have weight $k$. The physical bound and its value remain obligations.
+
+For an additive time response with independently variable balanced phases at each tick, Lean further proves that matching every phase history requires matching the three aggregate weights at every tick. The eight-field request-only weighting has a balanced probe giving $4\eta$, while the uniform twelve-field weighting gives $8\eta$. Thus bounded waiting and preserved bit population do not by themselves establish equivalent phase-sensitive work. On the other hand, identity transport has zero comparison flag; this does not remove reference preparation, storage or clock baseline costs. The sharper remaining substrate target is to derive $A_0=A_1=A_2=4\eta$ at each relevant tick from primitive events and maintained directional load, together with the stated comparison normalization.
+
+\subsection{Geometric Colour Load and Reference Sampling}
+
+The geometric input to the effective weights can now be restricted to the actual coloured carriers (\texttt{ColourGeometricLoad}). Their doubled-coordinate quadratic load is sixteen on their own axis and zero on the others. Normalizing by four gives load four per colour axis. Applying the existing intensive reference-star contract, with that load spread over the 43 phase cells of its row and the reference self-job omitted, gives
+\begin{equation}
+ A_a(o)=4-\frac{4}{43}\,\mathbf{1}_{\{o_{\rm dir}=a_{\rm colour}\}}.
+\end{equation}
+No $\eta$ is inserted in this calculation. A reference on the lepton row gives colour subtotal $12$; one on a colour row gives $12-4/43$. Neither is $12\eta$, even though the complete packet still has relational load $16\eta$. The existing phase tick preserves the reference direction, so averaging that single 43-cycle does not change the subtotal.
+
+For a reference ensemble with normalized direction weights $p_d$, the mean is $\overline A_a=4-(4/43)p_{a_{\rm colour}}$. All three weights equal $4\eta$ exactly when every direction has marginal $1/4$. Uniform phase sampling is unnecessary. Colour-exchange symmetry, tick invariance and positive probability on every grid cell are insufficient: the direction law $(1/2,1/6,1/6,1/6)$ satisfies those conditions but not the target.
+
+There is a concrete conditional realization of the required marginal. The actual eight minimal carriers have two states on each axis. If the reference direction is the axis of a uniformly sampled carrier, its direction marginal is $1/4$ for any assignment of reference phases. Lean then derives $4\eta$ per colour axis and, through the preceding phase response and common repair law, exactly the $12\eta$ stiffness factor. This is an ensemble result; it does not prove direction mixing along the existing reference trajectory. The remaining physical bridges are the identification of that sampler with the reference process, the identification of carrier axes with register directions, and the interpretation of quadratic relational density as required primitive comparison work. A null self-job alone establishes none of these; fixed positive address-edge density also differs from binary state-distinction cost on homogeneous configurations (\texttt{ExclusionLawAudit}).
 
 \subsection{Recursive Validation: The Cost of Time}
 

@@ -1,52 +1,37 @@
-\section{Structural Audit: The Zero-DOF Constraint}
+\section{Falsification Tests and Open Derivations}
 \CatchFileBetweenTags{\AlphaInvVal}{constants.tex}{AlphaInvVal}
 \CatchFileBetweenTags{\MeMeVPrint}{constants.tex}{MeMeVPrint}
 
-The ultimate test of the $E_8$-Persistence Theory is replacing the free parameters of the Standard Model global fit. Unlike Effective Field Theories (EFTs) which allow parameters to float to fit data, this framework creates a rigid dependency graph where the inputs are integers.
+The proposal links several Standard Model inputs to a small set of integers. Where a relation is fixed, it can fail. This section lists the sharpest tests and separates them from consequences that have been conjectured but not derived.
 
-Consequently, the theory generates specific ``Hard Constraints" that serve as falsification criteria. We propose the following analyses for groups with access to electroweak fit packages (e.g., Gfitter, HEPfit).
-
-\subsection{The Zero-Degree-of-Freedom Electroweak Fit}
-
-Standard global fits treat the Fine-Structure Constant ($\alpha$), the Fermi Constant ($G_F$), and the Weak Mixing Angle ($\sin^2\theta_W$) as floating nuisance parameters constrained only by measurement errors.
-
-\textbf{The Audit Task:} Run the global electroweak fit with these parameters fixed to their geometric derivations:
-\begin{align}
-\alpha^{-1} &= \AlphaInvVal \dots \quad (\text{Fixed}) \\
-\sin^2 \theta_W &= \WeakAngleVal \dots \quad (\text{Fixed}) \\
-G_F &= (\sqrt{2}v^2)^{-1} \quad (\text{Fixed via } v_{geo})
-\end{align}
-
-\textbf{Falsification Criterion:} If the global $\chi^2$ of the fit degrades by $\Delta\chi^2 > 9$ ($3\sigma$) compared to the standard floating fit, the geometric invariant hypothesis is falsified. If the $\chi^2$ remains stable, the free parameters are proven redundant.
-
-
-\subsection{Geometric Prohibitions (No-Go Theorems)}
-
-The integer invariants $\{\nu=16, D=4\}$ act as hard hardware limits. Unlike effective field theories where new heavy particles can be assumed to exist at higher energy scales, this framework asserts that the \textbf{geometry required to host such particles does not exist}.
+\subsection{Quantitative Tests}
 
 \begin{enumerate}
-    \item \textbf{The Kaluza-Klein Prohibition ($D=4$):} Standard String Theories require extra spatial dimensions ($D=10, 11$). The $E_8$ projection mandates $D=4$ to preserve lattice self-duality.
-    \textit{Test:} A confirmed detection of Kaluza-Klein graviton modes or large extra dimensions at the LHC/FCC falsifies the projection mechanism.
-
-    \item \textbf{The Supersymmetry Prohibition ($\nu=16$):}
-    The chiral truncation limits the active channel capacity to 16 states per generation. The Standard Model fermions already occupy exactly 48 states ($3 \times 16$). The lattice is saturated. This acts as a double-lock against SUSY. First, there are no available bit-addresses in the node to encode superpartner quantum numbers. Second, extending the manifold with Grassmann coordinates (Superspace) creates an effective fractional dimension that violates the Kneser constraints required for lattice self-duality. The substrate hardware ($E_8$) physically cannot map to the Superspace software. \textit{Test:} The discovery of a supersymmetric partner with quantum numbers occupying the $\nu=16$ channel space would require extending the chiral capacity, contradicting the projection derived in Paper 1. Such a discovery would necessitate revisiting the substrate geometry.
-
-    \item \textbf{The GUT Expectation ($\sigma \neq \chi$):} In this framework, the forces arise from distinct geometric features ($\Delta$ vs. $D\Delta$ vs. $\sigma$). Consequently, the theory structurally expects that precision measurements will continue to show the gauge couplings failing to converge at a single energy scale. This is not a strict prohibition, a consistent unified  embedding might yet be found, but it identifies the ``GUT mismatch'' as a natural consequence of the substrate architecture rather than evidence for missing threshold corrections.
+    \item \textbf{The W mass.} With the measured Z mass, the on-shell mixing ratio gives $80.3845<m_W<80.3846$~GeV and an implied radiative correction $\Delta r\approx0.0351$. Standard radiative corrections on the same inputs give $m_W\approx80.356$~GeV (\cref{subsec:weak_mixing}). MeV-level W-mass measurements distinguish the two.
+    \item \textbf{A fixed-input electroweak fit.} Electroweak fit packages (e.g.\ Gfitter, HEPfit) can be run with $\alpha^{-1}=\AlphaInvVal$, $\sin^2\theta_W=43/(177+16\eta)$ as the on-shell ratio, and $G_F=(\sqrt2v^2)^{-1}$ held fixed. A degradation of the global $\chi^2$ by more than $9$ relative to the floating fit would falsify the proposed fixed values. Such a fit also requires the interface response of \cref{subsec:weak_mixing}, since the proposal is not compatible with standard radiative corrections at the same inputs.
+    \item \textbf{The fine-structure constant.} The proposed $\alpha^{-1}$ is a fixed number (Paper~I). Its comparison with future determinations is a direct test, and the derived scales inherit any shift.
+    \item \textbf{The gravitational coupling.} $\alpha_G=(\nu-\chi/(\sigma-\chi)-\alpha)\,\alpha^{\Delta/2}$ agrees with $Gm_e^2/\hbar c$ to a few parts per million. Improved determinations of $G$ test it at that level; moving the depth by half a step changes $\alpha_G$ by a factor near twelve.
+    \item \textbf{Heavy chiral partners.} On the two-wall Hamiltonian, the chiral zero modes do not take the inter-wall link $Y$ as their mass. Integrating out the gapped modes gives the light Dirac mass $M=\delta^2Y^{-1}$, so $MM^\dagger=\delta^4(Y^\dagger Y)^{-1}$ and the light masses are $\delta^2/\sigma_i(Y)$ (Paper~II, \texttt{WallSeesaw.effective\_mass}, \texttt{seesaw}). For one flavour the spectrum is exact: $E^4-(y^2+2\delta^2)E^2+\delta^4=0$, a light mode and a heavy partner with $m_{\rm light}\,m_{\rm heavy}=\delta^2$ and $m_{\rm light}^2+m_{\rm heavy}^2=y^2+2\delta^2$ (\texttt{one\_flavour\_eigen}, \texttt{light\_heavy}). Since the on-site term $\delta$ is flavour-universal, every light chiral fermion has a heavy partner with $m_{\rm heavy}=\delta^2/m_{\rm light}$: the lightest fermions have the heaviest partners, and the partner masses scale as the inverse of the observed masses ($m_{\rm heavy}(e)/m_{\rm heavy}(t)=m_t/m_e$). Observing such partners, with this inverse scaling, would test the mechanism; a light fermion without a partner at $\delta^2/m$ would contradict it. The value of $\delta$, and the identification of these zero modes with the observed fermions, are what remain to be fixed. The measured Higgs couplings constrain that identification already: they require $m\propto v$, so $\delta^2/\sigma_i(Y)$ must be linear in the VEV. If only the on-site term carried the VEV ($\delta\propto v$), every Higgs--fermion coupling would be twice its Standard Model value; if only the link did ($Y\propto v$), the couplings would have the opposite sign. LHC measurements disfavour both, so the VEV must enter $\delta$ and $Y$ together, in a way still to be derived.
 \end{enumerate}
 
-\subsection{The Precision \texorpdfstring{$\alpha$}{alpha} Vector}
-As established in \cite{meyer_informational_2026}, the most immediate test of the foundational substrate is the convergence of the Fine-Structure Constant. Because the massive energy scales derived in this nested architecture are geometrically locked to $\alpha^{-1}$, deviation in the base impedance physically breaks the global solvency of the hierarchy.
+\subsection{Conjectured Consequences Requiring Derivation}
 
-\subsection{Additional Hard Constraints}
-
-\textbf{Strong CP and Axion Searches:} The topological prohibition of $\theta_{QCD} \equiv 0$ (\cref{sec:strong_cp_prohibition}) predicts that axion searches targeting the Peccei-Quinn mechanism will yield null results and that the neutron electric dipole moment is bounded by the CKM background ($\sim 10^{-32}$ e$\cdot$cm). Any confirmed detection of a standard QCD axion or a nEDM measurement exceeding $10^{-30}$ e$\cdot$cm would constitute a hard falsification.
-
-\textbf{The Prohibition of Intermediate Forces:} The $E_8$-Persistence theory allows only two topologically stable force origins: the boundary ($r=0$, gauge forces) and the centroid ($r=\Delta/2$, gravity). A stable force originating at an intermediate lattice depth lacks a topological anchor and must decay. This prohibits stable ``Fifth Force'' carriers at any energy scale between the gauge bosons and $M_P$ (\cref{sec:geometric_depth}).
-
-\subsection{Theoretical Audits (Community Verification)}
-
-The framework makes specific structural claims that allow for rigorous theoretical auditing. We identify open derivations that serve as definitive tests:
+The following are consequences the proposal suggests. None is yet a theorem of the formalized framework; each needs a representation-theoretic or dynamical proof before it can serve as a prohibition.
 
 \begin{enumerate}
-    \item \textbf{The Lattice Loop Calculation:} We identified the QCD beta function coefficients ($11, 2/3$) with geometric invariants of the substrate. An \textit{ab initio} lattice field theory calculation should confirm that these values arise as eigenvalues of the transfer matrix without manual identification.
+    \item \textbf{No extra spatial dimensions ($D=4$).} The coordinate sector of the forced $E_8$ has rank four. Whether this excludes Kaluza-Klein modes depends on how the effective spacetime is derived from the substrate, which is open.
+    \item \textbf{No supersymmetric partners ($\nu=16$).} The packet supplies the map from channels to representations: tagged by colour dimension, weak dimension and hypercharge, the sixteen channels are exactly one generation including the gauge-singlet slot (Paper~V's sterile vacancy), $(3,2)_{1/6}$, $(3,1)_{2/3}$, $(3,1)_{-1/3}$, $(1,2)_{-1/2}$, $(1,1)_{-1}$, $(1,1)_0$ (\texttt{ChannelOccupancy.occupancy}, \texttt{charge\_entries}). Every channel is used, so a further state with the same gauge numbers, such as a superpartner, has no channel in the packet (\texttt{no\_spare\_channel}). This assumes one generation occupies one packet; it does not exclude partners carried by other structures.
+    \item \textbf{No exact gauge-coupling unification.} The couplings arise from distinct geometric features. This is an expectation, not a prohibition; a unified embedding has not been excluded.
+    \item \textbf{Strong CP.} The package now selects $\bar\theta=0$ conditionally (\cref{sec:strong_cp_prohibition}): $\theta=0$ is the unique least-cost vacuum under $\operatorname{Re}Z$ or $|Z|$ (\texttt{PersistenceClosures.strict\_vafa\_witten}, \texttt{VacuumModulus.strict\_modulus}), and invariance under the wall-parity exchange makes the link masses Hermitian, so $\bar\theta=\theta$ (\texttt{WallParityExchange.thetaBar\_from\_exchange}). The premises are that symmetry of the update and the zero-winding sector's positive weight. A nonzero neutron EDM from strong CP, or an axion required to cancel $\bar\theta$, would contradict the selection.
+    \item \textbf{No intermediate-range forces.} The proposal places force origins at the boundary and at the centroid only. Excluding other origins needs the propagation law of \cref{sec:geometric_depth}, which is not yet derived.
+\end{enumerate}
+
+\subsection{Open Derivations}
+
+\begin{enumerate}
+    \item \textbf{Workload normalization.} The actual packet trace indices are $2,2,10/3$ for weak, colour and $Y/2$. Treating the current ledgers as raw refresh weights under one uniform packet readout gives $s=5547/37777$, rather than the proposed $1849/8295$. The carrier-orbit classification now reduces symmetric incoherent preparations to six per-carrier weights; the relation needed for the proposed ratio is explicit, but the existing gates do not select those weights. Stationary diagonal preparations with nonzero up/down inter-sector hops fail that relation, while type-dependent repair lengths require a separately justified primitive task. Whether the ledgers instead already include those indices must follow from the operational work/readout map; a common calibration cannot settle the distinction (\cref{app:gauge_admittance}).
+    \item \textbf{Response coefficients.} The beta-function coefficients $11$ and $2/3$, and the second-order running needed at the tau mass, should arise from the substrate's transfer matrix rather than by identification. The additive stiffness count is a stated hypothesis.
+    \item \textbf{The electroweak interface response.} The factor $k$, equivalently $\Delta r\approx0.0351$, must follow from the substrate. Pure Z-pole screening overshoots it, so an anti-screening contribution is required.
+    \item \textbf{The overhead's operational premises.} Register granularity, register width, the independent reference and the workload law behind $16\eta$.
+    \item \textbf{The reflection charge rate.} The rate $c$ at which the scalar interface pays for reflection, which fixes the small difference between the persistent gain and $128/989$.
 \end{enumerate}

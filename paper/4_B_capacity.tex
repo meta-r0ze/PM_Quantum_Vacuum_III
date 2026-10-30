@@ -1,66 +1,80 @@
+\CatchFileBetweenTags{\InvCoordinateOverhead}{constants.tex}{EtaVal}
 \CatchFileBetweenTags{\AlphaInvVal}{constants.tex}{AlphaInvVal}
-\CatchFileBetweenTags{\AlphaSVal}{constants.tex}{AlphaSVal}
-\CatchFileBetweenTags{\AlphaSExperimentalValue}{constants.tex}{AlphaSExperimentalValue}
-\CatchFileBetweenTags{\AlphaSSigma}{constants.tex}{AlphaSSigma}
+\CatchFileBetweenTags{\AlphaSExperimentalVal}{constants.tex}{AlphasSExperimentalVal}
 
 \subsection{Capacity \& The Coordinate Overhead (\texorpdfstring{$\eta$}{eta})}
+\label{subsec:coordinate_overhead}
 
-Under Rule 1 (Capacity Partitioning), splitting the $\nu = 16$ budget into orthogonal subsystems creates multiple independent signal paths. After the partition, signals must traverse a shared coordinate grid to reach their designated subsystem. This coordination requires a frame delimiter that separates control information from payload. On a discrete lattice, this delimiter is the coordinate origin: the site occupied by the reference frame that cannot simultaneously carry physical state information. 
+The proposed coordinate overhead can be formulated as a finite encoding problem without committing to an in-band marker. The operational model must first be specified: a complete closed memory of $N$ registers, each with alphabet size $a$, encodes an independently recoverable reference $o\in\mathrm{Ref}$ and arbitrary payload $p\in A^K$, with $|\mathrm{Ref}|=r$. Thus the code
+\begin{equation}
+ \mathrm{enc}:\mathrm{Ref}\times A^K\longrightarrow A^N
+\end{equation}
+is injective. The product assumption requires all reference/payload combinations to be distinguishable; a reference correlated with a restricted payload is a different model.
 
-This overhead applies exclusively to \textit{active signal transmission} over the bulk manifold volume (such as the channel saturation $\alpha_s$). Quantities defined by boundary topology (1-forms, Wilson Loops, $\chi$) do not reference the internal coordinate grid and are strictly unattenuated by $\eta$.
+\paragraph{Implementation-independent static bound.}
+Counting distinguishable states gives
+\begin{equation}
+ r\,a^K\leq a^N.
+\end{equation}
+This applies equally to an in-band marker, pointer or separate track within the same total memory budget. For $r\geq2$ and $a\geq1$, it excludes $K=N$. For $N\geq1$, exactly $N-1$ full-width payload registers are statically encodable if and only if $r\leq a$. Therefore, when $2\leq r\leq a$, maximizing the static payload selects $K_{\max}=N-1$ (Lean: \texttt{General.ReferenceCapacity}). This strengthens the marker-specific argument: the one-register loss need not be postulated as an occupied marker slot.
 
-The substrate's maximum address space per cycle is the Manifold Resolution $R_M = D \times \Delta = 4 \times 43 = 172$. The origin consumes exactly one slot from this finite budget, leaving $N_{\text{addressable}} = R_M - 1 = 171$ addressable payload sites. No other allocation is permitted:
+\paragraph{Application premises.}
+To specialize the result to $171/172$, the proposed register model uses one independently settable component per direction and clock phase:
+\begin{equation}
+ N=D\Delta=172,\qquad r=172.
+\end{equation}
+The additional width condition is $a\geq172$ for the static theorem. These register granularity, independence and width conditions are operational premises, not consequences of the numerical values $D=4$ and $\Delta=43$ alone. Closure does not by itself identify the complete physical state with $172$ registers; Paper I's lattice is an integral address/cost structure with finite bounded-cost sets, not a specified $172$-cell memory. Likewise, bit-addressed glue is an algebraic property and does not establish that these registers are either binary or wide enough to hold the reference.
 
-\begin{itemize}
-    \item $N_{\text{addressable}} = 172$ (no overhead): Requires a continuous manifold with infinite information density, violating Finiteness.
-    \item $N_{\text{addressable}} = R_M - k$ for integer $k > 1$: Requires $k$ independent reference frames. The Closure Constraint forbids external references; only the self-referential origin is permitted.
-    \item $N_{\text{addressable}} = 0$ (total overhead): No addressable capacity remains; the substrate cannot process information.
-    \item $\eta$ dependent on $\Delta$: The temporal resonance is a periodic cycle with no endpoints; it requires no origin fixing. Applying $\eta$ to $\Delta$ would double-count the structural cost.
-\end{itemize}
-
-The Coordinate Overhead is therefore the strict geometric ratio of addressable payload capacity to total hardware limit:
+Under the stated static premises,
 \begin{equation}
 \label{eq:coordinate_overhead}
-\begin{split}
-    \eta &\equiv \frac{N_{\text{addressable}}}{N_{\text{total}}} = \frac{R_M - 1}{R_M} = \frac{171}{172} \\
-         &\approx \InvCoordinateOverhead
-\end{split}
+ \eta\equiv\frac{K_{\max}}{N}=\frac{171}{172}
+ \approx\InvCoordinateOverhead.
 \end{equation}
+With ternary registers and the same independent reference, the static optimum is $167$ payload registers; with binary registers it is $164$. A one-register-per-tick model instead uses a different domain and can give $42/43$. A canonical reference with only one possible value need not reduce payload. None of these alternatives requires a continuous manifold or multiple external frames.
 
-The numerator captures the state's information load (Capacity and Protocol); the denominator is the full Geometric Impedance of the substrate, incorporating all six pillars.
+\paragraph{Compatibility with the update.}
+An attained static bound is not yet a persistent addressing protocol. If the stored frame rotates while the reference advances and the payload is fixed in its comoving description, the encoding must commute with those updates. Constant frames are fixed points of storage rotation, whereas a moving reference has no fixed point; injectivity excludes the fixed frames from the image. Lean proves that a clock-equivariant one-slot code then requires the stricter necessary condition $a\geq173$. In particular, the static code at $a=172$ cannot be clock-equivariant; under these update and independence assumptions its payload is at most $170$ full-width registers.
 
-\subsection{Capacity Saturation (The Strong Coupling \texorpdfstring{$\alpha_s$}{alpha\_s})}
+A single $172$-cycle and a tick advancing the $43$ phases independently in each of four directions are distinct updates. For the latter direction/phase grid, Lean now proves both necessity and sufficiency: for a nonempty alphabet, an injective code of all reference/payload pairs with $171$ full-width payload registers commutes with the phase tick if and only if $a\geq173$ (\texttt{General.ReferenceCapacity.GridEncoding.grid\_one\_slot\_iff}). The sufficiency proof selects distinct nonfixed storage orbits for each direction/payload pair. Since $43$ is prime, every such orbit has exactly $43$ phases. Fixed words number at most $a^4$, and counting the remaining words provides enough orbits when $a\geq173$. The construction uses the full payload alphabet and a choice of orbit representatives; it provides no locality or cost bound. The existing explicit marker construction uses a separate marker symbol and a restricted payload alphabet, which must be included in its resource accounting.
+
+\paragraph{Resource and response scope.}
+The state-count bound does not compare encoding latency, locality, refresh work or physical cost. Paper I's expected-transition cost law still needs a map from these register operations to its counted events. Nor does a single reference datum determine which later response factors receive $\eta$: applying the correction to propagated aperture or payload while omitting it from intrinsic impedance is a further response prescription. Until the substrate fixes that prescription and the register model, the following coupling formulas remain conditional on the proposed overhead reading. The phase-only tick does not force a uniform reference ensemble, and the capacity theorem supplies no suppression event for payload operations; \cref{subsec:weak_mixing} separates these issues from the proved geometric channel-load balance.
+
+\subsection{The Colour Ledger (The Strong Coupling \texorpdfstring{$\alpha_s$}{alpha\_s})}
 \label{subsec:saturation_ratio}
 
-The Fine-Structure Constant ($\alpha^{-1}$) is the baseline impedance of the vacuum: the resistance to a single-channel transmission derived directly from the $E_8$ substrate geometry \cite{meyer_informational_2026}. The Capacity Partition, however, requires a subsystem that saturates every available chiral channel to enforce color confinement. When such a fully confined state traverses the bulk manifold, it imposes a load on the network proportional to all $\nu=16$ channels simultaneously. The \textbf{Strong Coupling} ($\alpha_s$) emerges as the ratio of this saturated load to the baseline geometric impedance:
+The proposed stiffness is proportional to the refresh workload of the sector's links (\cref{subsec:weak_mixing}). Given a required-resource set and positive additive refresh costs, the list model's minimum uses one refresh per distinct resource: repeats and unrequired entries cost strictly more (\texttt{MinimalRefresh.minimal\_is\_ledger}, \texttt{strict\_if\_extra}). Identifying that list cost with physical link work, selecting the required resources, and realizing the minimum schedule remain operational obligations.
 
+The resources of a phase are those of the footprint: the clock row ($\Delta=43$), the three spatial rows ($129$), the wires ($\sigma=5$) and one payload per channel, each carrying the coordinate overhead $\eta$. The following resource assignments use Paper~V's channel attributes. Paper~III's representation data and carrier operations reproduce the channel-support columns (\texttt{RequirementTable}, \texttt{CarrierActions}); deriving the assigned refresh work is a further step:
 \begin{enumerate}
-    \item \textbf{Chiral Saturation ($\nu \cdot \eta$):} The defect must actively drive all $\nu=16$ chiral channels to maintain internal coherence. Because this confined state represents active payload propagating through the discrete bulk manifold, it incurs the Coordinate Overhead ($\eta$).
-    \item \textbf{Isotropic Flux ($1/D$):} The defect must anchor to the 4-dimensional spatial grid. By the Homogeneity constraint, a single unit of flux must distribute equally across the $D=4$ orthogonal spacetime directions, yielding a normalization factor of strictly $1/D = 1/4$.
+    \item \textbf{SU(2)} couples the eight left-handed channels to the active temporal boundary. That boundary is one clock shared by all of them, so its ledger is the clock, $43$, however many channels use it.
+    \item \textbf{Hypercharge} is boundary flux carried across the spatial grid. It requires the spatial rows, the wires and the payload of all sixteen channels, the sterile channel being the reference against which flux is measured: $129+5+16\eta$.
+    \item \textbf{Colour} routes payload through the colour bulk. Each of the twelve coloured channels (three colours of $u_L,d_L,u_R,d_R$) has its own routing, so the ledger is their payload, $12\eta$. These assignments are derived in \cref{subsec:weak_mixing} from the reserved reference: weak refreshes the reference's row, hypercharge the complement, colour each channel it moves.
 \end{enumerate}
-
-The maximum operational efficiency of this confined state is the ratio of this Total Active State Load to the Geometric Impedance ($\alpha^{-1}$):
-
+The electroweak ledgers sum to the footprint, $43+(129+5+16\eta)=N_{sys}$, and give the mixing $\Delta/N_{sys}$ (\texttt{GaugeLedgers.footprint\_from\_rule}, \texttt{mixing\_from\_rule}). With the table derived, these are consequences of the reference rather than of an assignment: the two electroweak sets are disjoint and their ledgers add to the footprint, so $1/e^2=1/g^2+1/g'^2$ is the sum over that partition; the sterile payload lies in the hypercharge set by construction, so the $3.1\sigma$ W-mass exclusion of omitting it is a check rather than the selector; and with $\rho=1$ the W mass from the measured $m_Z$ lies within $1.3\sigma$ (\texttt{TableConsequences.electric\_partition}, \texttt{sterile\_included}, \texttt{end\_to\_end}). With stiffness proportional to the ledger, couplings are inversely proportional to it, and the electric coupling corresponds to $N_{sys}$. The strong coupling is therefore
 \begin{equation} \label{eq:alphas_saturation}
-\alpha_s = \frac{\text{State Load}}{\text{Impedance}} 
-= \frac{\nu \cdot \eta + 1/D}{\alpha^{-1}}
+\alpha_s = \alpha\,\frac{N_{sys}}{12\eta} = \frac{D\Delta+\nu\eta+\sigma}{12\,\eta\,\alpha^{-1}}.
 \end{equation}
+
+Two checks separate this from a fit. The same per-channel rule cannot be SU(2)'s: eight left-handed payloads would give a mixing below $0.042$ (\texttt{ColourChannels.weak\_not\_per\_channel}). And excluding the sterile reference from hypercharge would move $m_W$ below $80.3268$~GeV, more than $3.1\sigma$ under the direct average (\texttt{ResourceLedger.sterile\_counted}). The measured window alone does not select $12\eta$: any ledger in $(11.66,12.21)$ is within $3\sigma$ (\texttt{ColourCount.ledger\_window}), and the rule, not the agreement, carries the result. The rule is itself derived: the single reserved cell holds the electroweak refreshes' shared lepton-doublet reference, which carries no colour, so colour reads against the payload, and the Economy-minimal refresh of its twelve coloured payload channels costs exactly $12\eta$ (\texttt{ColourReference.colour\_ledger\_minimal}; \cref{app:gauge_admittance}).
+
+\textit{The colour weight is a shared operational question.} A proposed common maintenance contract assigns weight $w$ to stored content, giving hypercharge payload $16w$ and colour ledger $12w$ (\texttt{ContentWeight.ledgers\_share\_weight}). The intensive and extensive formulas have a strict numerical cost ordering, but \texttt{economy\_selects\_intensive} proves those inequalities, not that the two contracts perform identical required work or are physically executable. Economy can select the cheaper implementation only after those obligations are established. The data comparison in \texttt{intensive\_preferred} is a test of the supplied formulas, not a derivation of their workload. The reference-density calculation and its measure conditions are made explicit in \cref{app:gauge_admittance}.
 
 \subsection{Verification: The Strong Coupling at the Z-Pole}
 
-The strong coupling ($\alpha_s$) is not a static number; it ``runs'' depending on the energy scale of the interaction. To test our geometric derivation, we must evaluate it at the appropriate physical limit.  In experimental physics, the saturation threshold is observed as the Electroweak Resonant Scale (the Z-Pole, $M_Z$). This is the specific physical energy density where the vacuum's internal capacity is fully ``illuminated'' before macroscopic spatial dilution (running) sets in. 
-
-Substituting the geometric invariants yields the exact physical magnitude of the Strong Coupling at this saturation limit:
+The strong coupling runs with scale, so a scale-free ledger must state where it applies. A one-loop log response moves $\alpha_s$ by the full experimental uncertainty over about $5\%$ in scale, so agreement places the readout at the electroweak interface, the link mass scale $M_Z$. The $Z$ is also the structural candidate. Colour's ledger is a ratio to the electroweak footprint through the payload, which hypercharge also refreshes. Reading payload must not change its electric charge, so the comparison uses a direction commuting with $Q$, and it must read the reference, so the direction is broken. A real electroweak generator commutes with $Q$ exactly when it has no charged component, and among those exactly one real direction moves the reference: the $Z$ (\texttt{ReadoutScales.commutes\_iff}, \texttt{neutral\_broken\_iff}). Its only intrinsic scale is its mass, the nonzero eigenvalue of the neutral mass form, the photon direction being null (\texttt{NeutralCurrent.z\_mass}, \texttt{photon\_is\_null}); the $W$ carries charge, $m_H$ is not a gauge direction and $v$ is not the mass of any direction (\texttt{StableReadout.anchor\_is\_Z}). The other reference-generated scales also fail as matching points, an independent check: with one-loop five-flavour running, reading the formula at $M_W$, $m_H$ or $v$ implies $\alpha_s(M_Z)<0.1162$, $>0.1227$ or $>0.1296$, more than $2\sigma$, $5\sigma$ and $12\sigma$ from $0.1180\pm0.0009$, while $M_Z$ gives the formula's value within $0.012\sigma$ (\texttt{at\_W}, \texttt{at\_H}, \texttt{at\_v}, \texttt{at\_Z}). The electric coupling in the formula is $\alpha(0)$, not $\alpha(M_Z)$: reading both at $M_Z$ would give $\alpha_s>0.1263$, more than $9\sigma$ high (\texttt{ScalePairing.same\_scale\_excluded}). The ledger relation therefore pairs each coupling at its own matching point, $\alpha$ where the electric readout is maintained and $\alpha_s$ at the $Z$. Persistence says why. A readout that persists must not depend on an arbitrary choice of where it is read, and a running coupling has such a value only where it does not run: at one loop $1/\alpha(\mu_1)=1/\alpha(\mu_2)$ for distinct scales exactly when the coefficient vanishes there (\texttt{StableReadout.stationary\_iff}). An abelian coupling stops running exactly when no charged matter is active (\texttt{abelian\_stationary\_iff}), so the electric coupling is constant below the lightest charged carrier, the electron, the reference's own charged carrier; that plateau value is $\alpha(0)$. Colour never stops: with massless gluons $b_0=11-2n_f/3\neq0$ for every whole number of flavours (\texttt{colour\_never\_stationary}), so it has no scale-free value of its own and must be read at the scale the reference supplies, the $Z$ above. The premise is that a readout is taken where it is scale-independent when such a region exists, and otherwise at the mass of the unique $Q$-neutral broken direction. Substituting the invariants,
 
 \begin{equation}
-\alpha_s(M_Z) = \frac{16 \cdot \eta + 1/4}{\alpha^{-1}}
-\approx \mathbf{\AlphaSVal}
+\alpha_s(M_Z) = \frac{172 + 16\eta + 5}{12\eta\,\alpha^{-1}}
+\approx 0.1179952
 \end{equation}
+
+Lean certifies $0.11799520370<\alpha_s<0.11799520373$ (\texttt{CurrentConstants.strong\_bounds}). The previous saturated-load expression $(16\eta+1/4)/\alpha^{-1}$ differs from it by less than $10^{-4}$ (\texttt{close\_to\_paper}); the ledger form is the current candidate under the stated resource and response contracts.
 
 \vspace{0.5em}
 \begin{tabular}{ll}
-\textbf{Prediction:} & \AlphaSVal \\
-\textbf{Experiment:} & \AlphaSExperimentalValue \\
-\textbf{Accuracy:}   & $\AlphaSSigma \sigma$ \\
+\textbf{Prediction:} & $0.1179952$ \\
+\textbf{Experiment:} & \AlphaSExperimentalVal \\
 \end{tabular}
 \vspace{0.5em}

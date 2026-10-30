@@ -2,9 +2,10 @@
 \label{subsec:jarlskog}
 
 \CatchFileBetweenTags{\JarlskogVal}{constants.tex}{JarlskogVal}
-\CatchFileBetweenTags{\JarlskogExperimentalValue}{constants.tex}{JarlskogExperimentalValue}
+\CatchFileBetweenTags{\JarlskogExperimentalVal}{constants.tex}{JarlskogExperimentalVal}
 \CatchFileBetweenTags{\JarlskogSigma}{constants.tex}{JarlskogSigma}
-\CatchFileBetweenTags{\AlphaInvTOL}{constants.tex}{AlphaInvTOL}
+\CatchFileBetweenTags{\JarlskogGeoVal}{constants.tex}{JarlskogGeoVal}
+\CatchFileBetweenTags{\AlphaInvTOL}{constants.tex}{AlphaInvTOLVal}
 
 \subsubsection{The Architectural Requirement}
 Under \textbf{Rule 2: Reversible Encoding}, the irreducible geometric mismatch of projecting 5-fold symmetry onto a 4-fold manifold cannot be erased; it must be stored as the measurable thermodynamic friction of the causal projection.
@@ -34,18 +35,18 @@ The Jarlskog Invariant is the fundamental causal Toll amplified by the Projectio
 \begin{split}
     J_{geo} &= (\phi^2 \cdot \eta) \cdot T_{geo} \\
     &= (2.61803 \cdot 0.994186) \cdot \AlphaInvTOL \\
-    &\approx \JarlskogVal
+    &\approx \JarlskogGeoVal
 \end{split}
 \end{equation}
 
-No other combination is permitted: $T_{geo}$ is the irreducible minimum; $\phi^2$ is the geometric deficit; $\eta$ is the bulk propagation correction. The product structure is forced by subspace orthogonality; the numerical value is fixed by the invariant set $\{\Delta=43, \nu=16, \sigma=5, \chi=2\}$.
+\paragraph{Relation to the CKM matrix.} $J$ is not a free observable once the mixing matrix is fixed: it is the invariant $\operatorname{Im}(V_{ud}V_{cs}V_{us}^*V_{cd}^*)$ of the unitary matrix. Paper~IV derives all four parameters of that matrix, and they give $J_{CKM}=c_{12}s_{12}c_{23}s_{23}c_{13}^2s_{13}\sin\delta\approx3.023\times10^{-5}$ (Paper~IV Lean: \texttt{CKM.pm\_jarlskog\_matrix}). The formula above gives $3.085\times10^{-5}$, about $2\%$ higher (\texttt{JarlskogReview.ratio\_window}). Both lie inside the measured range, but they cannot both be $J$. Two further points tell against $J_{geo}$ as the invariant. First, $J$ is built only from mixing angles and a phase, which Paper~IV classifies as topological quantities free of the coordinate overhead; applying $\eta$ to it contradicts that classification. Second, removing $\eta$ does not reconcile the two values: $\phi^2T_{geo}\approx3.103\times10^{-5}$ is further away (\texttt{eta\_not\_the\_fix}). We therefore take $J=J_{CKM}$ from Paper~IV. The product $\phi^2\eta T_{geo}$ is retained here only as a geometric estimate of the size of CP violation; the claim that its product structure is forced by subspace orthogonality is not established.
 
 \subsubsection{Validation: CP Violation}
 
 \vspace{0.5em}
 \begin{tabular}{ll}
-\textbf{Prediction:} & $\JarlskogVal$ \\
-\textbf{Experiment:} & \JarlskogExperimentalValue \\
+\textbf{Prediction ($J_{CKM}$, Paper~IV matrix):} & $\JarlskogVal$ \\
+\textbf{Experiment:} & \JarlskogExperimentalVal \\
 \textbf{Accuracy:}   & $\JarlskogSigma \sigma$ \\
 \end{tabular}
 \vspace{0.5em}
@@ -58,7 +59,7 @@ The CP violation is geometrically analogous to a pentagonal prism casting a shad
     
     \item \textbf{Why matter dominates:} Without CP violation ($J=0$), the universe would be perfectly symmetric and annihilate. The non-zero $J$ creates a topological bias favoring matter over antimatter, which is subsequently amplified by cosmological expansion.
     
-    \item \textbf{The Baryogenesis Gap:} While $J_{geo}$ matches the Quark Sector mixing ($J_{CKM}$), this magnitude is insufficient to explain the observed baryon asymmetry ($\eta_B \sim 10^{-9}$) through CKM physics alone. The framework structurally requires additional CP violation in the Lepton Sector (PMNS matrix); its geometric derivation is beyond the scope of this paper.
+    \item \textbf{The Baryogenesis Gap:} The quark-sector magnitude $J_{CKM}\approx3\times10^{-5}$ is insufficient to explain the observed baryon asymmetry ($\eta_B \sim 10^{-9}$) through CKM physics alone. The framework structurally requires additional CP violation in the Lepton Sector (PMNS matrix); its geometric derivation is beyond the scope of this paper.
 \end{itemize}
 
 
@@ -121,3 +122,5 @@ This geometric prohibition generates two hard-falsifiable predictions:
     
     \item \textbf{Zero Strong-Sector nEDM:} The contribution to the neutron electric dipole moment from $\theta_{QCD}$ is exactly zero. The only non-zero contribution arises from the CKM phase (a weak interaction effect), calculated to be $d_n^{weak} \sim 10^{-32} \, e\cdot\text{cm}$ \cite{pospelov_electric_2005}. Given the current experimental limit of $|d_n| < 1.8 \times 10^{-26} \, e\cdot\text{cm}$ \cite{abel_measurement_2020}, any confirmed measurement of $d_n > 10^{-30} \, e\cdot\text{cm}$ would constitute a major deviation from the Standard Model background and would falsify the $E_8$-Persistence Theory.
 \end{enumerate}
+\paragraph{Lean status of the prohibition.} The formal chain differs in one respect from the argument above. A real update matrix commutes with complex conjugation, so the winding weights $e^{in\theta}$ are all real exactly when $\theta\in\pi\mathbb Z$ (\texttt{CPPhases.real\_weights\_iff}); but the same reality would make the Jarlskog invariant of any real mixing matrix zero (\texttt{jarlskog\_real}), contradicting $J\neq0$. The complex phases must therefore sit in flavour mixing while the strong combination $\bar\theta=\theta-\arg\det(M_uM_d)$ stays real. The two D$_4$ sectors are copies of the same lattice; an update carrying no sector label commutes with their exchange, and a Hermitian, exchange-symmetric generator has a Hermitian link block (\texttt{SectorExchange.exchange\_hermitian}). Hermitian positive masses have real positive determinant, so $\bar\theta=\theta$ (\texttt{HermitianMass.thetaBar\_eq\_theta}); a single link doublet's vacuum phase cancels in $\det(\bar vY_u)\det(vY_d)$ (\texttt{one\_doublet\_phase\_cancels}); and Hermitian masses still allow $\det[H_u,H_d]\neq0$, hence $J\neq0$ (\texttt{cp\_with\_hermitian}; Paper~IV's CKM matrix has $\det V=1$). Of $\theta=0$ and $\theta=\pi$, the positive transfer matrix makes $\theta=0$ the lowest-cost vacuum, strictly when any odd winding sector has weight (\texttt{theta\_zero\_maximal}, \texttt{theta\_pi\_costlier}). With the unit winding sector weighted the inequality is strict for every $\theta\neq0$ in $(-\pi,\pi]$, so $\theta=0$ is the unique least-cost vacuum on the whole circle when the cost is read from $\operatorname{Re}Z$ (\texttt{PersistenceClosures.strict\_vafa\_witten}, \texttt{strict\_selects\_zero}). The modulus decides as well once the topologically trivial sector counts: unit weights on the windings $\pm1$ alone give $|Z(\pi)|=Z(0)$ (\texttt{abs\_not\_unique}), but that example omits winding $0$, and with the zero-winding sector (the vacuum persisting without tunnelling) and the unit winding both weighted, $|Z(\theta)|<Z(0)$ for every $\theta\neq0$ in $(-\pi,\pi]$ (\texttt{VacuumModulus.strict\_modulus}). So $\theta=0$ is the unique least-cost vacuum whichever of $\operatorname{Re}Z$ and $|Z|$ the cost reads. The remaining premise is that the update carries no sector label, argued from Economy. The exchange this requires is fixed by the actual domain-wall Hamiltonian: the plain swap of the two walls is not a symmetry, since they carry opposite chirality (Paper~II, \texttt{WallChiralCurrent.plain\_wall\_exchange\_fails}), but the swap combined with the spinor parity $\beta$ and momentum reversal is, and it maps an inter-wall flavour link $Y$ to $Y^\dagger$, so it is a symmetry exactly when $Y=Y^\dagger$ (Paper~II, \texttt{WallExchange.exchange\_symmetry\_iff}; \texttt{WallParityExchange.thetaBar\_from\_exchange}). The masses of the light chiral modes are not $Y$ itself but its seesaw image $M=\delta^2Y^{-1}$ (Paper~II, \texttt{WallSeesaw.effective\_mass}); a Hermitian positive link gives a Hermitian positive $M$, so the light masses also give $\bar\theta=\theta$ (\texttt{WallParityExchange.thetaBar\_from\_light}). The symmetry itself holds for the vacuum update Paper~II constructs: its native reference walk, a permutation of carrier labels in which two streams move in opposite directions and the root exchanges them at the coupling site, commutes with swapping the streams and reversing space (\texttt{ReferenceWalkParity.walk\_parity}), and its stationary backgrounds are invariant (\texttt{backgrounds\_agree}). The identification of those two streams with the two walls, and the positivity of the links, remain open.
+
