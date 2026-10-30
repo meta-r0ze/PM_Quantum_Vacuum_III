@@ -1,4 +1,4 @@
-This repository contains the latex source for the "Persistence Mechanics: Nested Persistence" paper which defines the three rules by which systems partion themselves.
+This repository contains the latex source for the "Persistence Mechanics of the Quantum Vacuum III" paper which defines the three rules by which systems partion themselves.
 
 and then validates this by applying this to E8 to derive the constants such as 
 
@@ -6,7 +6,7 @@ The rendered version can be viewed here: https://meta-r0ze.github.io/PM_Quantum_
 
 ## Reproducibility
 
-A core tenet of this work is that the physical constants are computational outputs. To verify the results found in the papers:
+The physical constants within the paper are injected and are computational outputs. To verify the results found in the papers:
 
 ### 2. Generate the Constants
 To regenerate the values for $\alpha^{-1}$, $\alpha_s$, $G_F$, etc., run:
