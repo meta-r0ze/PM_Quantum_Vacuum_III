@@ -60,6 +60,11 @@ import PMNested.ChainCouplings
 import PMNested.ScalarNormalization
 import PMNested.RunningResponseLink
 import PMNested.RunningDerived
+import PMNested.WeakSpectrumLinks
+import PMNested.VevEntry
+import PMNested.SectorObligations
+import PMNested.ReadScale
+import PMNested.OnShell
 import PMNested.LinkFromEvents
 import PMNested.ScalarSector
 import PMNested.FermionMassLaw
