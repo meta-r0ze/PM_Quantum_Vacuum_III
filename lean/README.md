@@ -182,6 +182,10 @@ Generated from `PMNested.lean`'s imports (in import order) and each module's doc
 | `NeutralCurrent` | The photon and Z couplings from the reference's mass form |
 | `RepairBudget` | The scalar budget from one exact repair of the reference |
 | `BudgetReadout` | What the scalar budget reads from a repair |
+| `CoherentBudget` | The scalar budget with the coherent restorer as the repair |
+| `TangentResponse` | The real drift family's response totals 3 |
+| `WalkTrials` | The finite walk protocol read against the scalar ledger |
+| `GaugeWalkBudget` | The scalar's repair with the weak doublet on its own payload index |
 | `NoiseShare` | Why the VEV's noise divisor is `3`, not `4` |
 | `VacuumModulus` | θ = 0 is unique under the modulus too, once the trivial sector counts |
 | `WallParityExchange` | θ̄ = θ from the wall exchange that is a symmetry |

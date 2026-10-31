@@ -26,7 +26,7 @@ direction (`record_dimension_bound`, at least `3`). If renewing it is charged to
 one unit per direction, spread over the 43 phases, the per-phase charge is at least `3/43`, and
 `(3 − 3/43)/23` falls below the window. So the `1/43` credit is **not** the per-direction renewal
 of the repair record. (Priced instead at the walk protocol's seed preparation, renewal shifts `λ`
-by less than its error; see `research/repair-budget/WalkTrials`.)
+by less than its error; see `WalkTrials`.)
 
 **The clock credit with the same unit** (`ledger_from_readouts`). The clock phase is one real
 direction. Re-synchronizing it once per cycle costs one unit under the same readout, and a

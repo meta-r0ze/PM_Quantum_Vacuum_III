@@ -128,6 +128,10 @@ import PMNested.VevCorrections
 import PMNested.NeutralCurrent
 import PMNested.RepairBudget
 import PMNested.BudgetReadout
+import PMNested.CoherentBudget
+import PMNested.TangentResponse
+import PMNested.WalkTrials
+import PMNested.GaugeWalkBudget
 import PMNested.NoiseShare
 import PMNested.VacuumModulus
 import PMNested.WallParityExchange
