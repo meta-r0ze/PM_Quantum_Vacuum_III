@@ -8,7 +8,7 @@ import PMFramework.LawSelection
 instantiates the framework theorem that selects it.
 
 * `rescue`: the nonuniform per-carrier law `(6,3,6,3,2,2)/73` on `(Q, u, d, L, e, ν)` carriers,
-  the preparation that would rescue the raw ledger reading (`CARRIER-READOUT`). `rescue_law`: it is
+  the preparation that would rescue the raw ledger reading. `rescue_law`: it is
   a strictly positive law; `rescue_ne_uniform`: it is not the uniform one.
 * `candidates`: the family `{uniform, rescue}` on the actual packet channels.
 * `preparation_selected`: with positive initial weights and survival actions growing at each law's

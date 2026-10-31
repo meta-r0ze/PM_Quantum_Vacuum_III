@@ -21,7 +21,7 @@ Two inputs now settle it.
   packet carriers. Each carrier then has weight `1/16` (`selected_is_uniform`), and its
   response indices are `2/16, 2/16, (10/3)/16` (`selected_indices`): exactly the uniform
   readout behind both readings. A nonuniform preparation that rescues the raw reading
-  (`CARRIER-READOUT`, `(6,3,6,3,2,2)/73`) is not the selected law.
+  (`(6,3,6,3,2,2)/73`) is not the selected law.
 * **The measured W mass.** With the measured `m_Z`, the raw reading gives
   `84.22 < m_W < 84.24` GeV (`raw_w_window`), more than `289σ` above the direct world average
   `80.3692 ± 0.0133` (`raw_excluded`). The effective reading gives `80.3827 < m_W < 80.38644`,

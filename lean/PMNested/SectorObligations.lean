@@ -8,8 +8,9 @@ import PMAction.PersistenceSelection
 /-!
 # Sector obligations from the record bound and the reference repair
 
-`REFERENCE-MAINTENANCE.md` asks for the sector-local events: weak's confinement to the reference
-row, and colour's separate per-channel obligation. It also asks for an exact refresh. Each now
+The reference-maintenance task model (`ReferenceMaintenanceLedger`) left open the sector-local
+events (weak's confinement to the reference row, and colour's separate per-channel obligation) and
+an exact refresh. Each now
 follows from a proved fact plus the definition of an independently drifting resource.
 
 * `no_spare_no_ownership`: if a sector's setting is fixed uniquely by the reference repair, it
