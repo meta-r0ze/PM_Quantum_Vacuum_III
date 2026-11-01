@@ -4,6 +4,7 @@ import PMAction.ReadoutAdditivity
 import PMAction.RecordSupply
 import PMAction.HomogeneousRouting
 import PMAction.PersistenceSelection
+import PMAction.ReferenceMaintenance
 
 /-!
 # Sector obligations from the record bound and the reference repair
@@ -45,13 +46,8 @@ open PMNested ReferenceDirections
 
 /-- **No spare freedom, no ownership.** -/
 theorem no_spare_no_ownership {P T D : Type*} [Nonempty T] (ρ : P → T) (σ : P → D)
-    (huniq : ∀ t, ∃! p, ρ p = t) (hmaint : ∀ t d, ∃ p, ρ p = t ∧ σ p = d) : Subsingleton D := by
-  obtain ⟨t⟩ := ‹Nonempty T›
-  refine ⟨fun d1 d2 => ?_⟩
-  obtain ⟨p1, h1, e1⟩ := hmaint t d1
-  obtain ⟨p2, h2, e2⟩ := hmaint t d2
-  have : p1 = p2 := (huniq t).unique h1 h2
-  rw [← e1, ← e2, this]
+    (huniq : ∀ t, ∃! p, ρ p = t) (hmaint : ∀ t d, ∃ p, ρ p = t ∧ σ p = d) : Subsingleton D :=
+  PMAction.ReferenceMaintenance.no_spare_no_ownership ρ σ huniq hmaint
 
 /-- Weak's correction is fixed by the reference repair, for every hypercharge setting. -/
 theorem weak_fixed (b : ℝ) (t : ℝ × ℂ) : ∃! p : ℝ × ℂ, displacement p.1 p.2 b = t := by

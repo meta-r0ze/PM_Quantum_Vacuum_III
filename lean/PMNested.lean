@@ -158,3 +158,8 @@ import PMNested.ReferenceMaintenance
 import PMNested.ReferenceMaintenanceLedger
 
 import PMNested.SectorCapabilities
+import PMNested.GenerationEncoding
+import PMNested.GenerationHistory
+import PMNested.GenerationWalls
+import PMNested.GenerationVacuumChoice
+import PMNested.CarrierPhaseComparison

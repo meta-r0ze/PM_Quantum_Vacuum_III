@@ -21,6 +21,10 @@ one. Only `propext`, `Classical.choice` and `Quot.sound` are permitted; no `sorr
 | [CONSTANTS-STATUS.md](CONSTANTS-STATUS.md) | Each constant, what Lean checks, and what its physical derivation still needs |
 | [GENERAL-RULES.md](GENERAL-RULES.md) | The substrate-independent `PMNested.General` layer (capacity, encoding, matching, nesting, service) |
 
+The latest 2026-11-01 full `check.sh` passed 4332 build jobs, the independent
+general-rules audit of 159 declarations, and the strict axiom audit of 3553
+declarations, without warnings. Log: `/tmp/pm3-shared-controller-full-check.log`.
+
 Each module's own docstring states its scope and premises; it is the authority for that module.
 The dated pass-by-pass history of this package is in git history (earlier versions of this README).
 
@@ -32,6 +36,73 @@ The dated pass-by-pass history of this package is in git history (earlier versio
 - `SectorObligations`: the reference/update contract (exact refresh, weak ownership, colour reads).
 - `ReadScale`, `OnShell`: the matching scales from persistence and frame independence.
 - `VevEntry`: how the vacuum value enters the fermion masses (law A).
+- `GenerationEncoding`: exhaustive three-pair classification, the distinction between
+  pair types and independent physical generations, and exact retained-label storage.
+- `GenerationHistory`: an actual companion-carrier encoding, its coherent isometry,
+  and the generation-preserving action of native within-class root words.
+- `GenerationWalls`: a representation on two-wall carrier labels, its two balanced
+  incidence conventions, and the nontrivial action of wall exchange.
+- `GenerationVacuumChoice`: tests the pair contract against Paper II's actual
+  class-sector vacuum and its unbroken class degeneracy.
+- `CarrierPhaseComparison`: the exact marker-free root-phase circuit and supplied
+  two-cell comparison register applied to the actual packet permutations.
+
+## Next physical dependency for flavour
+
+Three unordered distinct-class pairs are exactly three possible packet types.
+`GenerationEncoding` proves that retaining all their independent generation/carrier
+labels gives 48 modes, whereas the three minimal glue classes contain 24 native
+labels. Every native carrier occurs in two packets. No injective native-only
+encoding exists, including a linear encoding of coherent amplitudes. An explicit
+encoding by native carrier × one binary tag preserves the complete complex pairing;
+two tag values are necessary. This is a representation/storage theorem, not a free
+physical gate or a selection of an extra memory factor.
+
+Also, `Generations.same_class_loses` concerns the vector-only readout: keeping the
+wall tag preserves distinctions in an equal-class packet. Conservation alone does
+not exclude such packets. The three-pair classification therefore retains the
+vector-faithful, unordered, distinct-class packet contract. Identifying the physical
+generation states and their update, then deriving its breaking law, remains the
+relevant prerequisite for Paper IV's parameter selection. Completion of gravity or
+the thermal-floor example is not required for that work.
+
+`GenerationHistory` gives a concrete retained-record route: a supplied reference
+carrier in the companion occupied class encodes the missing binary distinction.
+The map has an exact left inverse and its coherent embedding has E†E = I.
+Its physical record preparation, location and renewal still need a model. Every
+word in the tested native within-class simple-root gate set preserves the pair
+type, including at the amplitude-matrix level. Thus this representation supplies
+no generation mixing until a class-changing or relational update is identified.
+
+The binary distinction need not be additional memory. `GenerationWalls` gives an
+exact amplitude-preserving representation on wall × native carrier, using all
+three classes on both walls and one class per wall in each packet. Precisely two
+balanced incidence conventions work, related by wall-name exchange. However,
+within either fixed convention, exchanging walls while keeping the carrier class
+fixed changes the packet label in a class-dependent way. It cannot be treated as
+an independent generation-preserving wall swap without a further identification.
+This is a possible representation, not a proof of physical accessibility or of
+the flavour current and full vacuum update on that representation.
+
+## New shared route from Paper II
+
+The generic coherent encoding proof, the unique-control maintenance theorem and
+the two-frequency ray theorem now live canonically in Paper II. Their old Paper
+III names remain available. Paper III retains all packet/reference choices and
+constant-specific arithmetic.
+
+`CarrierPhaseComparison` now has an exact comparison construction for the
+packet's involutive operations without an independent branch Z marker. It uses
+Paper II's reconstructed root phases, and a spatial two-cell register is available
+without borrowing the chirality wall. Admission, clean-cell preparation, clock
+matching and the total primitive ledger remain inputs; nine forward spectral
+calls are not priced as nine primitive events.
+
+The simpler generation candidate is Paper II's direct bundle of the actual
+class-sector vacua (`GenerationVacuumChoice`). It keeps a common wall action
+independent of class and supplies exact generator/evolution observation. The
+unbroken copies are degenerate and allow arbitrary class superpositions. Physical
+generation/current identification and a breaking law are still required.
 
 ## Certified model values
 
@@ -128,7 +199,12 @@ Generated from `PMNested.lean`'s imports (in import order) and each module's doc
 | `VevPremises` | The VEV's two structural premises, made sharp |
 | `DepthEvents` | The gravitational attenuation from the event law: why `α`, and why `α^{43/2}` |
 | `CarrierRepresentation` | The channel representation from Paper I's carriers |
-| `Generations` | Three generations as the pairs of distinct glue classes |
+| `Generations` | Three unordered distinct-class pair types under the vector-faithful packet contract |
+| `GenerationEncoding` | Exhaustive pair classification, exact binary encoding and 48-versus-24 linear capacity bound |
+| `GenerationHistory` | Companion-carrier representation, coherent isometry and native root-word preservation |
+| `GenerationWalls` | Two-wall representation, balanced incidence classification and wall-exchange test |
+| `GenerationVacuumChoice` | Native class-sector vacuum as an alternative readout contract; no selected masses or generations |
+| `CarrierPhaseComparison` | Exact comparison on packet involutions, with controlled phases and supplied spatial cells |
 | `FloorNeutrino` | Bare thermal tower and common-scale splitting obstruction |
 | `BetaUniversality` | The rank rule for the beta coefficient fails its own universality test |
 | `GravityAccounting` | Which channel count the gravitational coupling can persist with |
