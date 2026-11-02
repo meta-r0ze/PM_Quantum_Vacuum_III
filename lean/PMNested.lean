@@ -163,3 +163,6 @@ import PMNested.GenerationHistory
 import PMNested.GenerationWalls
 import PMNested.GenerationVacuumChoice
 import PMNested.CarrierPhaseComparison
+import PMNested.CarrierRegisterModel
+import PMNested.CarrierRegisterVacuum
+import PMNested.CarrierRegisterChirality
