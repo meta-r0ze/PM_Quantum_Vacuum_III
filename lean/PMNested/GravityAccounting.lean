@@ -47,6 +47,13 @@ theorem channels_as_frame :
   unfold Depth.gravity residual
   constructor <;> nlinarith [h.1, h.2, hA.1, hA.2]
 
+/-- Tight enclosure of the residual capacity `B_res`. -/
+theorem residual_tight_bounds :
+    (15.3260359807 : ℝ) < residual α ∧ residual α < 15.3260359808 := by
+  have h := alpha_bounds
+  unfold residual
+  constructor <;> linarith [h.1, h.2]
+
 theorem inside_codata :
     (1.751770e-45 : ℝ) < Depth.gravity α ∧ Depth.gravity α < 1.751849e-45 := by
   have h := channels_as_frame; constructor <;> linarith [h.1, h.2]

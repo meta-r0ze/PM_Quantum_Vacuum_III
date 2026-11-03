@@ -21,9 +21,10 @@ one. Only `propext`, `Classical.choice` and `Quot.sound` are permitted; no `sorr
 | [CONSTANTS-STATUS.md](CONSTANTS-STATUS.md) | Each constant, what Lean checks, and what its physical derivation still needs |
 | [GENERAL-RULES.md](GENERAL-RULES.md) | The substrate-independent `PMNested.General` layer (capacity, encoding, matching, nesting, service) |
 
-The latest 2026-11-01 full `check.sh` passed 4332 build jobs, the independent
-general-rules audit of 159 declarations, and the strict axiom audit of 3553
-declarations, without warnings. Log: `/tmp/pm3-shared-controller-full-check.log`.
+The latest full `check.sh` passed 4352 build jobs, the constants reporter checks,
+the independent general-rules audit of 168 declarations, and the strict axiom
+audit of 3654 declarations, without warnings.
+Log: `/tmp/pm3-paper2-register-reuse-full-check.log`.
 
 Each module's own docstring states its scope and premises; it is the authority for that module.
 The dated pass-by-pass history of this package is in git history (earlier versions of this README).
@@ -46,6 +47,12 @@ The dated pass-by-pass history of this package is in git history (earlier versio
   class-sector vacuum and its unbroken class degeneracy.
 - `CarrierPhaseComparison`: the exact marker-free root-phase circuit and supplied
   two-cell comparison register applied to the actual packet permutations.
+- `CarrierRegisterModel`: separate occupied Boolean banks for actual vacuum and
+  packet labels; exact coherent readout for the beta word and packet operations.
+- `CarrierRegisterVacuum`: the full native vacuum generator lifted to those banks,
+  with unitary evolution and exact all-state readout.
+- `CarrierRegisterChirality`: tests of packet/wall/chirality matching against the
+  full vacuum, and the agreement of the matching rules on its zero kernel.
 
 ## Next physical dependency for flavour
 
@@ -104,7 +111,75 @@ independent of class and supplies exact generator/evolution observation. The
 unbroken copies are degenerate and allow arbitrary class superpositions. Physical
 generation/current identification and a breaking law are still required.
 
+`CarrierRegisterModel` now gives a configuration-space witness for independent
+spinor and payload labels. Two supplied banks use 32 Boolean registers in total;
+one occupied register in each gives 256 encoded label pairs. The vacuum coordinate
+embedding supplies an isometric 128-mode spinor–payload readout. The existing
+native beta word and all packet permutations (including weak and colour) act on
+separate banks and have exact all-state readout. Paper II owns the general
+encoding, occupation conservation and operator-expression/evolution proofs.
+The banks' allocation and preparation, full vacuum/current schedule, physical
+reference/comparison integration and prices are still required. This is an
+explicit representation candidate, not a selected physical state space.
+
+The extension `CarrierRegisterVacuum` now supplies the full generator for every
+momentum and detuning. Paper II's `RegisterHamiltonian` implements its entries as
+occupation-dependent register hops and Hermitian completion; evolution conserves
+total occupation and each payload bit on all sectors. The higher-occupation
+completion and coherent hopping admission are specified choices. The actual
+real-space split schedule, reference/current attachment and prices remain open.
+
+The generic vacuum/encoding proofs are now canonical in Paper II's
+`RegisterVacuum`; the Paper III modules retain their packet specializations and
+compatibility names. Paper II also supplies `RegisterSplit`, `RegisterInteraction`,
+`ChiralRegisterCurrent`, `RegisterReference` and `RegisterControl`: a shared finite
+spatial register/current/record construction, with explicit memory, exact readout,
+unitary evolution and a clock. Choosing and preparing that construction as the
+physical model, attaching the packet charges and pricing its admitted gates
+remain application/physical obligations.
+
+`CarrierRegisterChirality` rules out imposing naive packet/wall or packet/Dirac-
+chirality matching as a reducing sector of the complete vacuum Hamiltonian:
+gapped states cross both matchings already at zero momentum and detuning. The
+two matching masks agree on the zero-mode kernel, including entangled payload
+amplitudes. A zero-mode chiral-current identification therefore does not by itself
+identify every ambient state.
+
 ## Certified model values
+
+### Native constants reporter
+
+Build and run the reporter from this directory:
+
+```sh
+lake build pm-constants
+.lake/build/bin/pm-constants
+.lake/build/bin/pm-constants --json --digits 18
+```
+
+Lean compiles this to a native executable through its C backend. Running it needs
+neither Python nor a separate C driver. The JSON output is also a small interface
+for comparison programs; numeric bounds are strings to preserve their exact digits.
+
+The initial catalog contains 14 entries: the impedance and admittance, partition
+fractions, current colour-ledger coupling, current electron Yukawa, VEV ratio,
+and the mass-scale quantities. `PMNested.ConstantReport.catalog_sound` checks every
+catalog endpoint against its named real-valued model formula. Building
+`pm-constants` requires this certificate module, while the executable links only
+the lightweight runtime modules. No noncomputable real expression is evaluated.
+
+Exact fractions are printed where available; other entries have certified closed
+bounds. Decimal formatting rounds those bounds outward using rational arithmetic,
+with a general Lean enclosure theorem and executable formatting checks.
+`--digits N` accepts 0–50 and changes formatting only: extra digits do not narrow
+the proved intervals. These intervals enclose the model formulas; they are not
+experimental uncertainties or a proof that the formulas follow from bare persistence.
+The supplied electron-mass benchmark is labelled as an external input, including
+its use by the GeV-valued outputs. The reporter does not infer an absolute scale.
+
+`./check.sh` also checks the reporter's Lean certificates, formatting fixtures,
+and an independent standard-library Python test of the compiled CLI and JSON.
+The existing Python calculator remains available separately.
 
 All interval endpoints are exact rationals in Lean.
 
@@ -165,6 +240,7 @@ Generated from `PMNested.lean`'s imports (in import order) and each module's doc
 | `StiffnessIndices` | Per-sector normalization from the generation's channel content |
 | `SectorLinks` | The inter-sector link is the scalar doublet |
 | `ChiralAnomalies` | Gauge anomalies of the two-sector assignment |
+| `BaryonNumber` | Baryon number from the axis ledger (`1/3` on colour, `0` on the lepton axis, matching `ReferenceAxis.bl`); native reversible gates preserve it, so a reversible update cannot create a baryon asymmetry (`no_asymmetry_from_reversible`) |
 | `LinkMass` | W and Z masses from the inter-sector link |
 | `LinkCustodial` | The opposite-sign interface term as custodial breaking of the link |
 | `WMassTest` | The W mass as a parameter-free test of the clock ratio |
@@ -281,3 +357,12 @@ Generated from `PMNested.lean`'s imports (in import order) and each module's doc
 | `ReferenceMaintenance` | Compatibility names; generic reversible tasks now live in Paper II. |
 | `ReferenceMaintenanceLedger` | Executable conditional ledgers and a partition countermodel |
 | `SectorCapabilities` | Capabilities of the actual carrier operations |
+| `GenerationEncoding` | Three packet types, retained labels and finite encoding capacity |
+| `GenerationHistory` | Companion-carrier encoding and generation-preserving root words |
+| `GenerationWalls` | Wall-retaining packet encodings and the wall-exchange constraint |
+| `GenerationVacuumChoice` | Existing class-sector vacua and unbroken class degeneracy |
+| `CarrierPhaseComparison` | Marker-free comparison on the actual packet permutations |
+| `PMConstantsProof` | Build-time certificates for the native constants reporter |
+| `CarrierRegisterModel` | Independent occupied banks for actual vacuum and packet labels |
+| `CarrierRegisterVacuum` | Full native vacuum generator on those configuration banks |
+| `CarrierRegisterChirality` | Full-state matching obstructions and zero-kernel agreement |

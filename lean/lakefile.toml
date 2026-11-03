@@ -6,13 +6,13 @@ defaultTargets = ["PMNested"]
 name = "PMNested"
 
 [[require]]
+name = "pm_framework"
+path = "../../PM/lean"
+
+[[require]]
 name = "pm_arch"
 path = "../../PM-1-Arch/lean"
 
 [[require]]
 name = "pm_action"
 path = "../../PM-2-Action/lean"
-
-[[require]]
-name = "pm_framework"
-path = "../../PM/lean"

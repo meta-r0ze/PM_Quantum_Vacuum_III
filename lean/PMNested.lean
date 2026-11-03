@@ -72,6 +72,7 @@ import PMNested.VevAccounting
 import PMNested.VevPremises
 import PMNested.DepthEvents
 import PMNested.CarrierRepresentation
+import PMNested.BaryonNumber
 import PMNested.Generations
 import PMNested.FloorNeutrino
 import PMNested.BetaUniversality
