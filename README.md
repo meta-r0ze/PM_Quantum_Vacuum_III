@@ -1,5 +1,7 @@
 This repository contains the latex source for the "Persistence Mechanics of the Quantum Vacuum III" paper which defines the three rules by which systems partion themselves.
 
+Lean: [README](lean/PMConstants/README.md), [OVERVIEW](lean/PMConstants/OVERVIEW.md), [REVIEW-AND-NEXT](lean/PMConstants/REVIEW-AND-NEXT.md).
+
 and then validates this by applying this to E8 to derive the constants such as 
 
 The rendered version can be viewed here: https://meta-r0ze.github.io/PM_Quantum_Vacuum_III/Persistence_Mechanics_of_the_Quantum_Vacuum_III.pdf

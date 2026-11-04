@@ -172,7 +172,6 @@ unit; lattice dimensionless data do not supply an independent GeV scale.
 ## Module index
 
 Generated from `PMConstants.lean`'s imports (in import order) and each module's docstring heading.
-`ControllerAdmissibility` and `ControllerTransferWitness` are in `PMConstants/` but not imported.
 
 | Module | Subject |
 | --- | --- |

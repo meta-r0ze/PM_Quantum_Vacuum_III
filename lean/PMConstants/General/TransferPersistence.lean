@@ -22,6 +22,7 @@ namespace PMConstants.General.TransferPersistence
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+omit [DecidableEq ι] in
 /-- A positive drift accumulates unbounded backlog over time.
 If d - s > 0, then for any B there exists n such that drift * n > B. -/
 theorem starvation_grows_linearly (d s : ι -> ℝ)
@@ -41,14 +42,15 @@ theorem starvation_grows_linearly (d s : ι -> ℝ)
       apply mul_lt_mul_of_pos_left hn hpos
     _ = B := by field_simp [hpos.ne']
 
+omit [DecidableEq ι] in
 /-- Persistence selects proportional allocation. If bounded backlog is required
 and service must not exceed demand per source, then service must equal demand
 for each queue. A policy that starves any queue cannot persist. -/
 theorem persistence_selects_equal (d s : ι -> ℝ)
-    (_hd : ∀ i : ι, 0 ≤ d i)
-    (_hle : ∀ i : ι, ∑ j : ι, s j ≤ ∑ j : ι, d j)
-    (hbacklog : ∃ B : ℝ, ∀ i : ι, ∀ n : ℕ, |(∑ j : ι, d j) - (∑ j : ι, s j)| * ↑n ≤ B) :
-    ∀ i : ι, ∑ j : ι, s j = ∑ j : ι, d j := by
+    (_hd : ∀ _i : ι, 0 ≤ d _i)
+    (_hle : ∀ _ : ι, ∑ j : ι, s j ≤ ∑ j : ι, d j)
+    (hbacklog : ∃ B : ℝ, ∀ _ : ι, ∀ n : ℕ, |(∑ j : ι, d j) - (∑ j : ι, s j)| * ↑n ≤ B) :
+    ∀ _ : ι, ∑ j : ι, s j = ∑ j : ι, d j := by
   intro i0
   by_contra hneq
   have hstarve : ∑ j : ι, s j < ∑ j : ι, d j := by

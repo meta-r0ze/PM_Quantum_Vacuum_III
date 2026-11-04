@@ -167,3 +167,4 @@ import PMConstants.CarrierPhaseComparison
 import PMConstants.CarrierRegisterModel
 import PMConstants.CarrierRegisterVacuum
 import PMConstants.CarrierRegisterChirality
+import PMConstants.PlanckReadout
