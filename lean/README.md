@@ -19,7 +19,7 @@ one. Only `propext`, `Classical.choice` and `Quot.sound` are permitted; no `sorr
 | --- | --- |
 | [VERIFICATION-STATUS.md](VERIFICATION-STATUS.md) | Build and audit status; the module holding the current statement of each result; what remains an input; what Paper III takes from Paper II; downstream use; research files |
 | [CONSTANTS-STATUS.md](CONSTANTS-STATUS.md) | Each constant, what Lean checks, and what its physical derivation still needs |
-| [GENERAL-RULES.md](GENERAL-RULES.md) | The substrate-independent `PMNested.General` layer (capacity, encoding, matching, nesting, service) |
+| [GENERAL-RULES.md](GENERAL-RULES.md) | The substrate-independent `PMConstants.General` layer (capacity, encoding, matching, nesting, service) |
 
 The latest full `check.sh` passed 4352 build jobs, the constants reporter checks,
 the independent general-rules audit of 168 declarations, and the strict axiom
@@ -163,7 +163,7 @@ for comparison programs; numeric bounds are strings to preserve their exact digi
 
 The initial catalog contains 14 entries: the impedance and admittance, partition
 fractions, current colour-ledger coupling, current electron Yukawa, VEV ratio,
-and the mass-scale quantities. `PMNested.ConstantReport.catalog_sound` checks every
+and the mass-scale quantities. `PMConstants.ConstantReport.catalog_sound` checks every
 catalog endpoint against its named real-valued model formula. Building
 `pm-constants` requires this certificate module, while the executable links only
 the lightweight runtime modules. No noncomputable real expression is evaluated.
@@ -196,8 +196,8 @@ unit; lattice dimensionless data do not supply an independent GeV scale.
 
 ## Module index
 
-Generated from `PMNested.lean`'s imports (in import order) and each module's docstring heading.
-`ControllerAdmissibility` and `ControllerTransferWitness` are in `PMNested/` but not imported.
+Generated from `PMConstants.lean`'s imports (in import order) and each module's docstring heading.
+`ControllerAdmissibility` and `ControllerTransferWitness` are in `PMConstants/` but not imported.
 
 | Module | Subject |
 | --- | --- |

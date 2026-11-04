@@ -1,7 +1,7 @@
 # General persistence rules, independent of the constants example
 
-The `PMNested.General` target imports general modules and the generic
-positive-real `Interface` law. It imports no `PMArch` module and no Paper III
+The `PMConstants.General` target imports general modules and the generic
+positive-real `Interface` law. It imports no `PMSubstrate` module and no Paper III
 constant definitions. `AuditGeneral.lean` enforces that dependency separation and
 checks all transitive proof axioms. The normal `check.sh` runs this audit and the
 complete project audit.
