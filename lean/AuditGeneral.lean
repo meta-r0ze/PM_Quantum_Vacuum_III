@@ -1,4 +1,4 @@
-import PMNested.General
+import PMConstants.General
 import Lean
 
 /-! The general-rules layer must not import the E8 example. -/
@@ -6,15 +6,15 @@ open Lean Elab Command in
 run_cmd do
   let env ← getEnv
   for mod in env.allImportedModuleNames do
-    if (`PMArch).isPrefixOf mod then
+    if (`PMSubstrate).isPrefixOf mod then
       throwError "General rules unexpectedly import the substrate example: {mod}"
-    if (`PMNested).isPrefixOf mod &&
-        !(`PMNested.General).isPrefixOf mod && mod != `PMNested.Interface then
+    if (`PMConstants).isPrefixOf mod &&
+        !(`PMConstants.General).isPrefixOf mod && mod != `PMConstants.Interface then
       throwError "General rules unexpectedly import a constants module: {mod}"
   let mut checked : Nat := 0
   for (name, _) in env.constants.toList do
     let fromGeneral := match env.getModuleIdxFor? name with
-      | some idx => (`PMNested.General).isPrefixOf env.allImportedModuleNames[idx.toNat]!
+      | some idx => (`PMConstants.General).isPrefixOf env.allImportedModuleNames[idx.toNat]!
       | none => false
     if fromGeneral then
       for ax in ← Lean.collectAxioms name do

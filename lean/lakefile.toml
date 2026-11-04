@@ -1,9 +1,9 @@
 name = "pm_nested"
 version = "0.1.0"
-defaultTargets = ["PMNested"]
+defaultTargets = ["PMConstants"]
 
 [[lean_lib]]
-name = "PMNested"
+name = "PMConstants"
 
 [[require]]
 name = "pm_framework"
