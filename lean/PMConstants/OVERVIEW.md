@@ -1,33 +1,8 @@
-# PM-3-Nested: constants and selection constraints in Lean
+# PMConstants — overview of checked results
 
-Lean 4.34.1. The package depends on the sibling `PM-1-Arch/lean` package and its pinned mathlib
-cache, the sibling `PM-2-Action/lean` package for carrier events and readout, and `PM/lean` for the
-framework selection theorems. Keep these paper folders as siblings, then run:
-
-```sh
-source ~/.elan/env
-./check.sh
-```
-
-The dependency direction is Paper I → Paper II → Paper III. Run Paper II's `check.sh` before this
-one. Only `propext`, `Classical.choice` and `Quot.sound` are permitted; no `sorry`, custom axioms or
-`native_decide`.
-
-## Where to look
-
-| Document | Contents |
-| --- | --- |
-| [VERIFICATION-STATUS.md](VERIFICATION-STATUS.md) | Build and audit status; the module holding the current statement of each result; what remains an input; what Paper III takes from Paper II; downstream use; research files |
-| [CONSTANTS-STATUS.md](CONSTANTS-STATUS.md) | Each constant, what Lean checks, and what its physical derivation still needs |
-| [GENERAL-RULES.md](GENERAL-RULES.md) | The substrate-independent `PMConstants.General` layer (capacity, encoding, matching, nesting, service) |
-
-The latest full `check.sh` passed 4352 build jobs, the constants reporter checks,
-the independent general-rules audit of 168 declarations, and the strict axiom
-audit of 3654 declarations, without warnings.
-Log: `/tmp/pm3-paper2-register-reuse-full-check.log`.
-
-Each module's own docstring states its scope and premises; it is the authority for that module.
-The dated pass-by-pass history of this package is in git history (earlier versions of this README).
+The module map for Paper III's constants, sectors, running and gauge factors. Build
+instructions are in [`README.md`](README.md); the constant-by-constant open
+dependencies are in [`REVIEW-AND-NEXT.md`](REVIEW-AND-NEXT.md).
 
 ## Entry points
 
@@ -201,7 +176,7 @@ Generated from `PMConstants.lean`'s imports (in import order) and each module's 
 
 | Module | Subject |
 | --- | --- |
-| `General` | Aggregator for the substrate-independent general rules ([GENERAL-RULES.md](GENERAL-RULES.md)) |
+| `General` | Aggregator for the substrate-independent general rules (capacity, encoding, matching, nesting, service) |
 | `Partition` | Conditional arithmetic of the paper's partition rules, with no empirical identification. |
 | `Depth` | Positivity of the stipulated gravity formula; Planck normalization and impedance ordering |
 | `ReviewChecks` | Small review checks: tensor trace 8·3 = 24; idempotent projections have eigenvalues 0 and 1 |

@@ -1,10 +1,10 @@
-# Paper III: constants and their outstanding proof dependencies
+# PMConstants — open work (todo)
 
 This is the current dependency map. A certified value below is a consequence
 of the specified formula/model; it is not automatically an unconditional
 physical derivation from Finiteness, Conservation and Causality. Start with
 `CurrentConstants.current_snapshot` for current values and
-[VERIFICATION-STATUS.md](VERIFICATION-STATUS.md) for build/axiom scope.
+[`OVERVIEW.md`](OVERVIEW.md) for the module map.
 
 ## Constant-by-constant map
 
@@ -69,5 +69,5 @@ work and more general dynamics remain possibilities that need derivations.
 - Update/propagation obligations: `SectorExchange`, `HermitianMass`, `DepthEvents`,
   `GravityAccounting`, `FloorNeutrino`.
 
-See [VERIFICATION-STATUS.md](VERIFICATION-STATUS.md) for the current statement of each result,
-what remains an input, and Paper V reuse.
+See [`OVERVIEW.md`](OVERVIEW.md) for the module map and [`README.md`](README.md) for
+build instructions.
